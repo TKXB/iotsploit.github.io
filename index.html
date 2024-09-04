@@ -11,9 +11,9 @@
     <meta property="og:locale" content="en_US">
     <meta property="og:description" content="An open-source universal messaging library">
     <meta name="og:type" content="website">
-    <meta name="og:image" content="/images/iotsploit.gif">
+    <meta name="og:image" content="/images/iotsploit.png">
     <meta name="og:image:alt" content="IoTSploit project logo">
-    <meta name="og:image:type" content="image/gif">
+    <meta name="og:image:type" content="image/png">
 
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@libzmq">
@@ -49,6 +49,51 @@
       }
     </script>
     <script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    <style>
+      .slider {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .slider-container {
+        display: flex;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .slide {
+        flex: 0 0 100%;
+      }
+
+      .slide img {
+        width: 100%;
+        height: auto;
+      }
+
+      .slider-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,0.5);
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      .prev { left: 10px; }
+      .next { right: 10px; }
+
+      .navbar-item img.is-logo {
+        max-height: 3rem;  /* Increase this value to make the logo larger */
+      }
+
+      @media screen and (max-width: 1023px) {
+        .navbar-item img.is-logo {
+          max-height: 2.5rem;  /* Slightly smaller on mobile devices */
+        }
+      }
+    </style>
   </head>
   <body class="page has-navbar-fixed-top">
     <div class="main">
@@ -56,7 +101,7 @@
         <div class="container">
           <div class="navbar-brand">
             <a id="logo" class="navbar-item" href="index.html">
-              <img src="images/iotsploit.gif" alt="Project navbar logo">
+              <img src="images/iotsploit.svg" alt="Project navbar logo" class="is-logo">
             </a>
 
             <a role="button" class="navbar-docsToc-button" onclick="page.toggleToc()">
@@ -336,134 +381,28 @@
 
       <section class="section">
         <div class="container">
-          <div class="content has-text-centered">
-            <h1 class="has-text-primary">Used by</h1>
-
-            <div class="level">
-              <div class="level-item">
-                <div>
-                  <div>
-                    <img width="48" height="48" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoft.svg" alt="Microsoft"></img>
+          <div class="columns is-centered">
+            <div class="column is-8">
+              <div class="slider">
+                <div class="slider-container">
+                  <div class="slide">
+                    <img src="assets/images/c6cd1631c34b80d182baf6d23b97d813a620e91298374777f4cccfb2abe606a1.png" alt="Product showcase 1">
                   </div>
-                  <div>
-                    Microsoft
+                  <div class="slide">
+                    <img src="assets/images/087b90d4cfc76cfb094cd4067921b344c1a093db57dfbbe0af84437ead89c1fc.png" alt="Product showcase 2">
                   </div>
-                </div>
-              </div>
-
-              <div class="level-item">
-                <div>
-                  <div>
-                    <img width="48" height="48" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/samsung.svg" alt="Samsung"></img>
-                  </div>
-                  <div>
-                    Samsung
+                  <div class="slide">
+                    <img src="assets/images/image3.png" alt="Product showcase 3">
                   </div>
                 </div>
-              </div>
-
-              <div class="level-item">
-                <div>
-                  <div>
-                    <img width="48" height="48" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/at-and-t.svg" alt="AT&amp;T"></img>
-                  </div>
-                  <div>
-                    AT&amp;T
-                  </div>
-                </div>
-              </div>
-
-              <div class="level-item">
-                <div>
-                  <div>
-                    <img width="48" height="48" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/spotify.svg" alt="Spotify"></img>
-                  </div>
-                  <div>
-                    Spotify
-                  </div>
-                </div>
-              </div>
-
-              <div class="level-item">
-                <div>
-                  <div>
-                    <img width="48" height="48" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/facebook.svg" alt="Facebook"></img>
-                  </div>
-                  <div>
-                    Facebook
-                  </div>
-                </div>
-              </div>
-
-              <div class="level-item">
-                <div>
-                  <div>
-                    <img width="48" height="48" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/digitalocean.svg" alt="Digital Ocean"></img>
-                  </div>
-                  <div>
-                    Digital Ocean
-                  </div>
-                </div>
-              </div>
-
-              <div class="level-item">
-                <div>
-                  <div>
-                    <img width="48" height="48" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/auth0.svg" alt="Auth0"></img>
-                  </div>
-                  <div>
-                    Auth0
-                  </div>
-                </div>
-              </div>
-
-              <div class="level-item">
-                <div>
-                  <div>
-                    <img width="48" height="48" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/bitcoin.svg" alt="Bitcoin"></img>
-                  </div>
-                  <div>
-                    Bitcoin
-                  </div>
-                </div>
-              </div>
-
-              <div class="level-item">
-                <div>
-                  <div>
-                    <img width="48" height="48" src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/jupyter.svg" alt="Jupyter"></img>
-                  </div>
-                  <div>
-                    Jupyter
-                  </div>
-                </div>
-              </div>
-
-              <div class="level-item">
-                <div>
-                  <div>
-                    <img width="48" height="48" src="https://upload.wikimedia.org/wikipedia/en/0/0b/Mongrel_2_logo.png" alt="Mongrel2"></img>
-                  </div>
-                  <div>
-                    Mongrel2
-                  </div>
-                </div>
-              </div>
-
-              <div class="level-item">
-                <div>
-                  <div>
-                    <img width="48" height="48" src="https://docs.jina.ai/_static/logo-black.svg" alt="Jina"></img>
-                  </div>
-                  <div>
-                    Jina
-                  </div>
-                </div>
+                <button class="slider-button prev">&lt;</button>
+                <button class="slider-button next">&gt;</button>
               </div>
             </div>
           </div>
         </div>
       </section>
+
 
       <section class="section hero is-small has-background-primary">
         <div class="container">
@@ -493,6 +432,30 @@
 
     <script src="js/jquery-3.3.1.min.aac102d50b6b0bdc80b9d66626172b4038d46d56b48c0cf54733db831345a75f.js" integrity="sha256-qsEC1QtrC9yAudZmJhcrQDjUbVa0jAz1RzPbgxNFp18="></script>
     <script src="js/app.min.e1f3bdce955d8afb8683e832a6b8de855d0c515ba52328e33c5c9b8cc431e05a.js" integrity="sha256-4fO9zpVdivuGg&#43;gyprjehV0MUVulIyjjPFybjMQx4Fo="></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const slider = document.querySelector('.slider-container');
+        const slides = document.querySelectorAll('.slide');
+        const prevButton = document.querySelector('.prev');
+        const nextButton = document.querySelector('.next');
+        let currentIndex = 0;
+
+        function showSlide(index) {
+          slider.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        prevButton.addEventListener('click', () => {
+          currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+          showSlide(currentIndex);
+        });
+
+        nextButton.addEventListener('click', () => {
+          currentIndex = (currentIndex + 1) % slides.length;
+          showSlide(currentIndex);
+        });
+      });
+    </script>
   </body>
 </html>
 
