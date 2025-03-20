@@ -52,39 +52,6 @@
     <script async src='https://www.google-analytics.com/analytics.js'></script>
 
     <style>
-      .slider {
-        position: relative;
-        overflow: hidden;
-      }
-
-      .slider-container {
-        display: flex;
-        transition: transform 0.3s ease-in-out;
-      }
-
-      .slide {
-        flex: 0 0 100%;
-      }
-
-      .slide img {
-        width: 100%;
-        height: auto;
-      }
-
-      .slider-button {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(0,0,0,0.5);
-        color: white;
-        border: none;
-        padding: 10px;
-        cursor: pointer;
-      }
-
-      .prev { left: 10px; }
-      .next { right: 10px; }
-
       .navbar-item img.is-logo {
         max-height: 3rem;  /* Increase this value to make the logo larger */
       }
@@ -258,6 +225,85 @@
         animation: fadeIn 1s ease-out 0.6s;
         animation-fill-mode: both;
       }
+
+      /* Feature box improvements */
+      .media.feature {
+        padding: 1.5rem;
+        border-radius: 6px;
+        height: 100%;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        align-items: flex-start; /* Align items to the top */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle initial shadow */
+      }
+      
+      .media.feature:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+      
+      /* Fix icon position inside feature box */
+      .media.feature .media-left {
+        margin-right: 1rem;
+        padding: 0.5rem 0.5rem 0.5rem 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      /* Create a circular background for icons */
+      .media.feature .icon.is-large {
+        height: 3.5rem;
+        width: 3.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(72, 199, 142, 0.1); /* Light green background */
+        border-radius: 50%; /* Make it circular */
+        padding: 1rem;
+        margin: 0.5rem;
+      }
+      
+      /* Adjust icon size to fit properly */
+      .media.feature .icon.is-large i {
+        font-size: 2.2rem; /* Slightly smaller icon size */
+      }
+      
+      /* Ensure consistent text height */
+      .media.feature .content p {
+        min-height: 3rem;
+        display: flex;
+        align-items: center;
+        margin-top: 0.5rem;
+        color: #666;
+      }
+      
+      /* Improve media content spacing */
+      .media.feature .media-content {
+        padding-top: 0.5rem;
+      }
+      
+      /* Feature section spacing */
+      .section.has-background-light {
+        padding: 3rem 1.5rem;
+      }
+      
+      /* Add responsive adjustments */
+      @media screen and (max-width: 768px) {
+        .media.feature {
+          padding: 1.25rem;
+        }
+        
+        .media.feature .icon.is-large {
+          height: 3rem;
+          width: 3rem;
+          padding: 0.75rem;
+        }
+        
+        .media.feature .icon.is-large i {
+          font-size: 1.8rem;
+        }
+      }
     </style>
   </head>
   <body class="page has-navbar-fixed-top">
@@ -340,7 +386,7 @@
             </p>
             
             <div class="mt-6">
-              <a class="button is-primary is-large mr-2" href="/get-started.html">
+              <a class="button is-primary is-large mr-2" href="https://iotsploit-tutorial.readthedocs.io/en/latest/">
                 <span class="icon">
                   <i class="fas fa-rocket"></i>
                 </span>
@@ -545,31 +591,6 @@
         </div>
       </section>
 
-      <section class="section">
-        <div class="container">
-          <div class="columns is-centered">
-            <div class="column is-8">
-              <div class="slider">
-                <div class="slider-container">
-                  <div class="slide">
-                    <img src="assets/images/c6cd1631c34b80d182baf6d23b97d813a620e91298374777f4cccfb2abe606a1.png" alt="Product showcase 1">
-                  </div>
-                  <div class="slide">
-                    <img src="assets/images/087b90d4cfc76cfb094cd4067921b344c1a093db57dfbbe0af84437ead89c1fc.png" alt="Product showcase 2">
-                  </div>
-                  <div class="slide">
-                    <img src="assets/images/image3.png" alt="Product showcase 3">
-                  </div>
-                </div>
-                <button class="slider-button prev">&lt;</button>
-                <button class="slider-button next">&gt;</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
       <section class="section hero is-small has-background-primary">
         <div class="container">
           <div class="content has-text-centered">
@@ -598,30 +619,6 @@
 
     <script src="js/jquery-3.3.1.min.aac102d50b6b0bdc80b9d66626172b4038d46d56b48c0cf54733db831345a75f.js" integrity="sha256-qsEC1QtrC9yAudZmJhcrQDjUbVa0jAz1RzPbgxNFp18="></script>
     <script src="js/app.min.e1f3bdce955d8afb8683e832a6b8de855d0c515ba52328e33c5c9b8cc431e05a.js" integrity="sha256-4fO9zpVdivuGg&#43;gyprjehV0MUVulIyjjPFybjMQx4Fo="></script>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const slider = document.querySelector('.slider-container');
-        const slides = document.querySelectorAll('.slide');
-        const prevButton = document.querySelector('.prev');
-        const nextButton = document.querySelector('.next');
-        let currentIndex = 0;
-
-        function showSlide(index) {
-          slider.style.transform = `translateX(-${index * 100}%)`;
-        }
-
-        prevButton.addEventListener('click', () => {
-          currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-          showSlide(currentIndex);
-        });
-
-        nextButton.addEventListener('click', () => {
-          currentIndex = (currentIndex + 1) % slides.length;
-          showSlide(currentIndex);
-        });
-      });
-    </script>
   </body>
 </html>
 
