@@ -104,14 +104,27 @@
       
       /* Custom hero background style */
       .hero-background {
+        position: relative;
+        min-height: 80vh; /* Make the hero section taller */
+        overflow: hidden; /* Ensure the background images stay within bounds */
+      }
+      
+      /* Background image animation */
+      .hero-background::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
         background-image: url('/assets/images/aaff5eb44b822d4053d6b674b82ee66d6f342217c9ee9b6da8d00a0d7fcac8af.png');
         background-size: cover;
         background-position: center;
-        position: relative;
-        min-height: 80vh; /* Make the hero section taller */
+        animation: backgroundChange 8s ease-in-out infinite;
+        z-index: 0;
       }
       
-      /* Overlay for better text readability */
+      /* Add a pseudo-element for the second image */
       .hero-background::before {
         content: '';
         position: absolute;
@@ -119,22 +132,77 @@
         right: 0;
         bottom: 0;
         left: 0;
-        background-color: rgba(0, 0, 0, 0.6); /* Dark overlay for readability */
+        background-image: url('/assets/images/eef643486dc991f51d09e6b092ae1a9dfa4d73040cf58a8e47bf11fa5173b7e1.jpg');
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        animation: secondImageFade 8s ease-in-out infinite;
         z-index: 1;
+      }
+      
+      /* Add a dark overlay for better text readability */
+      .hero-overlay {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 2;
+      }
+      
+      @keyframes backgroundChange {
+        0%, 45% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50%, 95% {
+          opacity: 0;
+          transform: scale(1.03);
+        }
+        47.5%, 97.5% {
+          opacity: 0.5;
+        }
+      }
+      
+      @keyframes secondImageFade {
+        0%, 45% {
+          opacity: 0;
+          transform: scale(1.03);
+        }
+        50%, 95% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        47.5%, 97.5% {
+          opacity: 0.5;
+        }
       }
       
       /* Ensure text appears above the overlay */
       .hero-background .hero-body,
       .hero-background .hero-foot {
         position: relative;
-        z-index: 2;
+        z-index: 3;
       }
       
       /* Enhanced text visibility */
       .hero-background .title,
       .hero-background .subtitle {
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
         margin-bottom: 1.5rem;
+        position: relative;
+      }
+      
+      .hero-background .title {
+        font-weight: 700;
+        letter-spacing: 1px;
+      }
+      
+      .hero-background .subtitle {
+        font-weight: 400;
+        letter-spacing: 0.5px;
       }
       
       /* Button styling for better visibility */
@@ -162,6 +230,12 @@
         
         .hero-background .subtitle {
           font-size: 1.5rem !important;
+        }
+        
+        /* Adjust animation timing for mobile */
+        .hero-background::after,
+        .hero-background::before {
+          animation-duration: 8s;
         }
       }
 
@@ -254,6 +328,7 @@
       </nav>
 
       <section class="hero has-text-centered is-medium hero-background">
+        <div class="hero-overlay"></div>
         <div class="hero-body">
           <div class="container">
             <p class="title is-size-1 is-size-2-mobile is-spaced has-text-white">
