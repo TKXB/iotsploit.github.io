@@ -101,6 +101,89 @@
         align-items: center;
         justify-content: center;
       }
+      
+      /* Custom hero background style */
+      .hero-background {
+        background-image: url('/assets/images/aaff5eb44b822d4053d6b674b82ee66d6f342217c9ee9b6da8d00a0d7fcac8af.png');
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        min-height: 80vh; /* Make the hero section taller */
+      }
+      
+      /* Overlay for better text readability */
+      .hero-background::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.6); /* Dark overlay for readability */
+        z-index: 1;
+      }
+      
+      /* Ensure text appears above the overlay */
+      .hero-background .hero-body,
+      .hero-background .hero-foot {
+        position: relative;
+        z-index: 2;
+      }
+      
+      /* Enhanced text visibility */
+      .hero-background .title,
+      .hero-background .subtitle {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        margin-bottom: 1.5rem;
+      }
+      
+      /* Button styling for better visibility */
+      .hero-background .button {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        font-weight: bold;
+        transition: transform 0.3s ease;
+        margin: 0 0.5rem;
+      }
+      
+      .hero-background .button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+      }
+      
+      /* Responsive adjustments */
+      @media screen and (max-width: 768px) {
+        .hero-background {
+          min-height: 60vh;
+        }
+        
+        .hero-background .title {
+          font-size: 2.5rem !important;
+        }
+        
+        .hero-background .subtitle {
+          font-size: 1.5rem !important;
+        }
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      .hero-background .title {
+        animation: fadeIn 1s ease-out;
+      }
+      
+      .hero-background .subtitle {
+        animation: fadeIn 1s ease-out 0.3s;
+        animation-fill-mode: both;
+      }
+      
+      .hero-background .mt-6 {
+        animation: fadeIn 1s ease-out 0.6s;
+        animation-fill-mode: both;
+      }
     </style>
   </head>
   <body class="page has-navbar-fixed-top">
@@ -170,26 +253,31 @@
         </div>
       </nav>
 
-      <section class="hero has-text-centered is-medium is-primary">
+      <section class="hero has-text-centered is-medium hero-background">
         <div class="hero-body">
           <div class="container">
-            <p class="title is-size-1 is-size-2-mobile  is-spaced">
+            <p class="title is-size-1 is-size-2-mobile is-spaced has-text-white">
               IoTSploit
             </p>
             
-            <p class="subtitle is-size-2 is-size-3-mobile has-text-weight-light">
+            <p class="subtitle is-size-2 is-size-3-mobile has-text-weight-light has-text-white">
               The Swiss Army Knife in the field of IoT security testing
             </p>
-      
             
-          </div>
-        </div>
-      
-        <div class="hero-foot">
-          <div class="container">
-            <a class="button get-started-button is-primary is-large mb-6" href="/get-started.html">
-              Get Started
-            </a>
+            <div class="mt-6">
+              <a class="button is-primary is-large mr-2" href="/get-started.html">
+                <span class="icon">
+                  <i class="fas fa-rocket"></i>
+                </span>
+                <span>Get Started</span>
+              </a>
+              <a class="button is-light is-large" href="https://github.com" target="_blank">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>GitHub</span>
+              </a>
+            </div>
           </div>
         </div>
       </section>
