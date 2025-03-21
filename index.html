@@ -333,6 +333,37 @@
         transform: scale(1.02);
         box-shadow: 0 15px 30px rgba(0,0,0,0.15);
       }
+
+      .feature-item-alt {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        transition: transform 0.2s ease;
+      }
+      
+      .feature-item-alt:hover {
+        transform: translateX(5px);
+      }
+      
+      .feature-item-alt .icon {
+        margin-right: 0.75rem;
+        background-color: rgba(50, 115, 220, 0.1);
+        padding: 0.5rem;
+        border-radius: 50%;
+        height: 2.5rem;
+        width: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .mobile-app-image {
+        transition: transform 0.3s ease;
+      }
+      
+      .mobile-app-image:hover {
+        transform: translateY(-10px) scale(1.02);
+      }
     </style>
   </head>
   <body class="page has-navbar-fixed-top">
@@ -616,6 +647,60 @@
               </div>
             </div>
             
+          </div>
+        </div>
+      </section>
+
+      <section class="section has-background-white">
+        <div class="container">
+          <h2 class="title has-text-centered has-text-info mb-6">IoTSploit Mobile App</h2>
+          <div class="columns is-vcentered">
+            <div class="column is-6">
+              <div class="content" style="padding-left: 6rem;">
+                <h3 class="subtitle has-text-info is-4 mb-3">Control & Monitor on the Go</h3>
+                <p class="mb-4">The IoTSploit Mobile App provides a convenient and powerful interface to control your IoT security testing from anywhere. Connect to your IoTSploit devices remotely and monitor testing results in real-time.</p>
+                
+                <div class="columns is-multiline">
+                  <div class="column is-6">
+                    <div class="feature-item-alt">
+                      <span class="icon has-text-info">
+                        <i class="fas fa-mobile-alt"></i>
+                      </span>
+                      <span>iOS & Android Compatible</span>
+                    </div>
+                  </div>
+                  <div class="column is-6">
+                    <div class="feature-item-alt">
+                      <span class="icon has-text-info">
+                        <i class="fas fa-chart-line"></i>
+                      </span>
+                      <span>Real-time Analytics</span>
+                    </div>
+                  </div>
+                  <div class="column is-6">
+                    <div class="feature-item-alt">
+                      <span class="icon has-text-info">
+                        <i class="fas fa-network-wired"></i>
+                      </span>
+                      <span>Remote Device Control</span>
+                    </div>
+                  </div>
+                  <div class="column is-6">
+                    <div class="feature-item-alt">
+                      <span class="icon has-text-info">
+                        <i class="fas fa-bell"></i>
+                      </span>
+                      <span>Push Notifications</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column is-6">
+              <figure class="image has-text-centered">
+                <img src="assets/images/mobile_app.png" alt="IoTSploit Mobile App" class="mobile-app-image" style="border-radius: 20px; box-shadow: 0 15px 35px rgba(50,115,220,0.2); max-height: 500px; width: auto; object-fit: contain; margin: 0 auto; display: block;">
+              </figure>
+            </div>
           </div>
         </div>
       </section>
