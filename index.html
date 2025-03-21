@@ -304,6 +304,35 @@
           font-size: 1.8rem;
         }
       }
+      
+      /* NXP Board feature styles */
+      .feature-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      
+      .feature-item .icon {
+        margin-right: 0.75rem;
+        background-color: rgba(72, 199, 142, 0.1);
+        padding: 0.5rem;
+        border-radius: 50%;
+        height: 2.5rem;
+        width: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .has-shadow {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      .has-shadow:hover {
+        transform: scale(1.02);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+      }
     </style>
   </head>
   <body class="page has-navbar-fixed-top">
@@ -591,12 +620,56 @@
         </div>
       </section>
 
-      <section class="section hero is-small has-background-primary">
+      <section class="section has-background-light">
         <div class="container">
-          <div class="content has-text-centered">
-            <a class="button is-primary is-inverted is-large" href="get-started.html">
-              Get Started
-            </a>
+          <h2 class="title has-text-centered has-text-primary mb-6">IoTSploit NXP Board</h2>
+          <div class="columns is-vcentered">
+            <div class="column is-5">
+              <figure class="image">
+                <img src="assets/images/iotsploit_nxp.png" alt="IoTSploit NXP Board" class="has-shadow" style="border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+              </figure>
+            </div>
+            <div class="column is-7">
+              <div class="content">
+                <h3 class="subtitle has-text-primary is-4 mb-3">Powerful Hardware for IoT Security Testing</h3>
+                <p class="mb-4">The IoTSploit NXP Board is a comprehensive hardware platform designed for advanced IoT security testing featuring USB simulation capabilities, Bad USB attacks, and integrated logic analyzer functionality.</p>
+                
+                <div class="columns is-multiline">
+                  <div class="column is-6">
+                    <div class="feature-item">
+                      <span class="icon has-text-primary">
+                        <i class="fas fa-keyboard"></i>
+                      </span>
+                      <span>USB Simulation & Bad USB</span>
+                    </div>
+                  </div>
+                  <div class="column is-6">
+                    <div class="feature-item">
+                      <span class="icon has-text-primary">
+                        <i class="fas fa-wave-square"></i>
+                      </span>
+                      <span>Integrated Logic Analyzer</span>
+                    </div>
+                  </div>
+                  <div class="column is-6">
+                    <div class="feature-item">
+                      <span class="icon has-text-primary">
+                        <i class="fas fa-desktop"></i>
+                      </span>
+                      <span>Support GUI Control, Easy to Use</span>
+                    </div>
+                  </div>
+                  <div class="column is-6">
+                    <div class="feature-item">
+                      <span class="icon has-text-primary">
+                        <i class="fas fa-plug"></i>
+                      </span>
+                      <span>M.2 KEYE Expansion Slot</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
