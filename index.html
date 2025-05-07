@@ -481,6 +481,67 @@
           top: 120px;
           right: -15px;
         }
+        
+        /* Plugin management mobile styles */
+        .plugin-image {
+          max-width: 90%;
+          margin: 0 auto;
+        }
+        
+        .plugin-title {
+          font-size: 1.75rem !important;
+        }
+        
+        .plugin-description {
+          font-size: 1.1rem !important;
+        }
+      }
+
+      /* Plugin Management Section Styles */
+      .plugin-title {
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      .plugin-description {
+        animation: fadeInUp 0.8s ease-out 0.3s;
+        animation-fill-mode: both;
+      }
+
+      .plugin-feature {
+        animation: fadeInUp 0.8s ease-out;
+        animation-fill-mode: both;
+        transition: transform 0.3s ease;
+      }
+
+      .plugin-feature:nth-child(1) {
+        animation-delay: 0.4s;
+      }
+
+      .plugin-feature:nth-child(2) {
+        animation-delay: 0.5s;
+      }
+
+      .plugin-feature:nth-child(3) {
+        animation-delay: 0.6s;
+      }
+
+      .plugin-feature:nth-child(4) {
+        animation-delay: 0.7s;
+      }
+
+      .plugin-feature:hover {
+        transform: translateX(5px);
+      }
+
+      .plugin-image {
+        animation: fadeIn 1s ease-out 0.8s;
+        animation-fill-mode: both;
+        transition: all 0.5s ease;
+      }
+
+      .plugin-image:hover {
+        transform: perspective(1000px) rotateY(0deg) translateY(-10px) !important;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.3) !important;
       }
     </style>
   </head>
@@ -793,6 +854,57 @@
                   <img src="assets/images/plugins.png" alt="IoTSploit Flutter UI">
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Plugin Management System Section -->
+      <section class="section" style="background-color: #f6fff0; padding: 5rem 1.5rem;">
+        <div class="container">
+          <div class="columns is-vcentered">
+            <!-- Text Introduction on Left -->
+            <div class="column is-5">
+              <h2 class="title is-2 has-text-weight-bold plugin-title" style="color: #2d3748; margin-bottom: 1.5rem; position: relative; display: inline-block;">
+                Plugin Management
+              </h2>
+              <div style="width: 50%; height: 3px; background-color: #48c78e; margin-bottom: 2rem;"></div>
+              <p class="subtitle is-4 has-text-grey plugin-description" style="margin-bottom: 2rem; line-height: 1.6;">
+                IoTSploit features a powerful plugin system built on Python that lets you extend the platform with custom security testing modules. The intuitive management interface makes it easy to discover, execute, and develop plugins for testing IoT devices.
+              </p>
+              <ul style="margin-bottom: 2rem; color: #4a5568;">
+                <li class="plugin-feature" style="margin-bottom: 1rem; display: flex; align-items: center;">
+                  <span style="background-color: rgba(72, 199, 142, 0.1); border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                    <i class="fas fa-puzzle-piece" style="color: #48c78e;"></i>
+                  </span>
+                  <span>Modular design with pluggable interfaces</span>
+                </li>
+                <li class="plugin-feature" style="margin-bottom: 1rem; display: flex; align-items: center;">
+                  <span style="background-color: rgba(72, 199, 142, 0.1); border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                    <i class="fas fa-shield-alt" style="color: #48c78e;"></i>
+                  </span>
+                  <span>Extensive library of security testing plugins</span>
+                </li>
+                <li class="plugin-feature" style="margin-bottom: 1rem; display: flex; align-items: center;">
+                  <span style="background-color: rgba(72, 199, 142, 0.1); border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                    <i class="fas fa-code" style="color: #48c78e;"></i>
+                  </span>
+                  <span>Custom plugin development with Python API</span>
+                </li>
+                <li class="plugin-feature" style="margin-bottom: 1rem; display: flex; align-items: center;">
+                  <span style="background-color: rgba(72, 199, 142, 0.1); border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                    <i class="fas fa-sync-alt" style="color: #48c78e;"></i>
+                  </span>
+                  <span>Real-time results with execution status tracking</span>
+                </li>
+              </ul>
+            </div>
+            
+            <!-- Image on Right -->
+            <div class="column is-7">
+              <figure class="image has-text-centered">
+                <img src="assets/images/plugins.png" alt="IoTSploit Plugin Management Interface" style="border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); transform: perspective(1000px) rotateY(2deg); transition: all 0.5s ease;" class="plugin-image">
+              </figure>
             </div>
           </div>
         </div>
