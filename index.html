@@ -208,8 +208,12 @@
 
       /* Animations */
       @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
       }
       
       .hero-background .title {
@@ -363,6 +367,120 @@
       
       .mobile-app-image:hover {
         transform: translateY(-10px) scale(1.02);
+      }
+
+      /* Dual Interface Section Styles */
+      .dual-interface-container {
+        position: relative;
+        height: 480px;
+        animation: fadeIn 1s ease-out 0.8s;
+        animation-fill-mode: both;
+      }
+
+      .interface-image {
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        border-radius: 24px;
+        overflow: hidden;
+        position: absolute;
+        transition: all 0.4s ease;
+      }
+
+      .interface-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .console-image {
+        top: 0;
+        left: 0;
+        width: 65%;
+        z-index: 1;
+        transform: rotate(-5deg);
+      }
+
+      .flutter-image {
+        top: 30px;
+        right: -40px;
+        width: 85%;
+        z-index: 2;
+        transform: rotate(2deg);
+      }
+
+      .dual-interface-container:hover .console-image {
+        transform: rotate(-3deg) translateY(-5px);
+      }
+
+      .dual-interface-container:hover .flutter-image {
+        transform: rotate(1deg) translateY(-8px);
+      }
+
+      .dual-interface-title {
+        position: relative;
+        display: inline-block;
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      .dual-interface-title::after {
+        content: '';
+        position: absolute;
+        width: 50%;
+        height: 3px;
+        bottom: -10px;
+        left: 0;
+        background-color: #48c78e;
+        transition: width 0.3s ease;
+      }
+
+      .dual-interface-title:hover::after {
+        width: 100%;
+      }
+
+      .dual-interface-description {
+        animation: fadeInUp 0.8s ease-out 0.3s;
+        animation-fill-mode: both;
+      }
+
+      .dual-interface-button-container {
+        animation: fadeInUp 0.8s ease-out 0.6s;
+        animation-fill-mode: both;
+      }
+
+      .dual-interface-button {
+        transition: all 0.3s ease;
+      }
+
+      .dual-interface-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        .dual-interface-container {
+          height: 400px;
+          margin-top: 2rem;
+        }
+        
+        .console-image {
+          width: 80%;
+        }
+        
+        .flutter-image {
+          width: 85%;
+          top: 120px;
+          right: -15px;
+        }
       }
     </style>
   </head>
@@ -647,6 +765,35 @@
               </div>
             </div>
             
+          </div>
+        </div>
+      </section>
+
+      <!-- Dual Interface Section -->
+      <section class="section" style="background-color: #f0f6ff; padding: 5rem 1.5rem;">
+        <div class="container">
+          <div class="columns is-vcentered">
+            <!-- Text Introduction on Left -->
+            <div class="column is-5">
+              <h2 class="title is-2 has-text-weight-bold dual-interface-title" style="color: #2d3748; margin-bottom: 1.5rem;">
+                Dual Interface
+              </h2>
+              <p class="subtitle is-4 has-text-grey dual-interface-description" style="margin-bottom: 2rem; line-height: 1.6;">
+                Power users get a Cmd2-powered REPL shell (scan devices, initialize devices, execute plugin, etc.) while makers and managers enjoy a Flutter-based dashboard on desktop or mobile.
+              </p>
+            </div>
+            
+            <!-- Images on Right -->
+            <div class="column is-7">
+              <div class="dual-interface-container">
+                <div class="interface-image console-image">
+                  <img src="assets/images/console.png" alt="IoTSploit Console Interface">
+                </div>
+                <div class="interface-image flutter-image">
+                  <img src="assets/images/plugins.png" alt="IoTSploit Flutter UI">
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
