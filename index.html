@@ -919,18 +919,18 @@
       <!-- Hardware Introduction Section -->
       <section class="section" style="background-color: #f5f5f5; padding: 5rem 1.5rem;">
         <div class="container">
-          <div class="columns is-vcentered">
-            <div class="column is-6">
-              <figure class="image">
-                <img src="assets/images/eef643486dc991f51d09e6b092ae1a9dfa4d73040cf58a8e47bf11fa5173b7e1.jpg" alt="IoTSploit Hardware" style="border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+          <div class="columns is-vcentered hardware-section">
+            <div class="column is-6 hardware-image-column">
+              <figure class="image hardware-image-container">
+                <img src="assets/images/eef643486dc991f51d09e6b092ae1a9dfa4d73040cf58a8e47bf11fa5173b7e1.jpg" alt="IoTSploit Hardware" style="border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);" class="hardware-image">
               </figure>
             </div>
-            <div class="column is-6">
-              <h2 class="title is-2 has-text-weight-bold" style="color: #2d3748; margin-bottom: 1.5rem;">
+            <div class="column is-6 hardware-text-column">
+              <h2 class="title is-2 has-text-weight-bold hardware-title" style="color: #2d3748; margin-bottom: 1.5rem;">
                 Hardware Modularity
               </h2>
-              <div style="width: 50%; height: 3px; background-color: #3273dc; margin-bottom: 2rem;"></div>
-              <p class="subtitle is-4 has-text-grey" style="margin-bottom: 2rem; line-height: 1.6;">
+              <div class="hardware-line" style="width: 0; height: 3px; background-color: #3273dc; margin-bottom: 2rem;"></div>
+              <p class="subtitle is-4 has-text-grey hardware-description" style="margin-bottom: 2rem; line-height: 1.6;">
                 Leveraging the versatile M2 KEYE slot, IoTSploit enables seamless integration of diverse hardware modules. This adaptability ensures the toolkit evolves alongside emerging IoT technologies and security challenges.
               </p>
             </div>
@@ -938,22 +938,106 @@
         </div>
       </section>
 
+      <!-- GSAP Animation for Hardware Section -->
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          if (typeof gsap !== 'undefined') {
+            // Hardware section animation
+            const hardwareTimeline = gsap.timeline({
+              scrollTrigger: {
+                trigger: ".hardware-section",
+                start: "top 80%",
+                once: true
+              }
+            });
+            
+            // Set initial states
+            gsap.set(".hardware-title", { opacity: 0, y: 30 });
+            gsap.set(".hardware-line", { width: 0 });
+            gsap.set(".hardware-description", { opacity: 0, y: 30 });
+            gsap.set(".hardware-image", { opacity: 0, x: -50 });
+            
+            // Create animation sequence
+            hardwareTimeline
+              .to(".hardware-title", { 
+                opacity: 1, 
+                y: 0, 
+                duration: 0.8, 
+                ease: "power3.out" 
+              })
+              .to(".hardware-line", { 
+                width: "50%", 
+                duration: 0.8, 
+                ease: "power3.out" 
+              }, "-=0.4")
+              .to(".hardware-description", { 
+                opacity: 1, 
+                y: 0, 
+                duration: 0.8, 
+                ease: "power3.out" 
+              }, "-=0.4")
+              .to(".hardware-image", { 
+                opacity: 1, 
+                x: 0, 
+                duration: 1, 
+                ease: "power3.out" 
+              }, "-=0.8");
+            
+            // Add hover effect to hardware image
+            const hardwareImage = document.querySelector('.hardware-image');
+            
+            hardwareImage.addEventListener('mouseenter', () => {
+              gsap.to(hardwareImage, {
+                scale: 1.05,
+                boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
+                duration: 0.4,
+                ease: "power2.out"
+              });
+            });
+            
+            hardwareImage.addEventListener('mouseleave', () => {
+              gsap.to(hardwareImage, {
+                scale: 1,
+                boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
+                duration: 0.4,
+                ease: "power2.out"
+              });
+            });
+          }
+        });
+      </script>
+
       <!-- Dual Interface Section -->
       <section class="section" style="background-color: #f0f6ff; padding: 5rem 1.5rem;">
         <div class="container">
-          <div class="columns is-vcentered">
+          <div class="columns is-vcentered dual-interface-section">
             <!-- Text Introduction on Left -->
-            <div class="column is-5">
-              <h2 class="title is-2 has-text-weight-bold dual-interface-title" style="color: #2d3748; margin-bottom: 1.5rem;">
+            <div class="column is-5 dual-text-column">
+              <h2 class="title is-2 has-text-weight-bold dual-title" style="color: #2d3748; margin-bottom: 1.5rem;">
                 Dual Interface
               </h2>
-              <p class="subtitle is-4 has-text-grey dual-interface-description" style="margin-bottom: 2rem; line-height: 1.6;">
+              <div class="dual-line" style="width: 0; height: 3px; background-color: #48c78e; margin-bottom: 2rem;"></div>
+              <p class="subtitle is-4 has-text-grey dual-description" style="margin-bottom: 2rem; line-height: 1.6;">
                 Power users get a Cmd2-powered REPL shell (scan devices, initialize devices, execute plugin, etc.) while makers and managers enjoy a Flutter-based dashboard on desktop or mobile.
               </p>
+              <div class="dual-buttons" style="opacity: 0;">
+                <a class="button is-primary mr-3" href="https://iotsploit-tutorial.readthedocs.io/en/latest/">
+                  <span class="icon">
+                    <i class="fas fa-terminal"></i>
+                  </span>
+                  <span>Command Line</span>
+                </a>
+                <a class="button is-info" href="#">
+                  <span class="icon">
+                    <i class="fas fa-mobile-alt"></i>
+                  </span>
+                  <span>Flutter UI</span>
+                </a>
+              </div>
             </div>
             
             <!-- Images on Right -->
-            <div class="column is-7">
+            <div class="column is-7 dual-images-column">
               <div class="dual-interface-container">
                 <div class="interface-image console-image">
                   <img src="assets/images/console.png" alt="IoTSploit Console Interface">
@@ -966,6 +1050,141 @@
           </div>
         </div>
       </section>
+
+      <!-- GSAP Animation for Dual Interface Section -->
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          if (typeof gsap !== 'undefined') {
+            // Dual Interface section animation
+            const dualInterfaceTimeline = gsap.timeline({
+              scrollTrigger: {
+                trigger: ".dual-interface-section",
+                start: "top 80%",
+                once: true
+              }
+            });
+            
+            // Set initial states
+            gsap.set(".dual-title", { opacity: 0, y: 30 });
+            gsap.set(".dual-line", { width: 0 });
+            gsap.set(".dual-description", { opacity: 0, y: 30 });
+            gsap.set(".dual-buttons", { opacity: 0, y: 20 });
+            gsap.set(".console-image", { opacity: 0, x: 30, rotationZ: -8 });
+            gsap.set(".flutter-image", { opacity: 0, y: 30, rotationZ: 5 });
+            
+            // Create animation sequence
+            dualInterfaceTimeline
+              .to(".dual-title", { 
+                opacity: 1, 
+                y: 0, 
+                duration: 0.8, 
+                ease: "power3.out" 
+              })
+              .to(".dual-line", { 
+                width: "50%", 
+                duration: 0.8, 
+                ease: "power3.out" 
+              }, "-=0.4")
+              .to(".dual-description", { 
+                opacity: 1, 
+                y: 0, 
+                duration: 0.8, 
+                ease: "power3.out" 
+              }, "-=0.4")
+              .to(".dual-buttons", { 
+                opacity: 1, 
+                y: 0, 
+                duration: 0.8, 
+                ease: "power3.out" 
+              }, "-=0.4")
+              .to(".console-image", { 
+                opacity: 1, 
+                x: 0, 
+                rotationZ: -5,
+                duration: 1, 
+                ease: "power3.out" 
+              }, "-=0.8")
+              .to(".flutter-image", { 
+                opacity: 1, 
+                y: 0, 
+                rotationZ: 2,
+                duration: 1, 
+                ease: "power3.out" 
+              }, "-=0.8");
+            
+            // Add hover effects to dual interface images
+            const consoleImage = document.querySelector('.console-image');
+            const flutterImage = document.querySelector('.flutter-image');
+            
+            consoleImage.addEventListener('mouseenter', () => {
+              gsap.to(consoleImage, {
+                rotationZ: -3,
+                y: -10,
+                scale: 1.02,
+                boxShadow: "0 20px 40px rgba(0,0,0,0.25)",
+                duration: 0.4,
+                ease: "power2.out"
+              });
+            });
+            
+            consoleImage.addEventListener('mouseleave', () => {
+              gsap.to(consoleImage, {
+                rotationZ: -5,
+                y: 0,
+                scale: 1,
+                boxShadow: "0 15px 35px rgba(0,0,0,0.2)",
+                duration: 0.4,
+                ease: "power2.out"
+              });
+            });
+            
+            flutterImage.addEventListener('mouseenter', () => {
+              gsap.to(flutterImage, {
+                rotationZ: 0,
+                y: -15,
+                scale: 1.02,
+                boxShadow: "0 25px 50px rgba(0,0,0,0.25)",
+                duration: 0.4,
+                ease: "power2.out"
+              });
+            });
+            
+            flutterImage.addEventListener('mouseleave', () => {
+              gsap.to(flutterImage, {
+                rotationZ: 2,
+                y: 0,
+                scale: 1,
+                boxShadow: "0 15px 35px rgba(0,0,0,0.2)",
+                duration: 0.4,
+                ease: "power2.out"
+              });
+            });
+            
+            // Add button hover effects
+            const dualButtons = document.querySelectorAll('.dual-buttons .button');
+            
+            dualButtons.forEach(button => {
+              button.addEventListener('mouseenter', () => {
+                gsap.to(button, {
+                  y: -5,
+                  boxShadow: "0 10px 20px rgba(0,0,0,0.15)",
+                  duration: 0.3,
+                  ease: "power2.out"
+                });
+              });
+              
+              button.addEventListener('mouseleave', () => {
+                gsap.to(button, {
+                  y: 0,
+                  boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                  duration: 0.3,
+                  ease: "power2.out"
+                });
+              });
+            });
+          }
+        });
+      </script>
 
       <!-- Plugin Management System Section -->
       <section class="section" style="background-color: #f6fff0; padding: 5rem 1.5rem;">
