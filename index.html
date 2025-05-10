@@ -233,17 +233,19 @@
       /* Feature box improvements */
       .media.feature {
         padding: 1.5rem;
-        border-radius: 6px;
+        border-radius: 12px;
         height: 100%;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         display: flex;
         align-items: flex-start; /* Align items to the top */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle initial shadow */
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        border-top: 3px solid transparent;
       }
       
       .media.feature:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        border-top: 3px solid #48c78e;
       }
       
       /* Fix icon position inside feature box */
@@ -257,8 +259,8 @@
       
       /* Create a circular background for icons */
       .media.feature .icon.is-large {
-        height: 3.5rem;
-        width: 3.5rem;
+        height: 4rem;
+        width: 4rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -266,6 +268,7 @@
         border-radius: 50%; /* Make it circular */
         padding: 1rem;
         margin: 0.5rem;
+        transition: all 0.3s ease;
       }
       
       /* Adjust icon size to fit properly */
@@ -299,8 +302,8 @@
         }
         
         .media.feature .icon.is-large {
-          height: 3rem;
-          width: 3rem;
+          height: 3.5rem;
+          width: 3.5rem;
           padding: 0.75rem;
         }
         
@@ -829,6 +832,89 @@
           </div>
         </div>
       </section>
+
+      <!-- GSAP library for feature animations -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+      
+      <!-- GSAP Feature Animation -->
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          if (typeof gsap !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Set initial state for feature boxes
+            const features = document.querySelectorAll('.media.feature');
+            gsap.set(features, { y: 40, opacity: 0 });
+            
+            // Create staggered animation for features
+            ScrollTrigger.batch(features, {
+              start: "top 85%",
+              onEnter: batch => {
+                gsap.to(batch, {
+                  y: 0,
+                  opacity: 1,
+                  stagger: 0.1,
+                  duration: 0.7,
+                  ease: "power3.out",
+                  clearProps: "opacity"
+                });
+              },
+              once: true
+            });
+            
+            // Feature hover animations
+            features.forEach(feature => {
+              const icon = feature.querySelector('.icon.is-large');
+              const title = feature.querySelector('.title');
+              
+              feature.addEventListener('mouseenter', () => {
+                gsap.to(feature, {
+                  y: -10,
+                  boxShadow: "0 15px 30px rgba(0,0,0,0.15)",
+                  duration: 0.3,
+                  ease: "power2.out"
+                });
+                
+                gsap.to(icon, {
+                  backgroundColor: "rgba(72, 199, 142, 0.2)",
+                  scale: 1.1,
+                  duration: 0.3,
+                  ease: "power2.out"
+                });
+                
+                gsap.to(title, {
+                  color: "#3273dc",
+                  duration: 0.3,
+                  ease: "power2.out"
+                });
+              });
+              
+              feature.addEventListener('mouseleave', () => {
+                gsap.to(feature, {
+                  y: 0,
+                  boxShadow: "0 3px 10px rgba(0,0,0,0.05)",
+                  duration: 0.3,
+                  ease: "power2.out"
+                });
+                
+                gsap.to(icon, {
+                  backgroundColor: "rgba(72, 199, 142, 0.1)",
+                  scale: 1,
+                  duration: 0.3,
+                  ease: "power2.out"
+                });
+                
+                gsap.to(title, {
+                  color: "#48c78e",
+                  duration: 0.3,
+                  ease: "power2.out"
+                });
+              });
+            });
+          }
+        });
+      </script>
 
       <!-- Hardware Introduction Section -->
       <section class="section" style="background-color: #f5f5f5; padding: 5rem 1.5rem;">
