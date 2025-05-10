@@ -1299,42 +1299,203 @@
           <!-- Motherboard Specs -->
           <div class="columns is-vcentered mb-6">
             <div class="column is-5">
-              <figure class="image">
+              <figure class="image motherboard-image">
                 <img src="assets/images/motherboard.jpg" alt="IoTSploit Motherboard" class="has-shadow" style="border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
               </figure>
             </div>
             <div class="column is-7">
-              <h3 class="title is-4 has-text-primary mb-4">Motherboard</h3>
-              <p class="mb-4">The IoTSploit motherboard provides a robust foundation for IoT security testing with multiple connectivity options and expansion capabilities.</p>
+              <h3 class="title is-4 has-text-primary mb-4 motherboard-title">Motherboard</h3>
+              <p class="mb-5 motherboard-description" style="color: #667085; font-size: 1.1rem; line-height: 1.6;">
+                The IoTSploit motherboard is engineered for maximum flexibility and connectivity, providing the perfect foundation for your IoT security testing arsenal.
+              </p>
               
-              <div class="columns is-multiline">
-                <div class="column is-6">
-                  <div class="feature-item">
-                    <span class="icon has-text-primary">
+              <div class="motherboard-features">
+                <!-- 100M Ethernet Switch -->
+                <div class="feature-card" style="background-color: #fff; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; align-items: center;">
+                  <div class="feature-icon" style="background-color: #ecfdf3; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1.5rem;">
+                    <span class="icon has-text-primary" style="font-size: 1.5rem;">
                       <i class="fas fa-network-wired"></i>
                     </span>
-                    <span>100M Ethernet Switch</span>
+                  </div>
+                  <div class="feature-content">
+                    <h4 class="is-size-5 has-text-weight-bold mb-1" style="color: #344054;">100M Ethernet Switch</h4>
+                    <p style="color: #667085; margin: 0;">High-speed network connectivity for testing and monitoring IoT devices</p>
                   </div>
                 </div>
-                <div class="column is-6">
-                  <div class="feature-item">
-                    <span class="icon has-text-primary">
+                
+                <!-- USB 2.0 HUB -->
+                <div class="feature-card" style="background-color: #fff; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; align-items: center;">
+                  <div class="feature-icon" style="background-color: #ecfdf3; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1.5rem;">
+                    <span class="icon has-text-primary" style="font-size: 1.5rem;">
                       <i class="fas fa-usb"></i>
                     </span>
-                    <span>USB 2.0 HUB</span>
+                  </div>
+                  <div class="feature-content">
+                    <h4 class="is-size-5 has-text-weight-bold mb-1" style="color: #344054;">USB 2.0 HUB</h4>
+                    <p style="color: #667085; margin: 0;">Multiple USB ports for connecting peripherals and test modules</p>
                   </div>
                 </div>
-                <div class="column is-6">
-                  <div class="feature-item">
-                    <span class="icon has-text-primary">
+                
+                <!-- 3 M.2 Key E Slots -->
+                <div class="feature-card" style="background-color: #fff; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; align-items: center;">
+                  <div class="feature-icon" style="background-color: #ecfdf3; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1.5rem;">
+                    <span class="icon has-text-primary" style="font-size: 1.5rem;">
                       <i class="fas fa-plug"></i>
                     </span>
-                    <span>3 M.2 Key E Slots</span>
                   </div>
+                  <div class="feature-content">
+                    <h4 class="is-size-5 has-text-weight-bold mb-1" style="color: #344054;">3 M.2 Key E Slots</h4>
+                    <p style="color: #667085; margin: 0;">Expandable architecture for adding specialized daughter boards</p>
+                  </div>
+                </div>
+                
+                <!-- Learn More Button -->
+                <div class="mt-4 learn-more-button">
+                  <a href="#" class="button is-primary is-rounded" style="padding-left: 1.5rem; padding-right: 1.5rem; transition: all 0.3s ease;">
+                    <span>Learn More</span>
+                    <span class="icon is-small ml-2">
+                      <i class="fas fa-arrow-right"></i>
+                    </span>
+                  </a>
                 </div>
               </div>
             </div>
           </div>
+          
+          <!-- Motherboard GSAP Animation -->
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              if (typeof gsap !== 'undefined') {
+                // Set initial states
+                gsap.set(".motherboard-title", { opacity: 0, y: 30 });
+                gsap.set(".motherboard-description", { opacity: 0, y: 30 });
+                gsap.set(".feature-card", { opacity: 0, x: 30, stagger: 0.1 });
+                gsap.set(".motherboard-image", { opacity: 0, x: -30 });
+                gsap.set(".learn-more-button", { opacity: 0, y: 20 });
+                
+                // Create timeline for motherboard section
+                const motherboardTimeline = gsap.timeline({
+                  scrollTrigger: {
+                    trigger: ".motherboard-title",
+                    start: "top 80%",
+                    once: true
+                  }
+                });
+                
+                // Animate elements in sequence
+                motherboardTimeline
+                  .to(".motherboard-title", { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 0.6, 
+                    ease: "power2.out" 
+                  })
+                  .to(".motherboard-description", { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 0.6, 
+                    ease: "power2.out" 
+                  }, "-=0.4")
+                  .to(".motherboard-image", { 
+                    opacity: 1, 
+                    x: 0, 
+                    duration: 0.8, 
+                    ease: "power2.out" 
+                  }, "-=0.5")
+                  .to(".feature-card", { 
+                    opacity: 1, 
+                    x: 0, 
+                    stagger: 0.15, 
+                    duration: 0.6, 
+                    ease: "power2.out" 
+                  }, "-=0.5")
+                  .to(".learn-more-button", { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 0.6, 
+                    ease: "power2.out" 
+                  }, "-=0.3");
+                
+                // Add hover effects to feature cards
+                const featureCards = document.querySelectorAll('.feature-card');
+                
+                featureCards.forEach(card => {
+                  card.addEventListener('mouseenter', () => {
+                    gsap.to(card, {
+                      y: -5,
+                      boxShadow: "0 8px 16px rgba(0,0,0,0.12)",
+                      duration: 0.3,
+                      ease: "power2.out"
+                    });
+                    
+                    // Also animate the icon
+                    const icon = card.querySelector('.feature-icon');
+                    gsap.to(icon, {
+                      scale: 1.1,
+                      backgroundColor: "#e6f7ef",
+                      duration: 0.3,
+                      ease: "power2.out"
+                    });
+                  });
+                  
+                  card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                      y: 0,
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                      duration: 0.3,
+                      ease: "power2.out"
+                    });
+                    
+                    // Reset the icon
+                    const icon = card.querySelector('.feature-icon');
+                    gsap.to(icon, {
+                      scale: 1,
+                      backgroundColor: "#ecfdf3",
+                      duration: 0.3,
+                      ease: "power2.out"
+                    });
+                  });
+                });
+                
+                // Hover effect for Learn More button
+                const learnMoreBtn = document.querySelector('.learn-more-button .button');
+                
+                learnMoreBtn.addEventListener('mouseenter', () => {
+                  gsap.to(learnMoreBtn, {
+                    boxShadow: "0 4px 12px rgba(0,150,100,0.25)",
+                    transform: "translateY(-3px)",
+                    duration: 0.3,
+                    ease: "power2.out"
+                  });
+                  
+                  // Animate the arrow
+                  const arrow = learnMoreBtn.querySelector('.fa-arrow-right');
+                  gsap.to(arrow, {
+                    x: 5,
+                    duration: 0.3,
+                    ease: "power2.out"
+                  });
+                });
+                
+                learnMoreBtn.addEventListener('mouseleave', () => {
+                  gsap.to(learnMoreBtn, {
+                    boxShadow: "none",
+                    transform: "translateY(0)",
+                    duration: 0.3,
+                    ease: "power2.out"
+                  });
+                  
+                  // Reset the arrow
+                  const arrow = learnMoreBtn.querySelector('.fa-arrow-right');
+                  gsap.to(arrow, {
+                    x: 0,
+                    duration: 0.3,
+                    ease: "power2.out"
+                  });
+                });
+              }
+            });
+          </script>
           
           <!-- Daughter Boards -->
           <h3 class="title is-4 has-text-primary has-text-centered my-5">Daughter Boards</h3>
