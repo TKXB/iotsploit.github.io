@@ -1348,16 +1348,6 @@
                     <p style="color: #667085; margin: 0;">Expandable architecture for adding specialized daughter boards</p>
                   </div>
                 </div>
-                
-                <!-- Learn More Button -->
-                <div class="mt-4 learn-more-button">
-                  <a href="#" class="button is-primary is-rounded" style="padding-left: 1.5rem; padding-right: 1.5rem; transition: all 0.3s ease;">
-                    <span>Learn More</span>
-                    <span class="icon is-small ml-2">
-                      <i class="fas fa-arrow-right"></i>
-                    </span>
-                  </a>
-                </div>
               </div>
             </div>
           </div>
@@ -1371,7 +1361,6 @@
                 gsap.set(".motherboard-description", { opacity: 0, y: 30 });
                 gsap.set(".feature-card", { opacity: 0, x: 30, stagger: 0.1 });
                 gsap.set(".motherboard-image", { opacity: 0, x: -30 });
-                gsap.set(".learn-more-button", { opacity: 0, y: 20 });
                 
                 // Create timeline for motherboard section
                 const motherboardTimeline = gsap.timeline({
@@ -1408,13 +1397,7 @@
                     stagger: 0.15, 
                     duration: 0.6, 
                     ease: "power2.out" 
-                  }, "-=0.5")
-                  .to(".learn-more-button", { 
-                    opacity: 1, 
-                    y: 0, 
-                    duration: 0.6, 
-                    ease: "power2.out" 
-                  }, "-=0.3");
+                  }, "-=0.5");
                 
                 // Add hover effects to feature cards
                 const featureCards = document.querySelectorAll('.feature-card');
@@ -1454,43 +1437,6 @@
                       duration: 0.3,
                       ease: "power2.out"
                     });
-                  });
-                });
-                
-                // Hover effect for Learn More button
-                const learnMoreBtn = document.querySelector('.learn-more-button .button');
-                
-                learnMoreBtn.addEventListener('mouseenter', () => {
-                  gsap.to(learnMoreBtn, {
-                    boxShadow: "0 4px 12px rgba(0,150,100,0.25)",
-                    transform: "translateY(-3px)",
-                    duration: 0.3,
-                    ease: "power2.out"
-                  });
-                  
-                  // Animate the arrow
-                  const arrow = learnMoreBtn.querySelector('.fa-arrow-right');
-                  gsap.to(arrow, {
-                    x: 5,
-                    duration: 0.3,
-                    ease: "power2.out"
-                  });
-                });
-                
-                learnMoreBtn.addEventListener('mouseleave', () => {
-                  gsap.to(learnMoreBtn, {
-                    boxShadow: "none",
-                    transform: "translateY(0)",
-                    duration: 0.3,
-                    ease: "power2.out"
-                  });
-                  
-                  // Reset the arrow
-                  const arrow = learnMoreBtn.querySelector('.fa-arrow-right');
-                  gsap.to(arrow, {
-                    x: 0,
-                    duration: 0.3,
-                    ease: "power2.out"
                   });
                 });
               }
@@ -1590,16 +1536,6 @@
                 </div>
               </div>
             </div>
-          </div>
-          
-          <!-- Learn More Button -->
-          <div class="has-text-centered mt-6">
-            <a href="#" class="button is-primary is-medium">
-              <span class="icon">
-                <i class="fas fa-book"></i>
-              </span>
-              <span>Detailed Documentation</span>
-            </a>
           </div>
         </div>
       </section>
