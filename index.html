@@ -1237,6 +1237,221 @@
         </div>
       </section>
 
+      <!-- Python Plugin Development Section -->
+      <section class="section" style="background-color: #f0f5ff; padding: 5rem 1.5rem;">
+        <div class="container">
+          <div class="columns is-vcentered python-plugin-section is-variable is-8">
+            <!-- Right side: Text & Benefits -->
+            <div class="column is-5-desktop is-12-tablet is-order-2-desktop is-order-1-mobile">
+              <h2 class="title is-2 has-text-weight-bold python-title" style="color: #2d3748; margin-bottom: 1.5rem;">
+                Focus on Python, Forget the UI
+              </h2>
+              <div class="python-line" style="width: 0; height: 3px; background-color: #6366F1; margin-bottom: 2rem;"></div>
+              <p class="subtitle is-4 has-text-grey python-description" style="margin-bottom: 2rem; line-height: 1.6;">
+                Write pure Python security testing plugins and let IoTSploit automatically generate beautiful user interfaces. No frontend code needed!
+              </p>
+              
+              <div class="python-features" style="margin-bottom: 2rem;">
+                <div class="python-feature" style="margin-bottom: 1.5rem; display: flex; align-items: flex-start;">
+                  <span style="background-color: rgba(99, 102, 241, 0.1); border-radius: 50%; min-width: 48px; height: 48px; display: inline-flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                    <i class="fas fa-sliders-h" style="color: #6366F1; font-size: 1.5rem;"></i>
+                  </span>
+                  <div>
+                    <h4 style="color: #2d3748; font-weight: 600; margin-bottom: 0.5rem;">Automatic UI Generation</h4>
+                    <p style="color: #4a5568; margin: 0;">Define parameters in your Python plugin and watch IoTSploit automatically create input fields, toggles, and controls in the Flutter UI.</p>
+                  </div>
+                </div>
+                
+                <div class="python-feature" style="margin-bottom: 1.5rem; display: flex; align-items: flex-start;">
+                  <span style="background-color: rgba(99, 102, 241, 0.1); border-radius: 50%; min-width: 48px; height: 48px; display: inline-flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                    <i class="fas fa-chart-line" style="color: #6366F1; font-size: 1.5rem;"></i>
+                  </span>
+                  <div>
+                    <h4 style="color: #2d3748; font-weight: 600; margin-bottom: 0.5rem;">Real-time Result Visualization</h4>
+                    <p style="color: #4a5568; margin: 0;">Return structured data from your Python plugins and see it automatically rendered as tables, charts, and status indicators.</p>
+                  </div>
+                </div>
+                
+                <div class="python-feature" style="margin-bottom: 1.5rem; display: flex; align-items: flex-start;">
+                  <span style="background-color: rgba(99, 102, 241, 0.1); border-radius: 50%; min-width: 48px; height: 48px; display: inline-flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                    <i class="fas fa-plug" style="color: #6366F1; font-size: 1.5rem;"></i>
+                  </span>
+                  <div>
+                    <h4 style="color: #2d3748; font-weight: 600; margin-bottom: 0.5rem;">Seamless Integration</h4>
+                    <p style="color: #4a5568; margin: 0;">New plugins are instantly available in both command-line and Flutter interfaces without any additional configuration.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Left side: Code Example -->
+            <div class="column is-7-desktop is-12-tablet is-order-1-desktop is-order-2-mobile">
+              <div class="code-container" style="position: relative; background-color: #1e1e2e; border-radius: 10px; padding: 2rem 1rem 1rem; box-shadow: 0 15px 30px rgba(0,0,0,0.2); overflow: hidden; min-height: 450px;">
+                <!-- Window controls -->
+                <div style="position: absolute; top: 12px; left: 12px; display: flex; gap: 6px;">
+                  <span style="height: 12px; width: 12px; border-radius: 50%; background-color: #ff5f56;"></span>
+                  <span style="height: 12px; width: 12px; border-radius: 50%; background-color: #ffbd2e;"></span>
+                  <span style="height: 12px; width: 12px; border-radius: 50%; background-color: #27c93f;"></span>
+                </div>
+                
+                <!-- Static code display instead of animation -->
+                <div class="code-content" style="color: #f8f8f2; font-family: 'Source Code Pro', monospace; font-size: 0.9rem; line-height: 1.5; white-space: pre;">class AdbSecurityCheckPlugin(BasePlugin):
+    def __init__(self):
+        super().__init__({
+            'Name': 'ADB Security Check',
+            'Description': 'Performs security checks on an Android device',
+            'License': 'GPL',
+            'Author': ['iotsploit'],
+            'Parameters': {
+                'device_serial': {
+                    'type': 'string',
+                    'required': False,
+                    'description': 'ADB device serial number',
+                    'default': '2fd1f89'
+                },
+                'try_root': {
+                    'type': 'bool',
+                    'required': False,
+                    'description': 'Attempt to gain root access',
+                    'default': False
+                }
+            }
+        })
+    
+    @hookimpl
+    def execute(self, target=None, parameters=None) -> ExploitResult:
+        # Your plugin logic here
+        return ExploitResult(True, "Test completed", {"status": "success"})
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- GSAP Animation for Python Plugin Section -->
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          if (typeof gsap !== 'undefined') {
+            // Python plugin section animation
+            const pythonPluginTimeline = gsap.timeline({
+              scrollTrigger: {
+                trigger: ".python-plugin-section",
+                start: "top 80%",
+                once: true
+              }
+            });
+            
+            // Set initial states
+            gsap.set(".code-container", { y: 30, opacity: 0 });
+            gsap.set(".python-title", { opacity: 0, y: 30 });
+            gsap.set(".python-line", { width: 0 });
+            gsap.set(".python-description", { opacity: 0, y: 30 });
+            gsap.set(".python-feature", { opacity: 0, x: 30 });
+            
+            // Create animation sequence
+            pythonPluginTimeline
+              .to(".python-title", { 
+                opacity: 1, 
+                y: 0, 
+                duration: 0.8, 
+                ease: "power3.out" 
+              })
+              .to(".python-line", { 
+                width: "50%", 
+                duration: 0.8, 
+                ease: "power3.out" 
+              }, "-=0.4")
+              .to(".python-description", { 
+                opacity: 1, 
+                y: 0, 
+                duration: 0.8, 
+                ease: "power3.out" 
+              }, "-=0.4")
+              .to(".code-container", { 
+                y: 0, 
+                opacity: 1, 
+                duration: 0.8, 
+                ease: "power3.out" 
+              }, "-=0.6")
+              .to(".python-feature", { 
+                opacity: 1, 
+                x: 0, 
+                stagger: 0.15, 
+                duration: 0.6, 
+                ease: "power2.out" 
+              }, "-=0.4");
+            
+            // Code highlight effect - simple fade in for syntax colors
+            const codeContent = document.querySelector('.code-content');
+            gsap.from(codeContent, {
+              opacity: 0.4,
+              duration: 1.5,
+              delay: 0.5,
+              ease: "power2.inOut"
+            });
+            
+            // Add hover effects to Python features
+            const pythonFeatures = document.querySelectorAll('.python-feature');
+            
+            pythonFeatures.forEach(feature => {
+              const icon = feature.querySelector('span');
+              
+              feature.addEventListener('mouseenter', () => {
+                gsap.to(feature, {
+                  x: 5,
+                  duration: 0.3,
+                  ease: "power2.out"
+                });
+                
+                gsap.to(icon, {
+                  backgroundColor: "rgba(99, 102, 241, 0.2)",
+                  scale: 1.1,
+                  duration: 0.3,
+                  ease: "power2.out"
+                });
+              });
+              
+              feature.addEventListener('mouseleave', () => {
+                gsap.to(feature, {
+                  x: 0,
+                  duration: 0.3,
+                  ease: "power2.out"
+                });
+                
+                gsap.to(icon, {
+                  backgroundColor: "rgba(99, 102, 241, 0.1)",
+                  scale: 1,
+                  duration: 0.3,
+                  ease: "power2.out"
+                });
+              });
+            });
+            
+            // Add hover effect to code container
+            const codeContainer = document.querySelector('.code-container');
+            
+            codeContainer.addEventListener('mouseenter', () => {
+              gsap.to(codeContainer, {
+                y: -5,
+                boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
+                duration: 0.4,
+                ease: "power2.out"
+              });
+            });
+            
+            codeContainer.addEventListener('mouseleave', () => {
+              gsap.to(codeContainer, {
+                y: 0,
+                boxShadow: "0 15px 30px rgba(0,0,0,0.2)",
+                duration: 0.4,
+                ease: "power2.out"
+              });
+            });
+          }
+        });
+      </script>
+
       <section class="section has-background-white">
         <div class="container">
           <h2 class="title has-text-centered has-text-grey-light mb-6">IoTSploit Mobile App</h2>
