@@ -124,6 +124,15 @@
           m2SlotsDesc: "Expandable architecture for adding specialized daughter boards",
           daughterBoards: "Daughter Boards",
           
+          // NXP Board
+          nxpBoardTitle: "IoTSploit NXP Board",
+          nxpBoardSubtitle: "Powerful Hardware for IoT Security Testing",
+          nxpBoardDesc: "The IoTSploit NXP Board is a comprehensive hardware platform designed for advanced IoT security testing featuring USB simulation capabilities, Bad USB attacks, and integrated logic analyzer functionality.",
+          nxpFeature1: "USB Simulation & Bad USB",
+          nxpFeature2: "Integrated Logic Analyzer",
+          nxpFeature3: "Support GUI Control, Easy to Use",
+          nxpFeature4: "M.2 KEYE Expansion Slot",
+          
           // Footer
           copyright: "© 2024 The IoTSploit authors",
           codeOfConduct: "Code of Conduct",
@@ -207,6 +216,15 @@
           m2Slots: "3 个 M.2 Key E 插槽",
           m2SlotsDesc: "可扩展架构，用于添加专用子板",
           daughterBoards: "子板",
+          
+          // NXP 板
+          nxpBoardTitle: "IoTSploit NXP 板",
+          nxpBoardSubtitle: "强大的物联网安全测试硬件",
+          nxpBoardDesc: "IoTSploit NXP 板是一个全面的硬件平台，专为高级物联网安全测试而设计，具有 USB 模拟功能、Bad USB 攻击和集成的逻辑分析仪功能。",
+          nxpFeature1: "USB 模拟与 Bad USB",
+          nxpFeature2: "集成逻辑分析仪",
+          nxpFeature3: "支持图形界面控制，易于使用",
+          nxpFeature4: "M.2 KEYE 扩展插槽",
           
           // 页脚
           copyright: "© 2024 IoTSploit 作者",
@@ -1433,11 +1451,11 @@
           <div class="columns is-vcentered">
             <!-- Text Introduction on Left -->
             <div class="column is-5">
-              <h2 class="title is-2 has-text-weight-bold plugin-title" style="color: #2d3748; margin-bottom: 1.5rem; position: relative; display: inline-block;">
+              <h2 class="title is-2 has-text-weight-bold plugin-title" style="color: #2d3748; margin-bottom: 1.5rem; position: relative; display: inline-block;" data-i18n="pluginTitle">
                 Plugin Management
               </h2>
               <div style="width: 50%; height: 3px; background-color: #48c78e; margin-bottom: 2rem;"></div>
-              <p class="subtitle is-4 has-text-grey plugin-description" style="margin-bottom: 2rem; line-height: 1.6;">
+              <p class="subtitle is-4 has-text-grey plugin-description" style="margin-bottom: 2rem; line-height: 1.6;" data-i18n="pluginDesc">
                 IoTSploit features a powerful plugin system built on Python that lets you extend the platform with custom security testing modules. The intuitive management interface makes it easy to discover, execute, and develop plugins for testing IoT devices.
               </p>
               <ul style="margin-bottom: 2rem; color: #4a5568;">
@@ -1445,25 +1463,25 @@
                   <span style="background-color: rgba(72, 199, 142, 0.1); border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 1rem;">
                     <i class="fas fa-puzzle-piece" style="color: #48c78e;"></i>
                   </span>
-                  <span>Modular design with pluggable interfaces</span>
+                  <span data-i18n="moduleDesign">Modular design with pluggable interfaces</span>
                 </li>
                 <li class="plugin-feature" style="margin-bottom: 1rem; display: flex; align-items: center;">
                   <span style="background-color: rgba(72, 199, 142, 0.1); border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 1rem;">
                     <i class="fas fa-shield-alt" style="color: #48c78e;"></i>
                   </span>
-                  <span>Extensive library of security testing plugins</span>
+                  <span data-i18n="securityLib">Extensive library of security testing plugins</span>
                 </li>
                 <li class="plugin-feature" style="margin-bottom: 1rem; display: flex; align-items: center;">
                   <span style="background-color: rgba(72, 199, 142, 0.1); border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 1rem;">
                     <i class="fas fa-code" style="color: #48c78e;"></i>
                   </span>
-                  <span>Custom plugin development with Python API</span>
+                  <span data-i18n="customDev">Custom plugin development with Python API</span>
                 </li>
                 <li class="plugin-feature" style="margin-bottom: 1rem; display: flex; align-items: center;">
                   <span style="background-color: rgba(72, 199, 142, 0.1); border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 1rem;">
                     <i class="fas fa-sync-alt" style="color: #48c78e;"></i>
                   </span>
-                  <span>Real-time results with execution status tracking</span>
+                  <span data-i18n="realTimeResults">Real-time results with execution status tracking</span>
                 </li>
               </ul>
             </div>
@@ -1484,11 +1502,11 @@
           <div class="columns is-vcentered python-plugin-section is-variable is-8">
             <!-- Right side: Text & Benefits -->
             <div class="column is-5-desktop is-12-tablet is-order-2-desktop is-order-1-mobile">
-              <h2 class="title is-2 has-text-weight-bold python-title" style="color: #2d3748; margin-bottom: 1.5rem;">
+              <h2 class="title is-2 has-text-weight-bold python-title" style="color: #2d3748; margin-bottom: 1.5rem;" data-i18n="pythonTitle">
                 Focus on Python, Forget the UI
               </h2>
               <div class="python-line" style="width: 0; height: 3px; background-color: #6366F1; margin-bottom: 2rem;"></div>
-              <p class="subtitle is-4 has-text-grey python-description" style="margin-bottom: 2rem; line-height: 1.6;">
+              <p class="subtitle is-4 has-text-grey python-description" style="margin-bottom: 2rem; line-height: 1.6;" data-i18n="pythonDesc">
                 Write pure Python security testing plugins and let IoTSploit automatically generate beautiful user interfaces. No frontend code needed!
               </p>
               
@@ -1498,8 +1516,8 @@
                     <i class="fas fa-sliders-h" style="color: #6366F1; font-size: 1.5rem;"></i>
                   </span>
                   <div>
-                    <h4 style="color: #2d3748; font-weight: 600; margin-bottom: 0.5rem;">Automatic UI Generation</h4>
-                    <p style="color: #4a5568; margin: 0;">Define parameters in your Python plugin and watch IoTSploit automatically create input fields, toggles, and controls in the Flutter UI.</p>
+                    <h4 style="color: #2d3748; font-weight: 600; margin-bottom: 0.5rem;" data-i18n="autoUI">Automatic UI Generation</h4>
+                    <p style="color: #4a5568; margin: 0;" data-i18n="autoUIDesc">Define parameters in your Python plugin and watch IoTSploit automatically create input fields, toggles, and controls in the Flutter UI.</p>
                   </div>
                 </div>
                 
@@ -1508,8 +1526,8 @@
                     <i class="fas fa-chart-line" style="color: #6366F1; font-size: 1.5rem;"></i>
                   </span>
                   <div>
-                    <h4 style="color: #2d3748; font-weight: 600; margin-bottom: 0.5rem;">Real-time Result Visualization</h4>
-                    <p style="color: #4a5568; margin: 0;">Return structured data from your Python plugins and see it automatically rendered as tables, charts, and status indicators.</p>
+                    <h4 style="color: #2d3748; font-weight: 600; margin-bottom: 0.5rem;" data-i18n="realTimeVis">Real-time Result Visualization</h4>
+                    <p style="color: #4a5568; margin: 0;" data-i18n="realTimeVisDesc">Return structured data from your Python plugins and see it automatically rendered as tables, charts, and status indicators.</p>
                   </div>
                 </div>
                 
@@ -1518,8 +1536,8 @@
                     <i class="fas fa-plug" style="color: #6366F1; font-size: 1.5rem;"></i>
                   </span>
                   <div>
-                    <h4 style="color: #2d3748; font-weight: 600; margin-bottom: 0.5rem;">Seamless Integration</h4>
-                    <p style="color: #4a5568; margin: 0;">New plugins are instantly available in both command-line and Flutter interfaces without any additional configuration.</p>
+                    <h4 style="color: #2d3748; font-weight: 600; margin-bottom: 0.5rem;" data-i18n="seamlessInt">Seamless Integration</h4>
+                    <p style="color: #4a5568; margin: 0;" data-i18n="seamlessIntDesc">New plugins are instantly available in both command-line and Flutter interfaces without any additional configuration.</p>
                   </div>
                 </div>
               </div>
@@ -1695,12 +1713,12 @@
 
       <section class="section has-background-white">
         <div class="container">
-          <h2 class="title has-text-centered has-text-grey-light mb-6">IoTSploit Mobile App</h2>
+          <h2 class="title has-text-centered has-text-grey-light mb-6" data-i18n="mobileTitle">IoTSploit Mobile App</h2>
           <div class="columns is-vcentered">
             <div class="column is-6">
               <div class="content" style="padding-left: 2rem;">
-                <h3 class="subtitle has-text-grey-light is-4 mb-3">Control & Monitor on the Go</h3>
-                <p class="mb-4">The IoTSploit Mobile App provides a convenient and powerful interface to control your IoT security testing from anywhere. Connect to your IoTSploit devices remotely and monitor testing results in real-time.</p>
+                <h3 class="subtitle has-text-grey-light is-4 mb-3" data-i18n="mobileDesc">Control & Monitor on the Go</h3>
+                <p class="mb-4" data-i18n="mobileDetailDesc">The IoTSploit Mobile App provides a convenient and powerful interface to control your IoT security testing from anywhere. Connect to your IoTSploit devices remotely and monitor testing results in real-time.</p>
                 
                 <div class="columns is-multiline">
                   <div class="column is-6">
@@ -1708,7 +1726,7 @@
                       <span class="icon has-text-grey-light">
                         <i class="fas fa-mobile-alt"></i>
                       </span>
-                      <span>iOS & Android Compatible</span>
+                      <span data-i18n="iosAndroid">iOS & Android Compatible</span>
                     </div>
                   </div>
                   <div class="column is-6">
@@ -1716,7 +1734,7 @@
                       <span class="icon has-text-grey-light">
                         <i class="fas fa-chart-line"></i>
                       </span>
-                      <span>Real-time Analytics</span>
+                      <span data-i18n="realTimeAnalytics">Real-time Analytics</span>
                     </div>
                   </div>
                   <div class="column is-6">
@@ -1724,7 +1742,7 @@
                       <span class="icon has-text-grey-light">
                         <i class="fas fa-network-wired"></i>
                       </span>
-                      <span>Remote Device Control</span>
+                      <span data-i18n="remoteControl">Remote Device Control</span>
                     </div>
                   </div>
                   <div class="column is-6">
@@ -1732,7 +1750,7 @@
                       <span class="icon has-text-grey-light">
                         <i class="fas fa-bell"></i>
                       </span>
-                      <span>Push Notifications</span>
+                      <span data-i18n="pushNotifications">Push Notifications</span>
                     </div>
                   </div>
                 </div>
@@ -1750,7 +1768,7 @@
       <!-- Technical Specifications Section -->
       <section class="section" style="background-color: #f0f8ff; padding: 5rem 1.5rem;">
         <div class="container">
-          <h2 class="title has-text-centered has-text-primary mb-5">Hardware Technical Specifications</h2>
+          <h2 class="title has-text-centered has-text-primary mb-5" data-i18n="techSpecsTitle">Hardware Technical Specifications</h2>
           
           <!-- Motherboard Specs -->
           <div class="columns is-vcentered mb-6">
@@ -1760,8 +1778,8 @@
               </figure>
             </div>
             <div class="column is-7">
-              <h3 class="title is-4 has-text-primary mb-4 motherboard-title">Motherboard</h3>
-              <p class="mb-5 motherboard-description" style="color: #667085; font-size: 1.1rem; line-height: 1.6;">
+              <h3 class="title is-4 has-text-primary mb-4 motherboard-title" data-i18n="motherboard">Motherboard</h3>
+              <p class="mb-5 motherboard-description" style="color: #667085; font-size: 1.1rem; line-height: 1.6;" data-i18n="motherboardDesc">
                 The IoTSploit motherboard is engineered for maximum flexibility and connectivity, providing the perfect foundation for your IoT security testing arsenal.
               </p>
               
@@ -1774,8 +1792,8 @@
                     </span>
                   </div>
                   <div class="feature-content">
-                    <h4 class="is-size-5 has-text-weight-bold mb-1" style="color: #344054;">100M Ethernet Switch</h4>
-                    <p style="color: #667085; margin: 0;">High-speed network connectivity for testing and monitoring IoT devices</p>
+                    <h4 class="is-size-5 has-text-weight-bold mb-1" style="color: #344054;" data-i18n="ethernet">100M Ethernet Switch</h4>
+                    <p style="color: #667085; margin: 0;" data-i18n="ethernetDesc">High-speed network connectivity for testing and monitoring IoT devices</p>
                   </div>
                 </div>
                 
@@ -1787,8 +1805,8 @@
                     </span>
                   </div>
                   <div class="feature-content">
-                    <h4 class="is-size-5 has-text-weight-bold mb-1" style="color: #344054;">USB 2.0 HUB</h4>
-                    <p style="color: #667085; margin: 0;">Multiple USB ports for connecting peripherals and test modules</p>
+                    <h4 class="is-size-5 has-text-weight-bold mb-1" style="color: #344054;" data-i18n="usbHub">USB 2.0 HUB</h4>
+                    <p style="color: #667085; margin: 0;" data-i18n="usbHubDesc">Multiple USB ports for connecting peripherals and test modules</p>
                   </div>
                 </div>
                 
@@ -1800,8 +1818,8 @@
                     </span>
                   </div>
                   <div class="feature-content">
-                    <h4 class="is-size-5 has-text-weight-bold mb-1" style="color: #344054;">3 M.2 Key E Slots</h4>
-                    <p style="color: #667085; margin: 0;">Expandable architecture for adding specialized daughter boards</p>
+                    <h4 class="is-size-5 has-text-weight-bold mb-1" style="color: #344054;" data-i18n="m2Slots">3 M.2 Key E Slots</h4>
+                    <p style="color: #667085; margin: 0;" data-i18n="m2SlotsDesc">Expandable architecture for adding specialized daughter boards</p>
                   </div>
                 </div>
               </div>
@@ -1900,7 +1918,7 @@
           </script>
           
           <!-- Daughter Boards -->
-          <h3 class="title is-4 has-text-primary has-text-centered my-5">Daughter Boards</h3>
+          <h3 class="title is-4 has-text-primary has-text-centered my-5" data-i18n="daughterBoards">Daughter Boards</h3>
           
           <div class="columns is-multiline">
             <!-- Daughter Board A -->
@@ -2045,7 +2063,7 @@
 
       <section class="section has-background-light">
         <div class="container">
-          <h2 class="title has-text-centered has-text-primary mb-6">IoTSploit NXP Board</h2>
+          <h2 class="title has-text-centered has-text-primary mb-6" data-i18n="nxpBoardTitle">IoTSploit NXP Board</h2>
           <div class="columns is-vcentered">
             <div class="column is-5">
               <figure class="image">
@@ -2054,8 +2072,8 @@
             </div>
             <div class="column is-7">
               <div class="content">
-                <h3 class="subtitle has-text-primary is-4 mb-3">Powerful Hardware for IoT Security Testing</h3>
-                <p class="mb-4">The IoTSploit NXP Board is a comprehensive hardware platform designed for advanced IoT security testing featuring USB simulation capabilities, Bad USB attacks, and integrated logic analyzer functionality.</p>
+                <h3 class="subtitle has-text-primary is-4 mb-3" data-i18n="nxpBoardSubtitle">Powerful Hardware for IoT Security Testing</h3>
+                <p class="mb-4" data-i18n="nxpBoardDesc">The IoTSploit NXP Board is a comprehensive hardware platform designed for advanced IoT security testing featuring USB simulation capabilities, Bad USB attacks, and integrated logic analyzer functionality.</p>
                 
                 <div class="columns is-multiline">
                   <div class="column is-6">
@@ -2063,7 +2081,7 @@
                       <span class="icon has-text-primary">
                         <i class="fas fa-keyboard"></i>
                       </span>
-                      <span>USB Simulation & Bad USB</span>
+                      <span data-i18n="nxpFeature1">USB Simulation & Bad USB</span>
                     </div>
                   </div>
                   <div class="column is-6">
@@ -2071,7 +2089,7 @@
                       <span class="icon has-text-primary">
                         <i class="fas fa-wave-square"></i>
                       </span>
-                      <span>Integrated Logic Analyzer</span>
+                      <span data-i18n="nxpFeature2">Integrated Logic Analyzer</span>
                     </div>
                   </div>
                   <div class="column is-6">
@@ -2079,7 +2097,7 @@
                       <span class="icon has-text-primary">
                         <i class="fas fa-desktop"></i>
                       </span>
-                      <span>Support GUI Control, Easy to Use</span>
+                      <span data-i18n="nxpFeature3">Support GUI Control, Easy to Use</span>
                     </div>
                   </div>
                   <div class="column is-6">
@@ -2087,7 +2105,7 @@
                       <span class="icon has-text-primary">
                         <i class="fas fa-plug"></i>
                       </span>
-                      <span>M.2 KEYE Expansion Slot</span>
+                      <span data-i18n="nxpFeature4">M.2 KEYE Expansion Slot</span>
                     </div>
                   </div>
                 </div>
