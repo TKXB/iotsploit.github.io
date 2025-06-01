@@ -57,6 +57,7 @@
           latestVersion: "Latest Version",
           releaseNotes: "Release Notes",
           downloadNow: "Download Now",
+          comingSoon: "Coming Soon",
           
           // Platforms
           windowsTitle: "Windows",
@@ -95,6 +96,13 @@
           quickStart: "Quick Start Guide",
           documentation: "Full Documentation",
           
+          // Linux Download Modal
+          linuxDownloadTitle: "Choose Linux Version",
+          linuxDownloadDesc: "Select the Linux package format that works best for your system:",
+          appImageDesc: "Universal binary for most Linux distributions",
+          tarGzDesc: "Traditional archive for manual installation",
+          cancel: "Cancel",
+          
           // Footer
           copyright: "© 2024 The IoTSploit authors",
           codeOfConduct: "Code of Conduct",
@@ -114,6 +122,7 @@
           latestVersion: "最新版本",
           releaseNotes: "发布说明",
           downloadNow: "立即下载",
+          comingSoon: "敬请期待",
           
           // 平台
           windowsTitle: "Windows",
@@ -152,7 +161,14 @@
           quickStart: "快速开始指南",
           documentation: "完整文档",
           
-          // 页脚
+          // Linux Download Modal
+          linuxDownloadTitle: "选择 Linux 版本",
+          linuxDownloadDesc: "选择最适合您系统的 Linux 包格式：",
+          appImageDesc: "适用于大多数 Linux 发行版的通用格式",
+          tarGzDesc: "传统压缩包格式适用于手动安装",
+          cancel: "取消",
+          
+          // Footer
           copyright: "© 2024 IoTSploit 作者",
           codeOfConduct: "行为准则",
           poweredBy: "本站由 github pages 提供支持。"
@@ -320,6 +336,26 @@
         box-shadow: 0 4px 12px rgba(50, 115, 220, 0.3);
       }
 
+      /* Coming Soon button styles */
+      .coming-soon-button {
+        width: auto !important;
+        min-width: 160px;
+        padding: 0.75rem 1.5rem;
+        background-color: #6c757d !important;
+        border-color: #6c757d !important;
+        color: white !important;
+        font-weight: bold;
+        cursor: not-allowed;
+        opacity: 0.8;
+      }
+
+      .coming-soon-button:hover {
+        background-color: #6c757d !important;
+        border-color: #6c757d !important;
+        transform: none !important;
+        box-shadow: none !important;
+      }
+
       .requirements-table {
         background: #f8f9fa;
         border-radius: 8px;
@@ -389,6 +425,32 @@
       .animate-delay-2 { animation-delay: 0.2s; animation-fill-mode: both; }
       .animate-delay-3 { animation-delay: 0.3s; animation-fill-mode: both; }
       .animate-delay-4 { animation-delay: 0.4s; animation-fill-mode: both; }
+
+      /* Linux Download Modal styles */
+      #linuxDownloadModal .card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #linuxDownloadModal .card-content {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 280px;
+      }
+
+      #linuxDownloadModal .card-content .subtitle {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 60px;
+      }
+
+      #linuxDownloadModal .column {
+        display: flex;
+      }
     </style>
   </head>
   <body class="page has-navbar-fixed-top">
@@ -486,7 +548,7 @@
             </p>
             <div class="animate-fade-in animate-delay-2">
               <span class="version-badge" data-i18n="latestVersion">Latest Version</span>
-              <span class="version-badge">v2.1.0</span>
+              <span class="version-badge">v0.0.1</span>
             </div>
           </div>
         </div>
@@ -516,14 +578,14 @@
                   </div>
                   <div class="card-footer-content">
                     <div class="buttons is-centered">
-                      <a class="button download-button is-medium" href="https://github.com/TKXB/iotsploit/releases/latest/download/iotsploit-windows-x64.msi">
+                      <a class="button download-button is-medium" href="downloads/iotsploit-ui-v0.0.1-windows.zip">
                         <span class="icon">
                           <i class="fas fa-download"></i>
                         </span>
                         <span data-i18n="downloadNow">Download Now</span>
                       </a>
                     </div>
-                    <p class="is-size-7 has-text-grey">Size: 45.2 MB</p>
+                    <p class="is-size-7 has-text-grey">Size: 13.0 MB</p>
                   </div>
                 </div>
               </div>
@@ -548,11 +610,11 @@
                   </div>
                   <div class="card-footer-content">
                     <div class="buttons is-centered">
-                      <a class="button download-button is-medium" href="https://github.com/TKXB/iotsploit/releases/latest/download/iotsploit-macos-universal.dmg">
+                      <a class="button coming-soon-button is-medium" disabled>
                         <span class="icon">
-                          <i class="fas fa-download"></i>
+                          <i class="fas fa-clock"></i>
                         </span>
-                        <span data-i18n="downloadNow">Download Now</span>
+                        <span data-i18n="comingSoon">Coming Soon</span>
                       </a>
                     </div>
                     <p class="is-size-7 has-text-grey">Size: 52.8 MB</p>
@@ -580,14 +642,14 @@
                   </div>
                   <div class="card-footer-content">
                     <div class="buttons is-centered">
-                      <a class="button download-button is-medium" href="https://github.com/TKXB/iotsploit/releases/latest/download/iotsploit-linux-x64.deb">
+                      <a class="button download-button is-medium" onclick="showLinuxDownloadModal()">
                         <span class="icon">
                           <i class="fas fa-download"></i>
                         </span>
                         <span data-i18n="downloadNow">Download Now</span>
                       </a>
                     </div>
-                    <p class="is-size-7 has-text-grey">Size: 38.4 MB</p>
+                    <p class="is-size-7 has-text-grey">Size: 9.0-11.0 MB</p>
                   </div>
                 </div>
               </div>
@@ -611,11 +673,11 @@
                   <h3 class="title is-size-4" data-i18n="iosApp">iOS App</h3>
                   <p class="subtitle is-size-6 mb-4">iOS 13.0 or later</p>
                   <div class="buttons is-centered">
-                    <a class="button download-button is-medium" href="https://apps.apple.com/app/iotsploit">
+                    <a class="button coming-soon-button is-medium" disabled>
                       <span class="icon">
-                        <i class="fab fa-app-store-ios"></i>
+                        <i class="fas fa-clock"></i>
                       </span>
-                      <span>App Store</span>
+                      <span data-i18n="comingSoon">Coming Soon</span>
                     </a>
                   </div>
                 </div>
@@ -630,11 +692,11 @@
                   <h3 class="title is-size-4" data-i18n="androidApp">Android App</h3>
                   <p class="subtitle is-size-6 mb-4">Android 7.0 or later</p>
                   <div class="buttons is-centered">
-                    <a class="button download-button is-medium" href="https://play.google.com/store/apps/details?id=org.iotsploit">
+                    <a class="button coming-soon-button is-medium" disabled>
                       <span class="icon">
-                        <i class="fab fa-google-play"></i>
+                        <i class="fas fa-clock"></i>
                       </span>
-                      <span>Google Play</span>
+                      <span data-i18n="comingSoon">Coming Soon</span>
                     </a>
                   </div>
                 </div>
@@ -822,6 +884,61 @@
           </div>
         </div>
       </footer>
+
+      <!-- Linux Download Modal -->
+      <div class="modal" id="linuxDownloadModal">
+        <div class="modal-background" onclick="closeLinuxDownloadModal()"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title" data-i18n="linuxDownloadTitle">Choose Linux Version</p>
+            <button class="delete" aria-label="close" onclick="closeLinuxDownloadModal()"></button>
+          </header>
+          <section class="modal-card-body">
+            <p class="mb-4" data-i18n="linuxDownloadDesc">Select the Linux package format that works best for your system:</p>
+            <div class="columns">
+              <div class="column is-6">
+                <div class="card">
+                  <div class="card-content has-text-centered">
+                    <div class="platform-icon" style="font-size: 2rem; margin-bottom: 0.5rem;">
+                      <i class="fas fa-cube"></i>
+                    </div>
+                    <h4 class="title is-size-5">AppImage</h4>
+                    <p class="subtitle is-size-6 mb-4" data-i18n="appImageDesc">Universal binary for most Linux distributions</p>
+                    <a class="button download-button" href="downloads/iotsploit-ui-v0.0.1-linux.AppImage">
+                      <span class="icon">
+                        <i class="fas fa-download"></i>
+                      </span>
+                      <span data-i18n="downloadNow">Download Now</span>
+                    </a>
+                    <p class="is-size-7 has-text-grey mt-2">Size: 9.0 MB</p>
+                  </div>
+                </div>
+              </div>
+              <div class="column is-6">
+                <div class="card">
+                  <div class="card-content has-text-centered">
+                    <div class="platform-icon" style="font-size: 2rem; margin-bottom: 0.5rem;">
+                      <i class="fas fa-file-archive"></i>
+                    </div>
+                    <h4 class="title is-size-5">TAR.GZ</h4>
+                    <p class="subtitle is-size-6 mb-4" data-i18n="tarGzDesc">Traditional archive for manual installation</p>
+                    <a class="button download-button" href="downloads/iotsploit-ui-v0.0.1-linux.tar.gz">
+                      <span class="icon">
+                        <i class="fas fa-download"></i>
+                      </span>
+                      <span data-i18n="downloadNow">Download Now</span>
+                    </a>
+                    <p class="is-size-7 has-text-grey mt-2">Size: 11.0 MB</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button" onclick="closeLinuxDownloadModal()" data-i18n="cancel">Cancel</button>
+          </footer>
+        </div>
+      </div>
     </div>
 
     <script>
@@ -834,6 +951,17 @@
           burger.classList.toggle('is-active');
         }
       };
+
+      // Linux Download Modal functions
+      function showLinuxDownloadModal() {
+        document.getElementById('linuxDownloadModal').classList.add('is-active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLinuxDownloadModal() {
+        document.getElementById('linuxDownloadModal').classList.remove('is-active');
+        document.body.style.overflow = 'auto';
+      }
 
       // Add scroll animations
       const observerOptions = {
