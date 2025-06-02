@@ -306,10 +306,23 @@
       }
 
       .buttons .button {
-        width: 100px; /* Set desired fixed width for both buttons */
+        width: 120px; /* Set desired fixed width for three buttons */
         display: inline-flex;
         align-items: center;
         justify-content: center;
+      }
+      
+      /* Discord purple button styling */
+      .button.is-discord-purple {
+        background-color: #5865F2;
+        border-color: #5865F2;
+        color: white;
+      }
+      
+      .button.is-discord-purple:hover {
+        background-color: #4752C4;
+        border-color: #4752C4;
+        color: white;
       }
       
       /* Custom hero background style */
@@ -871,6 +884,15 @@
                     </span>
                     <span>
                       Twitter
+                    </span>
+                  </a>
+
+                  <a class="button is-discord-purple has-text-weight-bold" href="https://discord.gg/Hmu7JbQb9z" target="_blank">
+                    <span class="icon">
+                      <i class="fab fa-discord"></i>
+                    </span>
+                    <span>
+                      Discord
                     </span>
                   </a>
                 </div>
