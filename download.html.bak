@@ -73,12 +73,10 @@
           iosApp: "iOS App",
           androidApp: "Android App",
           
-          // Hardware
-          hardwareTitle: "Hardware Downloads",
-          hardwareDesc: "Firmware and drivers for IoTSploit hardware",
-          firmwareDownload: "Download Firmware",
-          driversDownload: "Download Drivers",
-          schematicsDownload: "Download Schematics",
+          // Web Source
+          webSourceTitle: "Web Source Downloads",
+          webSourceDesc: "Flutter web build output and source files",
+          webAppDownload: "Download Web App",
           
           // Source Code
           sourceTitle: "Source Code",
@@ -138,12 +136,10 @@
           iosApp: "iOS 应用",
           androidApp: "Android 应用",
           
-          // 硬件
-          hardwareTitle: "硬件下载",
-          hardwareDesc: "IoTSploit 硬件的固件和驱动程序",
-          firmwareDownload: "下载固件",
-          driversDownload: "下载驱动程序",
-          schematicsDownload: "下载原理图",
+          // Web 源码
+          webSourceTitle: "Web 源码下载",
+          webSourceDesc: "Flutter Web 构建输出和源文件",
+          webAppDownload: "下载 Web 应用",
           
           // 源代码
           sourceTitle: "源代码",
@@ -706,65 +702,38 @@
         </div>
       </section>
 
-      <!-- Hardware Downloads -->
+      <!-- Web Source Downloads -->
       <section class="section">
         <div class="container">
-          <h2 class="title is-size-2 has-text-centered mb-6" data-i18n="hardwareTitle">Hardware Downloads</h2>
-          <p class="subtitle has-text-centered mb-6" data-i18n="hardwareDesc">Firmware and drivers for IoTSploit hardware</p>
-          <div class="columns is-multiline">
+          <h2 class="title is-size-2 has-text-centered mb-6" data-i18n="webSourceTitle">Web Source Downloads</h2>
+          <p class="subtitle has-text-centered mb-6" data-i18n="webSourceDesc">Flutter web build output and source files</p>
+          <div class="columns is-centered">
             <div class="column is-4">
               <div class="card download-card animate-fade-in animate-delay-1">
                 <div class="card-content has-text-centered">
-                  <div class="platform-icon">
-                    <i class="fas fa-microchip"></i>
+                  <div class="card-main-content">
+                    <div class="platform-icon">
+                      <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 class="title is-size-4">Web Application</h3>
+                    <p class="subtitle is-size-6 mb-4">Ready-to-deploy Flutter web build output</p>
+                    <ul class="feature-list mb-4">
+                      <li><i class="fas fa-check"></i> Complete web build</li>
+                      <li><i class="fas fa-check"></i> All assets included</li>
+                      <li><i class="fas fa-check"></i> Ready for deployment</li>
+                      <li><i class="fas fa-check"></i> Optimized for production</li>
+                    </ul>
                   </div>
-                  <h3 class="title is-size-5">Firmware</h3>
-                  <p class="subtitle is-size-6 mb-4">Latest firmware for IoTSploit hardware</p>
-                  <div class="buttons is-centered">
-                    <a class="button download-button" href="https://github.com/TKXB/iotsploit/releases/latest/download/iotsploit-firmware.bin">
-                      <span class="icon">
-                        <i class="fas fa-download"></i>
-                      </span>
-                      <span data-i18n="firmwareDownload">Download Firmware</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="column is-4">
-              <div class="card download-card animate-fade-in animate-delay-2">
-                <div class="card-content has-text-centered">
-                  <div class="platform-icon">
-                    <i class="fas fa-cogs"></i>
-                  </div>
-                  <h3 class="title is-size-5">Drivers</h3>
-                  <p class="subtitle is-size-6 mb-4">USB and hardware drivers</p>
-                  <div class="buttons is-centered">
-                    <a class="button download-button" href="https://github.com/TKXB/iotsploit/releases/latest/download/iotsploit-drivers.zip">
-                      <span class="icon">
-                        <i class="fas fa-download"></i>
-                      </span>
-                      <span data-i18n="driversDownload">Download Drivers</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="column is-4">
-              <div class="card download-card animate-fade-in animate-delay-3">
-                <div class="card-content has-text-centered">
-                  <div class="platform-icon">
-                    <i class="fas fa-file-alt"></i>
-                  </div>
-                  <h3 class="title is-size-5">Schematics</h3>
-                  <p class="subtitle is-size-6 mb-4">Hardware schematics and documentation</p>
-                  <div class="buttons is-centered">
-                    <a class="button download-button" href="https://github.com/TKXB/iotsploit/releases/latest/download/iotsploit-schematics.pdf">
-                      <span class="icon">
-                        <i class="fas fa-download"></i>
-                      </span>
-                      <span data-i18n="schematicsDownload">Download Schematics</span>
-                    </a>
+                  <div class="card-footer-content">
+                    <div class="buttons is-centered">
+                      <a class="button download-button is-medium" href="downloads/iotsploit-web-v0.0.3.zip">
+                        <span class="icon">
+                          <i class="fas fa-download"></i>
+                        </span>
+                        <span data-i18n="webAppDownload">Download Web App</span>
+                      </a>
+                    </div>
+                    <p class="is-size-7 has-text-grey">Contains: HTML, CSS, JS, Assets</p>
                   </div>
                 </div>
               </div>
