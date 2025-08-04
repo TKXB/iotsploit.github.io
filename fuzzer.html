@@ -92,7 +92,7 @@
         right: 0;
         bottom: 0;
         left: 0;
-        background: linear-gradient(135deg, rgba(103, 58, 183, 0.8), rgba(63, 81, 181, 0.8));
+        background: linear-gradient(135deg, rgba(65, 77, 89, 0.9), rgba(50, 59, 68, 0.9));
         z-index: 1;
       }
       
@@ -111,23 +111,25 @@
       
       /* Feature cards styling */
       .fuzzer-feature-card {
-        background: white;
+        background: #27343F;
         border-radius: 12px;
         padding: 2rem;
         height: 100%;
         transition: all 0.3s ease;
         border-top: 3px solid transparent;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        color: rgba(255, 255, 255, 0.7);
       }
       
       .fuzzer-feature-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        border-top-color: #673AB7;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        border-top-color: #0096D1;
+        background: #323b44;
       }
       
       .fuzzer-feature-icon {
-        background: linear-gradient(135deg, #673AB7, #3F51B5);
+        background: linear-gradient(135deg, #414d59, #0096D1);
         color: white;
         width: 60px;
         height: 60px;
@@ -145,19 +147,21 @@
         align-items: center;
         margin-bottom: 1rem;
         padding: 1rem;
-        background: white;
+        background: #212C34;
         border-radius: 8px;
         transition: all 0.3s ease;
-        border-left: 4px solid #673AB7;
+        border-left: 4px solid #0096D1;
+        color: rgba(255, 255, 255, 0.7);
       }
       
       .tech-spec-item:hover {
         transform: translateX(5px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        background: #27343F;
       }
       
       .tech-spec-icon {
-        background: rgba(103, 58, 183, 0.1);
+        background: rgba(0, 150, 209, 0.2);
         border-radius: 50%;
         width: 40px;
         height: 40px;
@@ -165,26 +169,27 @@
         align-items: center;
         justify-content: center;
         margin-right: 1rem;
-        color: #673AB7;
+        color: #0096D1;
       }
       
       /* Code block styling */
       .api-code-block {
-        background: #1e1e2e;
+        background: #1f2c36;
         border-radius: 8px;
         padding: 1.5rem;
-        color: #f8f8f2;
+        color: rgba(255, 255, 255, 0.7);
         font-family: 'Source Code Pro', monospace;
         overflow-x: auto;
+        border: 1px solid #323b44;
       }
       
       .api-endpoint {
-        color: #50fa7b;
+        color: #0096D1;
         font-weight: bold;
       }
       
       .api-method {
-        color: #ff79c6;
+        color: #ADD8E6;
         font-weight: bold;
       }
       
@@ -246,9 +251,9 @@
       </section>
 
       <!-- Core Features Section -->
-      <section class="section has-background-light">
+      <section class="section" style="background-color: #1f2c36;">
         <div class="container">
-          <h2 class="title has-text-centered has-text-primary mb-6">Core Features</h2>
+          <h2 class="title has-text-centered mb-6" style="color: #0096D1;">Core Features</h2>
           
           <div class="columns is-multiline">
             <!-- Real-time Testing -->
@@ -257,7 +262,7 @@
                 <div class="fuzzer-feature-icon">
                   <i class="fas fa-play-circle"></i>
                 </div>
-                <h3 class="title is-4 has-text-primary" data-i18n="realTimeTestingTitle">Real-time Testing</h3>
+                <h3 class="title is-4" style="color: #0096D1;" data-i18n="realTimeTestingTitle">Real-time Testing</h3>
                 <p data-i18n="realTimeTestingDesc">Execute fuzzing campaigns with live monitoring and instant feedback on test progress and results.</p>
               </div>
             </div>
@@ -268,7 +273,7 @@
                 <div class="fuzzer-feature-icon">
                   <i class="fas fa-cogs"></i>
                 </div>
-                <h3 class="title is-4 has-text-primary" data-i18n="protocolConfigTitle">Protocol Configuration</h3>
+                <h3 class="title is-4" style="color: #0096D1;" data-i18n="protocolConfigTitle">Protocol Configuration</h3>
                 <p data-i18n="protocolConfigDesc">Configure and customize fuzzing parameters for various IoT protocols including UART, JTAG, BLE, and more.</p>
               </div>
             </div>
@@ -279,7 +284,7 @@
                 <div class="fuzzer-feature-icon">
                   <i class="fas fa-tasks"></i>
                 </div>
-                <h3 class="title is-4 has-text-primary" data-i18n="testManagementTitle">Test Management</h3>
+                <h3 class="title is-4" style="color: #0096D1;" data-i18n="testManagementTitle">Test Management</h3>
                 <p data-i18n="testManagementDesc">Organize test cases and groups for systematic security assessment campaigns.</p>
               </div>
             </div>
@@ -290,7 +295,7 @@
                 <div class="fuzzer-feature-icon">
                   <i class="fas fa-chart-line"></i>
                 </div>
-                <h3 class="title is-4 has-text-primary" data-i18n="resultAnalysisTitle">Result Analysis</h3>
+                <h3 class="title is-4" style="color: #0096D1;" data-i18n="resultAnalysisTitle">Result Analysis</h3>
                 <p data-i18n="resultAnalysisDesc">Comprehensive result analysis with live logging, filtering, and export capabilities for detailed reporting.</p>
               </div>
             </div>
@@ -299,9 +304,9 @@
       </section>
 
       <!-- Technical Features Section -->
-      <section class="section" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+      <section class="section" style="background: linear-gradient(135deg, #323b44 0%, #414d59 100%);">
         <div class="container">
-          <h2 class="title has-text-centered has-text-primary mb-6" data-i18n="techFeaturesTitle">Technical Features</h2>
+          <h2 class="title has-text-centered mb-6" style="color: #0096D1;" data-i18n="techFeaturesTitle">Technical Features</h2>
           
           <div class="columns">
             <div class="column is-6">
@@ -310,7 +315,7 @@
                   <i class="fas fa-stream"></i>
                 </div>
                 <div>
-                  <h4 class="title is-5 has-text-primary" data-i18n="liveLoggingTitle">Live Logging</h4>
+                  <h4 class="title is-5" style="color: #0096D1;" data-i18n="liveLoggingTitle">Live Logging</h4>
                   <p data-i18n="liveLoggingDesc">Real-time log streaming with advanced filtering by status, search terms, and log levels.</p>
                 </div>
               </div>
@@ -320,7 +325,7 @@
                   <i class="fas fa-tachometer-alt"></i>
                 </div>
                 <div>
-                  <h4 class="title is-5 has-text-primary" data-i18n="performanceMonitoringTitle">Performance Monitoring</h4>
+                  <h4 class="title is-5" style="color: #0096D1;" data-i18n="performanceMonitoringTitle">Performance Monitoring</h4>
                   <p data-i18n="performanceMonitoringDesc">System metrics tracking including CPU, memory usage, and test execution statistics.</p>
                 </div>
               </div>
@@ -332,7 +337,7 @@
                   <i class="fas fa-folder-open"></i>
                 </div>
                 <div>
-                  <h4 class="title is-5 has-text-primary" data-i18n="fileManagementTitle">File Management</h4>
+                  <h4 class="title is-5" style="color: #0096D1;" data-i18n="fileManagementTitle">File Management</h4>
                   <p data-i18n="fileManagementDesc">Comprehensive file management for test results, configurations, and analysis reports.</p>
                 </div>
               </div>
@@ -342,7 +347,7 @@
                   <i class="fas fa-download"></i>
                 </div>
                 <div>
-                  <h4 class="title is-5 has-text-primary" data-i18n="exportCapabilityTitle">Export Capability</h4>
+                  <h4 class="title is-5" style="color: #0096D1;" data-i18n="exportCapabilityTitle">Export Capability</h4>
                   <p data-i18n="exportCapabilityDesc">Generate detailed reports and export test data for further analysis and documentation.</p>
                 </div>
               </div>
@@ -352,21 +357,21 @@
       </section>
 
       <!-- Integration Section -->
-      <section class="section has-background-white">
+      <section class="section" style="background-color: #212C34;">
         <div class="container">
           <div class="columns is-vcentered">
             <div class="column is-6">
-              <h2 class="title has-text-primary" data-i18n="integrationTitle">Integration & API</h2>
-              <p class="subtitle" data-i18n="integrationDesc">
+              <h2 class="title" style="color: #0096D1;" data-i18n="integrationTitle">Integration & API</h2>
+              <p class="subtitle" style="color: rgba(255, 255, 255, 0.7);" data-i18n="integrationDesc">
                 The IoT Protocol Fuzzer integrates with Django backend API and provides WebSocket connections for real-time updates. Features include:
               </p>
               
-              <div class="content">
+              <div class="content" style="color: rgba(255, 255, 255, 0.7);">
                 <ul>
-                  <li><strong data-i18n="djangoIntegration">Django Backend Integration</strong></li>
-                  <li><strong data-i18n="websocketSupport">WebSocket Real-time Updates</strong></li>
-                  <li><strong data-i18n="restApi">RESTful API Endpoints</strong></li>
-                  <li><strong data-i18n="errorHandling">Advanced Error Handling</strong></li>
+                  <li><strong data-i18n="djangoIntegration" style="color: #ADD8E6;">Django Backend Integration</strong></li>
+                  <li><strong data-i18n="websocketSupport" style="color: #ADD8E6;">WebSocket Real-time Updates</strong></li>
+                  <li><strong data-i18n="restApi" style="color: #ADD8E6;">RESTful API Endpoints</strong></li>
+                  <li><strong data-i18n="errorHandling" style="color: #ADD8E6;">Advanced Error Handling</strong></li>
                 </ul>
               </div>
             </div>
@@ -389,16 +394,16 @@
       </section>
 
       <!-- Footer -->
-      <footer class="footer has-text-centered">
+      <footer class="footer has-text-centered" style="background-color: #212B33; color: rgba(255, 255, 255, 0.7);">
         <div class="container">
-          <p class="has-text-weight-light" data-i18n="copyright">
+          <p class="has-text-weight-light" data-i18n="copyright" style="color: rgba(255, 255, 255, 0.7);">
             &copy; 2024 The IoTSploit authors
           </p>
-          <a style="font-size: 12px" href="community/code-of-conduct.html">
+          <a style="font-size: 12px; color: #0096D1;" href="community/code-of-conduct.html">
             <span data-i18n="codeOfConduct">Code of Conduct</span>
           </a>
           |
-          <a style="font-size: 12px" href="https://www.netlify.com">
+          <a style="font-size: 12px; color: #0096D1;" href="https://www.netlify.com">
             <span data-i18n="poweredBy">This site is powered by github pages.</span>
           </a>
         </div>
