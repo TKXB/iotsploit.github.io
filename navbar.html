@@ -1,0 +1,117 @@
+<nav class="navbar has-shadow is-fixed-top">
+  <div class="container">
+    <div class="navbar-brand">
+      <a id="logo" class="navbar-item" href="index.html">
+        <img src="images/iotsploit.svg" alt="Project navbar logo" class="is-logo">
+      </a>
+
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+        data-target="navMenu" onclick="page.toggleNavbarMenu()">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div class="navbar-menu" id="navMenu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://iotsploit-tutorial.readthedocs.io/en/latest/">
+          <span data-i18n="documentation">Documentation</span>
+        </a>
+
+        <a class="navbar-item" href="our-community.html">
+          <span data-i18n="community">Community</span>
+        </a>
+
+        <!-- Features Dropdown -->
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            <span data-i18n="features">Features</span>
+          </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="fuzzer.html">
+              <span class="icon">
+                <i class="fas fa-bug"></i>
+              </span>
+              <span data-i18n="iotFuzzer">IoT Protocol Fuzzer</span>
+            </a>
+            <hr class="navbar-divider">
+            <a class="navbar-item" href="#">
+              <span class="icon">
+                <i class="fas fa-shield-alt"></i>
+              </span>
+              <span data-i18n="vulnerabilityScanner">Vulnerability Scanner</span>
+            </a>
+            <a class="navbar-item" href="#">
+              <span class="icon">
+                <i class="fas fa-network-wired"></i>
+              </span>
+              <span data-i18n="protocolAnalyzer">Protocol Analyzer</span>
+            </a>
+          </div>
+        </div>
+
+        <a class="navbar-item" href="http://zguide.iotsploit.org/">
+          <span data-i18n="guide">The Guide</span>
+        </a>
+
+        <a class="navbar-item" href="https://iotsploit-tutorial.readthedocs.io/en/latest/">
+          <span data-i18n="wiki">Wiki</span>
+        </a>
+
+        <a class="navbar-item" href="download.html">
+          <span data-i18n="download">Download</span>
+        </a>
+
+        <!-- Language Selector -->
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            <span class="icon">
+              <i class="fas fa-globe"></i>
+            </span>
+            <span id="current-lang">EN</span>
+          </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" onclick="changeLanguage('en')">
+              English
+            </a>
+            <a class="navbar-item" onclick="changeLanguage('zh')">
+              中文
+            </a>
+          </div>
+        </div>
+
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button is-link has-text-weight-bold" href="https://github.com/TKXB/iotsploit" target="_blank">
+              <span class="icon">
+                <i class="fab fa-github"></i>
+              </span>
+              <span>
+                GitHub
+              </span>
+            </a>
+
+            <a class="button is-twitter-blue has-text-weight-bold" href="https://twitter.com/" target="_blank">
+              <span class="icon">
+                <i class="fab fa-twitter"></i>
+              </span>
+              <span>
+                Twitter
+              </span>
+            </a>
+
+            <a class="button is-discord-purple has-text-weight-bold" href="https://discord.gg/Hmu7JbQb9z" target="_blank">
+              <span class="icon">
+                <i class="fab fa-discord"></i>
+              </span>
+              <span>
+                Discord
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav> 

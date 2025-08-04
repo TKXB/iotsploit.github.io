@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="generator" content="Hugo 0.120.3">
+    <meta name="description" content="IoT Protocol Fuzzer - Advanced IoT Security Testing Tool" />
+
+    <meta property="og:title" content="IoT Protocol Fuzzer - IoTSploit">
+    <meta property="og:url" content="https://iotsploit.org/fuzzer.html">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:description" content="Advanced IoT Protocol Fuzzing Tool for Security Testing">
+    <meta name="og:type" content="website">
+    <meta name="og:image" content="/images/fuzzer.png">
+    <meta name="og:image:alt" content="IoT Protocol Fuzzer">
+    <meta name="og:image:type" content="image/png">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@libzmq">
+    <meta name="twitter:creator" content="@libzmq">
+
+    <link rel="canonical" content="https://iotsploit.org/fuzzer.html">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+    <meta name="theme-color" content="#9c3838">
+
+    <title>IoT Protocol Fuzzer - IoTSploit</title>
+
+    <link rel="stylesheet" href="css/bulma.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+
+    <style>
+      /* Navbar logo styling */
+      .navbar-item img.is-logo {
+        max-height: 3rem;
+      }
+
+      @media screen and (max-width: 1023px) {
+        .navbar-item img.is-logo {
+          max-height: 2.5rem;
+        }
+      }
+
+      .buttons .button {
+        width: 120px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      /* Discord purple button styling */
+      .button.is-discord-purple {
+        background-color: #5865F2;
+        border-color: #5865F2;
+        color: white;
+      }
+      
+      .button.is-discord-purple:hover {
+        background-color: #4752C4;
+        border-color: #4752C4;
+        color: white;
+      }
+
+
+
+      /* Fuzzer Hero Background */
+      .fuzzer-hero-background {
+        position: relative;
+        min-height: 80vh;
+        overflow: hidden;
+        background-image: url('images/fuzzer.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+      }
+      
+      /* Dark overlay for better text readability */
+      .fuzzer-hero-overlay {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(135deg, rgba(103, 58, 183, 0.8), rgba(63, 81, 181, 0.8));
+        z-index: 1;
+      }
+      
+      /* Ensure text appears above the overlay */
+      .fuzzer-hero-background .hero-body {
+        position: relative;
+        z-index: 2;
+      }
+      
+      /* Enhanced text visibility */
+      .fuzzer-hero-background .title,
+      .fuzzer-hero-background .subtitle {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        margin-bottom: 1.5rem;
+      }
+      
+      /* Feature cards styling */
+      .fuzzer-feature-card {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        height: 100%;
+        transition: all 0.3s ease;
+        border-top: 3px solid transparent;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      
+      .fuzzer-feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        border-top-color: #673AB7;
+      }
+      
+      .fuzzer-feature-icon {
+        background: linear-gradient(135deg, #673AB7, #3F51B5);
+        color: white;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+      }
+      
+      /* Technical specs styling */
+      .tech-spec-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        border-left: 4px solid #673AB7;
+      }
+      
+      .tech-spec-item:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+      
+      .tech-spec-icon {
+        background: rgba(103, 58, 183, 0.1);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        color: #673AB7;
+      }
+      
+      /* Code block styling */
+      .api-code-block {
+        background: #1e1e2e;
+        border-radius: 8px;
+        padding: 1.5rem;
+        color: #f8f8f2;
+        font-family: 'Source Code Pro', monospace;
+        overflow-x: auto;
+      }
+      
+      .api-endpoint {
+        color: #50fa7b;
+        font-weight: bold;
+      }
+      
+      .api-method {
+        color: #ff79c6;
+        font-weight: bold;
+      }
+      
+      /* Responsive adjustments */
+      @media screen and (max-width: 768px) {
+        .fuzzer-hero-background {
+          min-height: 60vh;
+          background-attachment: scroll;
+        }
+        
+        .fuzzer-hero-background .title {
+          font-size: 2rem !important;
+        }
+        
+        .fuzzer-hero-background .subtitle {
+          font-size: 1.25rem !important;
+        }
+      }
+    </style>
+  </head>
+  
+  <body class="page has-navbar-fixed-top">
+    <div class="main">
+      <!-- Navigation -->
+      <nav class="navbar has-shadow is-fixed-top">
+        <div class="container">
+          <div class="navbar-brand">
+            <a id="logo" class="navbar-item" href="index.html">
+              <img src="images/iotsploit.svg" alt="Project navbar logo" class="is-logo">
+            </a>
+
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+              data-target="navMenu" onclick="page.toggleNavbarMenu()">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+
+          <div class="navbar-menu" id="navMenu">
+            <div class="navbar-end">
+              <a class="navbar-item" href="https://iotsploit-tutorial.readthedocs.io/en/latest/">
+                <span data-i18n="documentation">Documentation</span>
+              </a>
+
+              <a class="navbar-item" href="our-community.html">
+                <span data-i18n="community">Community</span>
+              </a>
+
+              <!-- Features Dropdown -->
+              <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                  <span data-i18n="features">Features</span>
+                </a>
+                <div class="navbar-dropdown">
+                  <a class="navbar-item" href="fuzzer.html">
+                    <span class="icon">
+                      <i class="fas fa-bug"></i>
+                    </span>
+                    <span data-i18n="iotFuzzer">IoT Protocol Fuzzer</span>
+                  </a>
+                  <hr class="navbar-divider">
+                  <a class="navbar-item" href="#">
+                    <span class="icon">
+                      <i class="fas fa-shield-alt"></i>
+                    </span>
+                    <span data-i18n="vulnerabilityScanner">Vulnerability Scanner</span>
+                  </a>
+                  <a class="navbar-item" href="#">
+                    <span class="icon">
+                      <i class="fas fa-network-wired"></i>
+                    </span>
+                    <span data-i18n="protocolAnalyzer">Protocol Analyzer</span>
+                  </a>
+                </div>
+              </div>
+
+              <a class="navbar-item" href="http://zguide.iotsploit.org/">
+                <span data-i18n="guide">The Guide</span>
+              </a>
+
+              <a class="navbar-item" href="https://iotsploit-tutorial.readthedocs.io/en/latest/">
+                <span data-i18n="wiki">Wiki</span>
+              </a>
+
+              <a class="navbar-item" href="download.html">
+                <span data-i18n="download">Download</span>
+              </a>
+
+              <!-- Language Selector -->
+              <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                  <span class="icon">
+                    <i class="fas fa-globe"></i>
+                  </span>
+                  <span id="current-lang">EN</span>
+                </a>
+                <div class="navbar-dropdown">
+                  <a class="navbar-item" onclick="changeLanguage('en')">
+                    English
+                  </a>
+                  <a class="navbar-item" onclick="changeLanguage('zh')">
+                    中文
+                  </a>
+                </div>
+              </div>
+
+              <div class="navbar-item">
+                <div class="buttons">
+                  <a class="button is-link has-text-weight-bold" href="https://github.com/TKXB/iotsploit" target="_blank">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>
+                      GitHub
+                    </span>
+                  </a>
+
+                  <a class="button is-twitter-blue has-text-weight-bold" href="https://twitter.com/" target="_blank">
+                    <span class="icon">
+                      <i class="fab fa-twitter"></i>
+                    </span>
+                    <span>
+                      Twitter
+                    </span>
+                  </a>
+
+                  <a class="button is-discord-purple has-text-weight-bold" href="https://discord.gg/Hmu7JbQb9z" target="_blank">
+                    <span class="icon">
+                      <i class="fab fa-discord"></i>
+                    </span>
+                    <span>
+                      Discord
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Hero Section -->
+      <section class="hero has-text-centered is-medium fuzzer-hero-background">
+        <div class="fuzzer-hero-overlay"></div>
+        <div class="hero-body">
+          <div class="container">
+            <p class="title is-size-1 is-size-2-mobile is-spaced has-text-white" data-i18n="fuzzerTitle">
+              IoT Protocol Fuzzer
+            </p>
+            
+            <p class="subtitle is-size-3 is-size-4-mobile has-text-weight-light has-text-white" data-i18n="fuzzerSubtitle">
+              Advanced Security Testing for IoT Protocols
+            </p>
+            
+            <p class="subtitle is-size-5 is-size-6-mobile has-text-white" style="max-width: 600px; margin: 0 auto 2rem;" data-i18n="fuzzerDescription">
+              Comprehensive protocol fuzzing tool designed specifically for IoT devices and communication protocols. Test security vulnerabilities with real-time monitoring and advanced analysis capabilities.
+            </p>
+            
+            <div class="mt-6">
+              <a class="button is-primary is-large mr-2" href="https://iotsploit-tutorial.readthedocs.io/en/latest/">
+                <span class="icon">
+                  <i class="fas fa-rocket"></i>
+                </span>
+                <span data-i18n="getStarted">Get Started</span>
+              </a>
+              <a class="button is-light is-large" href="https://github.com/TKXB/iotsploit" target="_blank">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span data-i18n="learnMore">Learn More</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Core Features Section -->
+      <section class="section has-background-light">
+        <div class="container">
+          <h2 class="title has-text-centered has-text-primary mb-6">Core Features</h2>
+          
+          <div class="columns is-multiline">
+            <!-- Real-time Testing -->
+            <div class="column is-6">
+              <div class="fuzzer-feature-card">
+                <div class="fuzzer-feature-icon">
+                  <i class="fas fa-play-circle"></i>
+                </div>
+                <h3 class="title is-4 has-text-primary" data-i18n="realTimeTestingTitle">Real-time Testing</h3>
+                <p data-i18n="realTimeTestingDesc">Execute fuzzing campaigns with live monitoring and instant feedback on test progress and results.</p>
+              </div>
+            </div>
+            
+            <!-- Protocol Configuration -->
+            <div class="column is-6">
+              <div class="fuzzer-feature-card">
+                <div class="fuzzer-feature-icon">
+                  <i class="fas fa-cogs"></i>
+                </div>
+                <h3 class="title is-4 has-text-primary" data-i18n="protocolConfigTitle">Protocol Configuration</h3>
+                <p data-i18n="protocolConfigDesc">Configure and customize fuzzing parameters for various IoT protocols including UART, JTAG, BLE, and more.</p>
+              </div>
+            </div>
+            
+            <!-- Test Management -->
+            <div class="column is-6">
+              <div class="fuzzer-feature-card">
+                <div class="fuzzer-feature-icon">
+                  <i class="fas fa-tasks"></i>
+                </div>
+                <h3 class="title is-4 has-text-primary" data-i18n="testManagementTitle">Test Management</h3>
+                <p data-i18n="testManagementDesc">Organize test cases and groups for systematic security assessment campaigns.</p>
+              </div>
+            </div>
+            
+            <!-- Result Analysis -->
+            <div class="column is-6">
+              <div class="fuzzer-feature-card">
+                <div class="fuzzer-feature-icon">
+                  <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="title is-4 has-text-primary" data-i18n="resultAnalysisTitle">Result Analysis</h3>
+                <p data-i18n="resultAnalysisDesc">Comprehensive result analysis with live logging, filtering, and export capabilities for detailed reporting.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Technical Features Section -->
+      <section class="section" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+        <div class="container">
+          <h2 class="title has-text-centered has-text-primary mb-6" data-i18n="techFeaturesTitle">Technical Features</h2>
+          
+          <div class="columns">
+            <div class="column is-6">
+              <div class="tech-spec-item">
+                <div class="tech-spec-icon">
+                  <i class="fas fa-stream"></i>
+                </div>
+                <div>
+                  <h4 class="title is-5 has-text-primary" data-i18n="liveLoggingTitle">Live Logging</h4>
+                  <p data-i18n="liveLoggingDesc">Real-time log streaming with advanced filtering by status, search terms, and log levels.</p>
+                </div>
+              </div>
+              
+              <div class="tech-spec-item">
+                <div class="tech-spec-icon">
+                  <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <div>
+                  <h4 class="title is-5 has-text-primary" data-i18n="performanceMonitoringTitle">Performance Monitoring</h4>
+                  <p data-i18n="performanceMonitoringDesc">System metrics tracking including CPU, memory usage, and test execution statistics.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="column is-6">
+              <div class="tech-spec-item">
+                <div class="tech-spec-icon">
+                  <i class="fas fa-folder-open"></i>
+                </div>
+                <div>
+                  <h4 class="title is-5 has-text-primary" data-i18n="fileManagementTitle">File Management</h4>
+                  <p data-i18n="fileManagementDesc">Comprehensive file management for test results, configurations, and analysis reports.</p>
+                </div>
+              </div>
+              
+              <div class="tech-spec-item">
+                <div class="tech-spec-icon">
+                  <i class="fas fa-download"></i>
+                </div>
+                <div>
+                  <h4 class="title is-5 has-text-primary" data-i18n="exportCapabilityTitle">Export Capability</h4>
+                  <p data-i18n="exportCapabilityDesc">Generate detailed reports and export test data for further analysis and documentation.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Integration Section -->
+      <section class="section has-background-white">
+        <div class="container">
+          <div class="columns is-vcentered">
+            <div class="column is-6">
+              <h2 class="title has-text-primary" data-i18n="integrationTitle">Integration & API</h2>
+              <p class="subtitle" data-i18n="integrationDesc">
+                The IoT Protocol Fuzzer integrates with Django backend API and provides WebSocket connections for real-time updates. Features include:
+              </p>
+              
+              <div class="content">
+                <ul>
+                  <li><strong data-i18n="djangoIntegration">Django Backend Integration</strong></li>
+                  <li><strong data-i18n="websocketSupport">WebSocket Real-time Updates</strong></li>
+                  <li><strong data-i18n="restApi">RESTful API Endpoints</strong></li>
+                  <li><strong data-i18n="errorHandling">Advanced Error Handling</strong></li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="column is-6">
+              <div class="api-code-block">
+<span class="api-method">POST</span> <span class="api-endpoint">/api/iot-fuzzer/testing/campaign/start/</span>
+<span class="api-method">POST</span> <span class="api-endpoint">/api/iot-fuzzer/testing/campaign/stop/</span>
+<span class="api-method">POST</span> <span class="api-endpoint">/api/iot-fuzzer/testing/campaign/pause/</span>
+<span class="api-method">GET</span>  <span class="api-endpoint">/api/iot-fuzzer/testing/campaign/status/</span>
+<span class="api-method">GET</span>  <span class="api-endpoint">/api/iot-fuzzer/testing/statistics/</span>
+<span class="api-method">GET</span>  <span class="api-endpoint">/api/iot-fuzzer/testing/test-groups/</span>
+
+<span style="color: #6272a4;"># WebSocket connection for real-time updates</span>
+<span style="color: #f1fa8c;">ws://localhost:9999/fuzzer/live</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer has-text-centered">
+        <div class="container">
+          <p class="has-text-weight-light" data-i18n="copyright">
+            &copy; 2024 The IoTSploit authors
+          </p>
+          <a style="font-size: 12px" href="community/code-of-conduct.html">
+            <span data-i18n="codeOfConduct">Code of Conduct</span>
+          </a>
+          |
+          <a style="font-size: 12px" href="https://www.netlify.com">
+            <span data-i18n="poweredBy">This site is powered by github pages.</span>
+          </a>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/navbar.js"></script>
+    <script>
+      // Fuzzer page specific translations
+      document.addEventListener('DOMContentLoaded', function() {
+        const fuzzerTranslations = {
+          en: {
+            // Fuzzer Page
+            fuzzerTitle: "IoT Protocol Fuzzer",
+            fuzzerSubtitle: "Advanced Security Testing for IoT Protocols",
+            fuzzerDescription: "Comprehensive protocol fuzzing tool designed specifically for IoT devices and communication protocols. Test security vulnerabilities with real-time monitoring and advanced analysis capabilities.",
+            
+            // Features
+            realTimeTestingTitle: "Real-time Testing",
+            realTimeTestingDesc: "Execute fuzzing campaigns with live monitoring and instant feedback on test progress and results.",
+            
+            protocolConfigTitle: "Protocol Configuration",
+            protocolConfigDesc: "Configure and customize fuzzing parameters for various IoT protocols including UART, JTAG, BLE, and more.",
+            
+            testManagementTitle: "Test Management",
+            testManagementDesc: "Organize test cases and groups for systematic security assessment campaigns.",
+            
+            resultAnalysisTitle: "Result Analysis",
+            resultAnalysisDesc: "Comprehensive result analysis with live logging, filtering, and export capabilities for detailed reporting.",
+            
+            // Technical Features
+            techFeaturesTitle: "Technical Features",
+            liveLoggingTitle: "Live Logging",
+            liveLoggingDesc: "Real-time log streaming with advanced filtering by status, search terms, and log levels.",
+            
+            performanceMonitoringTitle: "Performance Monitoring",
+            performanceMonitoringDesc: "System metrics tracking including CPU, memory usage, and test execution statistics.",
+            
+            fileManagementTitle: "File Management",
+            fileManagementDesc: "Comprehensive file management for test results, configurations, and analysis reports.",
+            
+            exportCapabilityTitle: "Export Capability",
+            exportCapabilityDesc: "Generate detailed reports and export test data for further analysis and documentation.",
+            
+            // Integration
+            integrationTitle: "Integration & API",
+            integrationDesc: "The IoT Protocol Fuzzer integrates with Django backend API and provides WebSocket connections for real-time updates. Features include:",
+            
+            djangoIntegration: "Django Backend Integration",
+            websocketSupport: "WebSocket Real-time Updates",
+            restApi: "RESTful API Endpoints",
+            errorHandling: "Advanced Error Handling",
+            
+            getStarted: "Get Started",
+            learnMore: "Learn More",
+            
+            // Footer
+            copyright: "© 2024 The IoTSploit authors",
+            codeOfConduct: "Code of Conduct",
+            poweredBy: "This site is powered by github pages."
+          },
+          zh: {
+            // 模糊器页面
+            fuzzerTitle: "物联网协议模糊器",
+            fuzzerSubtitle: "物联网协议高级安全测试工具",
+            fuzzerDescription: "专为物联网设备和通信协议设计的综合协议模糊测试工具。通过实时监控和高级分析功能测试安全漏洞。",
+            
+            // 功能特性
+            realTimeTestingTitle: "实时测试",
+            realTimeTestingDesc: "执行模糊测试活动，实时监控测试进度和结果，提供即时反馈。",
+            
+            protocolConfigTitle: "协议配置",
+            protocolConfigDesc: "为各种物联网协议（包括 UART、JTAG、BLE 等）配置和自定义模糊测试参数。",
+            
+            testManagementTitle: "测试管理",
+            testManagementDesc: "为系统性安全评估活动组织测试用例和组。",
+            
+            resultAnalysisTitle: "结果分析",
+            resultAnalysisDesc: "全面的结果分析，包括实时日志记录、过滤和导出功能，便于详细报告。",
+            
+            // 技术特性
+            techFeaturesTitle: "技术特性",
+            liveLoggingTitle: "实时日志",
+            liveLoggingDesc: "实时日志流，支持按状态、搜索词和日志级别进行高级过滤。",
+            
+            performanceMonitoringTitle: "性能监控",
+            performanceMonitoringDesc: "系统指标跟踪，包括 CPU、内存使用情况和测试执行统计。",
+            
+            fileManagementTitle: "文件管理",
+            fileManagementDesc: "测试结果、配置和分析报告的综合文件管理。",
+            
+            exportCapabilityTitle: "导出功能",
+            exportCapabilityDesc: "生成详细报告并导出测试数据，以便进一步分析和文档记录。",
+            
+            // 集成
+            integrationTitle: "集成与API",
+            integrationDesc: "物联网协议模糊器与 Django 后端 API 集成，并提供 WebSocket 连接以进行实时更新。功能包括：",
+            
+            djangoIntegration: "Django 后端集成",
+            websocketSupport: "WebSocket 实时更新",
+            restApi: "RESTful API 端点",
+            errorHandling: "高级错误处理",
+            
+            getStarted: "开始使用",
+            learnMore: "了解更多",
+            
+            // 页脚
+            copyright: "© 2024 IoTSploit 作者",
+            codeOfConduct: "行为准则",
+            poweredBy: "本站由 github pages 提供支持。"
+          }
+        };
+
+        // Extend the navbar translations with fuzzer page translations
+        if (window.navbar && window.navbar.translations) {
+          Object.keys(fuzzerTranslations).forEach(lang => {
+            Object.assign(window.navbar.translations[lang], fuzzerTranslations[lang]);
+          });
+        }
+
+        // Apply current language to fuzzer page specific elements
+        const currentLang = localStorage.getItem('language') || 'en';
+        if (window.changeLanguage) {
+          window.changeLanguage(currentLang);
+        }
+      });
+    </script>
+  </body>
+</html> 
