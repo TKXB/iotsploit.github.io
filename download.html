@@ -40,173 +40,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <!-- Language Translations -->
+    <script src="js/translations.js"></script>
     <script>
-      // Language translations
-      const translations = {
-        en: {
-          // Navbar
-          documentation: "Documentation",
-          community: "Community",
-          guide: "The Guide",
-          wiki: "Wiki",
-          download: "Download",
-          
-          // Download page
-          downloadTitle: "Download IoTSploit",
-          downloadSubtitle: "Get the latest version of IoTSploit for your platform",
-          latestVersion: "Latest Version",
-          releaseNotes: "Release Notes",
-          downloadNow: "Download Now",
-          comingSoon: "Coming Soon",
-          
-          // Platforms
-          windowsTitle: "Windows",
-          windowsDesc: "Compatible with Windows 10/11 (64-bit)",
-          macosTitle: "macOS",
-          macosDesc: "Compatible with macOS 10.15+ (Intel & Apple Silicon)",
-          linuxTitle: "Linux",
-          linuxDesc: "Compatible with Ubuntu 20.04+, Debian 11+, CentOS 8+",
-          
-          // Mobile
-          mobileTitle: "Mobile Apps",
-          mobileDesc: "Control IoTSploit from your mobile device",
-          iosApp: "iOS App",
-          androidApp: "Android App",
-          
-          // Web Source
-          webSourceTitle: "Web Source Downloads",
-          webSourceDesc: "Flutter web build output and source files",
-          webAppDownload: "Download Web App",
-          
-          // Source Code
-          sourceTitle: "Source Code",
-          sourceDesc: "Build IoTSploit from source or contribute to the project",
-          githubRepo: "GitHub Repository",
-          dockerImage: "Docker Image",
-          
-          // System Requirements
-          requirementsTitle: "System Requirements",
-          minRequirements: "Minimum Requirements",
-          recRequirements: "Recommended Requirements",
-          
-          // Installation
-          installationTitle: "Installation Guide",
-          quickStart: "Quick Start Guide",
-          documentation: "Full Documentation",
-          
-          // Linux Download Modal
-          linuxDownloadTitle: "Choose Linux Version",
-          linuxDownloadDesc: "Select the Linux package format that works best for your system:",
-          appImageDesc: "Universal binary for most Linux distributions",
-          tarGzDesc: "Traditional archive for manual installation",
-          cancel: "Cancel",
-          
-          // Footer
-          copyright: "© 2024 The IoTSploit authors",
-          codeOfConduct: "Code of Conduct",
-          poweredBy: "This site is powered by github pages."
-        },
-        zh: {
-          // 导航栏
-          documentation: "文档",
-          community: "社区",
-          guide: "指南",
-          wiki: "百科",
-          download: "下载",
-          
-          // 下载页面
-          downloadTitle: "下载 IoTSploit",
-          downloadSubtitle: "获取适用于您平台的最新版本 IoTSploit",
-          latestVersion: "最新版本",
-          releaseNotes: "发布说明",
-          downloadNow: "立即下载",
-          comingSoon: "敬请期待",
-          
-          // 平台
-          windowsTitle: "Windows",
-          windowsDesc: "兼容 Windows 10/11 (64位)",
-          macosTitle: "macOS",
-          macosDesc: "兼容 macOS 10.15+ (Intel 和 Apple Silicon)",
-          linuxTitle: "Linux",
-          linuxDesc: "兼容 Ubuntu 20.04+, Debian 11+, CentOS 8+",
-          
-          // 移动端
-          mobileTitle: "移动应用",
-          mobileDesc: "从移动设备控制 IoTSploit",
-          iosApp: "iOS 应用",
-          androidApp: "Android 应用",
-          
-          // Web 源码
-          webSourceTitle: "Web 源码下载",
-          webSourceDesc: "Flutter Web 构建输出和源文件",
-          webAppDownload: "下载 Web 应用",
-          
-          // 源代码
-          sourceTitle: "源代码",
-          sourceDesc: "从源代码构建 IoTSploit 或为项目做贡献",
-          githubRepo: "GitHub 仓库",
-          dockerImage: "Docker 镜像",
-          
-          // 系统要求
-          requirementsTitle: "系统要求",
-          minRequirements: "最低要求",
-          recRequirements: "推荐配置",
-          
-          // 安装
-          installationTitle: "安装指南",
-          quickStart: "快速开始指南",
-          documentation: "完整文档",
-          
-          // Linux Download Modal
-          linuxDownloadTitle: "选择 Linux 版本",
-          linuxDownloadDesc: "选择最适合您系统的 Linux 包格式：",
-          appImageDesc: "适用于大多数 Linux 发行版的通用格式",
-          tarGzDesc: "传统压缩包格式适用于手动安装",
-          cancel: "取消",
-          
-          // Footer
-          copyright: "© 2024 IoTSploit 作者",
-          codeOfConduct: "行为准则",
-          poweredBy: "本站由 github pages 提供支持。"
-        }
-      };
-      
-      // Default language
-      let currentLang = 'en';
-      
-      // Check browser language
-      function detectLanguage() {
-        const browserLang = navigator.language || navigator.userLanguage;
-        if (browserLang.startsWith('zh')) {
-          return 'zh';
-        }
-        return 'en';
-      }
-      
-      // Initialize language
-      document.addEventListener('DOMContentLoaded', () => {
-        // Try to get language from localStorage
-        const savedLang = localStorage.getItem('language');
-        currentLang = savedLang || detectLanguage();
-        changeLanguage(currentLang);
-      });
-      
-      // Change language function
-      function changeLanguage(lang) {
-        currentLang = lang;
-        localStorage.setItem('language', lang);
-        
-        // Update UI elements with translations
-        document.querySelectorAll('[data-i18n]').forEach(element => {
-          const key = element.getAttribute('data-i18n');
-          if (translations[lang][key]) {
-            element.textContent = translations[lang][key];
+              // 下载页面的翻译已经包含在全局翻译文件中
+        document.addEventListener('DOMContentLoaded', () => {
+          // 初始化语言设置
+          if (window.initializeLanguage) {
+            window.initializeLanguage();
           }
         });
-        
-        // Update language selector
-        document.getElementById('current-lang').textContent = lang.toUpperCase();
-      }
     </script>
 
     <!-- Google tag (gtag.js) -->
@@ -886,13 +728,20 @@
         });
       });
 
-      // --- 新增：动态加载独立导航栏 ---
+      // --- 动态加载独立导航栏 ---
       document.addEventListener('DOMContentLoaded', () => {
         fetch('navbar.html')
           .then(r => r.text())
           .then(html => {
             const placeholder = document.getElementById('navbar-placeholder');
-            if (placeholder) placeholder.innerHTML = html;
+            if (placeholder) {
+              placeholder.innerHTML = html;
+              // 导航栏加载完成后，重新应用当前语言设置
+              const currentLanguage = localStorage.getItem('language') || (window.detectLanguage ? window.detectLanguage() : 'en');
+              if (window.changeLanguage) {
+                window.changeLanguage(currentLanguage);
+              }
+            }
           });
       });
     </script>
