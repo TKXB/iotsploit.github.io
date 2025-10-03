@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>IoTSploit Attack Path Analysis</title>
+    <meta name="description" content="Visual Attack Path Analysis for IoT/Automotive systems with logic gates, templates, and TARA export." />
+
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+    <link rel="stylesheet" href="css/bulma.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+      .hero-wrap {
+        background: linear-gradient(180deg,#f8fafc, #ffffff);
+        border-bottom: 1px solid #e5e7eb;
+      }
+      .badge-new {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: #eef2ff;
+        color: #3730a3;
+        font-size: 12px;
+        font-weight: 700;
+        border: 1px solid #e5e7eb;
+      }
+      .hero-illustration {
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        overflow: hidden;
+        background: #fff;
+      }
+      .hero-illustration .bar {
+        height: 12px;
+        background: #f3f4f6;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        padding: 8px;
+      }
+      .feature-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 14px;
+        background: #ffffff;
+        height: 100%;
+      }
+      .cta-wrap {
+        border-top: 1px solid #e5e7eb;
+        background: #ffffff;
+      }
+    </style>
+  </head>
+  <body class="page has-navbar-fixed-top">
+    <div class="main">
+      <div id="navbar-placeholder"></div>
+
+      <!-- Hero -->
+      <section class="section hero-wrap">
+        <div class="container">
+          <div class="columns is-vcentered is-variable is-6">
+            <div class="column is-6">
+              <span class="badge-new">New • Attack Path Analysis</span>
+              <h1 class="title is-2 has-text-dark" style="margin-top: 12px;">Visual Attack Path Analysis</h1>
+              <p class="subtitle is-5 has-text-grey" style="margin-bottom: 1rem;">
+                Build, explore, and validate cyber attack paths across Entry Points, Logic gates, and system targets.
+                Designed for IoT/Automotive TARA workflows and rapid what‑if analysis.
+              </p>
+              <div class="buttons">
+                <a class="button is-link is-medium" href="#get-started"><span class="icon"><i class="fas fa-play"></i></span><span>Get Started</span></a>
+                <a class="button is-light is-medium" href="https://iotsploit-tutorial.readthedocs.io/en/latest/" target="_blank"><span class="icon"><i class="fas fa-book"></i></span><span>Docs</span></a>
+              </div>
+              <p class="has-text-grey is-size-7">LLM‑assisted methods • TARA export • Template‑driven palette</p>
+            </div>
+            <div class="column is-6">
+              <div class="hero-illustration">
+                <div class="bar"><span style="width:8px;height:8px;background:#ef4444;border-radius:999px;"></span><span style="width:8px;height:8px;background:#f59e0b;border-radius:999px;"></span><span style="width:8px;height:8px;background:#10b981;border-radius:999px;"></span></div>
+                <div style="padding:16px;">
+                  <div style="height:220px;border:1px dashed #e5e7eb;border-radius:8px;background:linear-gradient(135deg,#f9fafb 25%,#ffffff 25%,#ffffff 50%,#f9fafb 50%,#f9fafb 75%,#ffffff 75%);background-size:16px 16px;"></div>
+                  <div style="margin-top:10px;height:8px;width:80%;background:#e5e7eb;border-radius:6px;"></div>
+                  <div style="margin-top:6px;height:8px;width:60%;background:#e5e7eb;border-radius:6px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section class="section">
+        <div class="container">
+          <h2 class="title is-4 has-text-dark">Why Attack Path</h2>
+          <div class="columns is-multiline">
+            <div class="column is-one-quarter">
+              <div class="feature-card">
+                <p class="has-text-weight-bold has-text-dark">Template‑Driven</p>
+                <p class="is-size-7 has-text-grey">Drop Wi‑Fi/BLE/UART/JTAG entries and attach curated attack steps.</p>
+              </div>
+            </div>
+            <div class="column is-one-quarter">
+              <div class="feature-card">
+                <p class="has-text-weight-bold has-text-dark">Logic Gates</p>
+                <p class="is-size-7 has-text-grey">AND/OR nodes express preconditions and branching strategies.</p>
+              </div>
+            </div>
+            <div class="column is-one-quarter">
+              <div class="feature-card">
+                <p class="has-text-weight-bold has-text-dark">LLM Suggestions</p>
+                <p class="is-size-7 has-text-grey">Generate candidate methods and map to actual paths for review.</p>
+              </div>
+            </div>
+            <div class="column is-one-quarter">
+              <div class="feature-card">
+                <p class="has-text-weight-bold has-text-dark">TARA Table</p>
+                <p class="is-size-7 has-text-grey">Export risk rows, merge cells by scenario, and track feasibility.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section id="get-started" class="section cta-wrap">
+        <div class="container">
+          <div class="columns is-vcentered is-variable is-6">
+            <div class="column is-8">
+              <h3 class="title is-5 has-text-dark" style="margin-bottom: 6px;">Start modeling attack paths now</h3>
+              <p class="is-size-7 has-text-grey">Use the palette to insert entry points and quickly assemble path templates.</p>
+            </div>
+            <div class="column is-4 has-text-right">
+              <a class="button is-link" href="https://iotsploit-tutorial.readthedocs.io/en/latest/" target="_blank"><span class="icon"><i class="fas fa-book"></i></span><span>Read Docs</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer has-text-centered">
+        <div class="container">
+          <p class="has-text-weight-light">&copy; 2025 The IoTSploit authors</p>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Load shared navbar -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        fetch('navbar.html')
+          .then(r => r.text())
+          .then(html => {
+            const placeholder = document.getElementById('navbar-placeholder');
+            if (placeholder) placeholder.innerHTML = html;
+          });
+      });
+    </script>
+  </body>
+  </html>
+
+
