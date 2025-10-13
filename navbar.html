@@ -1,4 +1,21 @@
 <nav class="navbar has-shadow is-fixed-top">
+  <style>
+    /* Mega dropdown for CyberDive */
+    .navbar .mega-dropdown {
+      width: 560px;
+      padding: 16px 18px;
+      background: linear-gradient(180deg,#f8fafc,#ffffff);
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+    }
+    .navbar .mega-title { font-weight: 700; color: #111827; }
+    .navbar .mega-sub { font-size: 0.9rem; color: #6b7280; margin-top: 6px; }
+    .navbar .mega-badges .tag { margin-right: 6px; margin-bottom: 6px; }
+    @media (max-width: 1024px) {
+      .navbar .mega-dropdown { width: 100%; }
+    }
+  </style>
   <div class="container">
     <div class="navbar-brand">
       <a id="logo" class="navbar-item" href="index.html">
@@ -27,9 +44,29 @@
           <span data-i18n="blog">Blog</span>
         </a>
 
-        <a class="navbar-item" href="attackpath.html" target="_blank">
-          <span>CyberDive</span>
-        </a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="attackpath.html" target="_blank">
+            <span>CyberDive</span>
+          </a>
+          <div class="navbar-dropdown mega-dropdown">
+            <p class="mega-title">CyberDive</p>
+            <p class="mega-sub">Fast, visual threat modeling for IoT/Automotive — build paths, validate assumptions, export TARA.</p>
+            <div class="mega-badges" style="margin-top:8px;">
+              <span class="tag is-info is-light is-rounded">Templates</span>
+              <span class="tag is-link is-light is-rounded">AND/OR Blocks</span>
+              <span class="tag is-success is-light is-rounded">AI Suggestions</span>
+              <span class="tag is-warning is-light is-rounded">TARA Export</span>
+            </div>
+            <div class="buttons" style="margin-top:12px;">
+              <a class="button is-link is-small" href="https://ap.iotsploit.org" target="_blank">
+                <span class="icon"><i class="fas fa-play"></i></span><span>Open App</span>
+              </a>
+              <a class="button is-light is-small" href="https://iotsploit-tutorial.readthedocs.io/en/latest/" target="_blank">
+                <span class="icon"><i class="fas fa-book"></i></span><span>Docs</span>
+              </a>
+            </div>
+          </div>
+        </div>
 
         <!-- Features Dropdown -->
         <div class="navbar-item has-dropdown is-hoverable">
