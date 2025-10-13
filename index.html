@@ -51,6 +51,30 @@
       });
     </script>
 
+    <!-- Preload and early load navbar to reduce TTI -->
+    <link rel="preload" as="fetch" href="navbar.html" crossorigin="anonymous">
+    <script defer>
+      (function(){
+        // 提前发起并在解析结束立即渲染 navbar（不再等待 DOMContentLoaded）
+        fetch('navbar.html', { credentials: 'same-origin' })
+          .then(function(r){ return r.text(); })
+          .then(function(html){
+            var placeholder = document.getElementById('navbar-placeholder');
+            if (!placeholder) return;
+            placeholder.innerHTML = html;
+            // 应用当前语言
+            var lang = localStorage.getItem('language');
+            if (typeof detectLanguage === 'function' && (!lang || lang === '')) {
+              lang = detectLanguage();
+            }
+            if (typeof changeLanguage === 'function' && lang) {
+              changeLanguage(lang);
+            }
+          })
+          .catch(function(){ /* 忽略导航加载失败 */ });
+      })();
+    </script>
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KN6JB826X3"></script>
     <script>
@@ -805,8 +829,8 @@
       </section>
 
       <!-- GSAP library for feature animations -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
       
       <!-- GSAP Feature Animation -->
       <script>
@@ -1846,22 +1870,7 @@
     <script src="js/jquery-3.3.1.min.aac102d50b6b0bdc80b9d66626172b4038d46d56b48c0cf54733db831345a75f.js" integrity="sha256-qsEC1QtrC9yAudZmJhcrQDjUbVa0jAz1RzPbgxNFp18="></script>
     <script src="js/app.min.e1f3bdce955d8afb8683e832a6b8de855d0c515ba52328e33c5c9b8cc431e05a.js" integrity="sha256-4fO9zpVdivuGg&#43;gyprjehV0MUVulIyjjPFybjMQx4Fo="></script>
 
-    <script>
-      // --- 动态加载独立导航栏 ---
-      document.addEventListener('DOMContentLoaded', () => {
-        fetch('navbar.html')
-          .then(r => r.text())
-          .then(html => {
-            const placeholder = document.getElementById('navbar-placeholder');
-            if (placeholder) {
-              placeholder.innerHTML = html;
-              // 导航栏加载完成后，重新应用当前语言设置
-              const currentLanguage = localStorage.getItem('language') || detectLanguage();
-              changeLanguage(currentLanguage);
-            }
-          });
-      });
-    </script>
+
   </body>
 </html>
 
