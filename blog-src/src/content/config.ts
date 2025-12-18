@@ -1,18 +1,7 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { docsSchema } from '@astrojs/starlight/schema';
 
-const blogCollection = defineCollection({
-  type: 'content',
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    pubDate: z.date(),
-    author: z.string(),
-    tags: z.array(z.string()).optional(),
-    image: z.string().optional(),
-    draft: z.boolean().optional(),
-  })
-});
-
+// Starlight 会自动管理 docs collection 的 schema
 export const collections = {
-  'blog': blogCollection,
-}; 
+  docs: defineCollection({ schema: docsSchema() }),
+};
