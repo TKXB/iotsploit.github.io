@@ -11,6 +11,12 @@ IoTSploit 是一个强大的 IoT 安全测试工具集，提供协议分析、�
 
 - **[文件混淆器手册](/blog/zh/manual/file-obfuscator/)** - 使用隐写术和加密在图像中隐藏文件的完整指南
 
+:::tip[安全咨询与合作]
+如果你需要**网络安全 / IoT 安全 / 汽车安全（车联网安全）**相关的咨询、方案建议或合作支持，欢迎通过邮箱联系我：
+
+- **Email**: [support@iotsploit.org](mailto:support@iotsploit.org)
+:::
+
 ## 功能特性
 
 ### 🔒 安全测试工具
