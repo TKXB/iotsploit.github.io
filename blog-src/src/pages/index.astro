@@ -13,9 +13,9 @@ const defaultPath = '/blog/zh/';
     <title>IoTSploit Documentation</title>
     <meta http-equiv="refresh" content={`0; url=${defaultPath}`} />
     <link rel="canonical" href={`https://www.iotsploit.org${defaultPath}`} />
-    <script>
+    <script is:inline>
       // 立即跳转到中文文档首页
-      window.location.replace({JSON.stringify(defaultPath)});
+      window.location.replace('/blog/zh/');
     </script>
     <style>
       body {
