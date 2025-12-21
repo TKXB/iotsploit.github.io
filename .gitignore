@@ -28,4 +28,10 @@ yarn-error.log*
 # Build directories
 dist/
 build/
-public/ 
+/public/
+
+# Blog (Astro/Starlight) build output
+blog/
+
+# Astro caches (in case they appear at repo root)
+.astro/
