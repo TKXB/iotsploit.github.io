@@ -10,6 +10,7 @@ IoTSploit is a powerful IoT security testing toolkit providing protocol analysis
 ## Quick Navigation
 
 - **[File Obfuscator Manual](/blog/en/manual/file-obfuscator/)** - Complete guide to hiding files in images using steganography and encryption
+- **[Attack Path Analysis Tutorial](/blog/en/manual/attack-path-app/)** - Configure LLM, pick entry points and an asset, then generate a TARA table with AI
 
 :::tip[Cybersecurity consulting]
 If you’d like **cybersecurity / IoT security / automotive security** consulting, solution advice, or collaboration support, feel free to reach out:

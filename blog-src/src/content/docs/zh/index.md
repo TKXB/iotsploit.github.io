@@ -10,6 +10,7 @@ IoTSploit 是一个强大的 IoT 安全测试工具集，提供协议分析、�
 ## 快速导航
 
 - **[文件混淆器手册](/blog/zh/manual/file-obfuscator/)** - 使用隐写术和加密在图像中隐藏文件的完整指南
+- **[Attack Path Analysis 使用教程](/blog/zh/manual/attack-path-app/)** - 配置 LLM、选择入口点与资产节点，并使用 AI 生成 TARA 结果
 
 :::tip[安全咨询与合作]
 如果你需要 **网络安全 / IoT 安全 / 汽车安全（车联网安全）** 相关的咨询、方案建议或合作支持，欢迎通过邮箱联系我：
