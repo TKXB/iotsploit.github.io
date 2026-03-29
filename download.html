@@ -73,6 +73,25 @@
     </script>
 
     <style>
+      :root {
+        --vsc-bg: #1e1e1e;
+        --vsc-bg-light: #252526;
+        --vsc-bg-lighter: #2d2d2d;
+        --vsc-border: #3e3e42;
+        --vsc-text: #cccccc;
+        --vsc-text-bright: #e7e7e7;
+        --vsc-text-muted: #858585;
+        --vsc-blue: #0078d4;
+        --vsc-blue-hover: #1a8ae8;
+        --vsc-green: #4ec9b0;
+        --vsc-section-alt: #1a1a1a;
+      }
+
+      body.page {
+        background-color: var(--vsc-bg);
+        color: var(--vsc-text);
+      }
+
       .navbar-item img.is-logo {
         max-height: 3rem;
       }
@@ -84,58 +103,80 @@
       }
 
       .buttons .button {
-        width: 120px; /* Set desired fixed width for three buttons */
+        width: 120px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
       }
-      
-      /* Discord purple button styling */
+
       .button.is-discord-purple {
         background-color: #5865F2;
         border-color: #5865F2;
         color: white;
       }
-      
+
       .button.is-discord-purple:hover {
         background-color: #4752C4;
         border-color: #4752C4;
         color: white;
       }
 
-      /* Override button width for download buttons */
-      .download-button {
-        width: auto !important;
-        min-width: 140px;
-        padding: 0.75rem 1.5rem;
-        background: linear-gradient(45deg, #3273dc, #48c78e);
-        border: none;
-        color: white;
-        font-weight: bold;
-        transition: all 0.3s ease;
-      }
-
-      /* Download page specific styles */
+      /* Hero */
       .download-hero {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
+        background: var(--vsc-bg);
+        color: var(--vsc-text-bright);
+        border-bottom: 1px solid var(--vsc-border);
       }
 
+      .download-hero .title,
+      .download-hero .subtitle {
+        color: var(--vsc-text-bright) !important;
+      }
+
+      /* Version badge */
+      .version-badge {
+        background-color: var(--vsc-blue);
+        color: #fff;
+        padding: 0.3rem 0.9rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 1rem;
+        letter-spacing: 0.02em;
+      }
+
+      /* Sections */
+      .section {
+        background-color: var(--vsc-bg);
+      }
+
+      .section.has-background-light {
+        background-color: var(--vsc-section-alt) !important;
+      }
+
+      .section .title,
+      .section .subtitle {
+        color: var(--vsc-text-bright) !important;
+      }
+
+      /* Download cards */
       .download-card {
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
+        border-radius: 8px;
+        background: var(--vsc-bg-light);
+        border: 1px solid var(--vsc-border);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
         height: 100%;
-        border: 1px solid #e1e5e9;
         display: flex;
         flex-direction: column;
+        box-shadow: none;
       }
 
       .download-card .card-content {
         display: flex;
         flex-direction: column;
         height: 100%;
-        padding: 1.5rem;
+        padding: 2rem 1.5rem;
       }
 
       .download-card .card-main-content {
@@ -153,76 +194,90 @@
         margin-top: auto;
       }
 
-      /* Ensure the button container is at the bottom */
       .download-card .buttons {
         margin-top: auto;
         padding-top: 1rem;
       }
 
       .download-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        border-color: var(--vsc-blue);
+        box-shadow: 0 0 0 1px var(--vsc-blue);
+        transform: none;
       }
 
+      .download-card .title,
+      .download-card .subtitle {
+        color: var(--vsc-text-bright) !important;
+      }
+
+      .download-card .subtitle {
+        color: var(--vsc-text-muted) !important;
+      }
+
+      /* Platform icon */
       .platform-icon {
         font-size: 3rem;
         margin-bottom: 1rem;
-        color: #3273dc;
+        color: var(--vsc-text-bright);
       }
 
-      .version-badge {
-        background: linear-gradient(45deg, #48c78e, #00d1b2);
-        color: white;
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.875rem;
-        font-weight: bold;
-        display: inline-block;
-        margin-bottom: 1rem;
+      /* Download button — VS Code style */
+      .download-button {
+        width: auto !important;
+        min-width: 160px;
+        padding: 0.6rem 1.4rem;
+        background-color: var(--vsc-blue);
+        border: none;
+        border-radius: 4px;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: background-color 0.15s ease;
+        box-shadow: none;
       }
 
       .download-button:hover {
-        background: linear-gradient(45deg, #2366d1, #3ec487);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(50, 115, 220, 0.3);
+        background-color: var(--vsc-blue-hover);
+        color: #fff;
+        transform: none;
+        box-shadow: none;
       }
 
-      /* Coming Soon button styles */
+      /* Coming Soon */
       .coming-soon-button {
         width: auto !important;
         min-width: 160px;
-        padding: 0.75rem 1.5rem;
-        background-color: #6c757d !important;
-        border-color: #6c757d !important;
-        color: white !important;
-        font-weight: bold;
+        padding: 0.6rem 1.4rem;
+        background-color: var(--vsc-bg-lighter) !important;
+        border: 1px solid var(--vsc-border) !important;
+        color: var(--vsc-text-muted) !important;
+        font-weight: 600;
         cursor: not-allowed;
-        opacity: 0.8;
+        opacity: 0.7;
+        border-radius: 4px;
       }
 
       .coming-soon-button:hover {
-        background-color: #6c757d !important;
-        border-color: #6c757d !important;
+        background-color: var(--vsc-bg-lighter) !important;
+        border-color: var(--vsc-border) !important;
         transform: none !important;
         box-shadow: none !important;
       }
 
-      .requirements-table {
-        background: #f8f9fa;
-        border-radius: 8px;
-        padding: 1.5rem;
-      }
-
+      /* Feature list */
       .feature-list {
         list-style: none;
         padding: 0;
+        text-align: left;
       }
 
       .feature-list li {
-        padding: 0.5rem 0;
-        border-bottom: 1px solid #e1e5e9;
+        padding: 0.45rem 0;
+        border-bottom: 1px solid var(--vsc-border);
         display: flex;
         align-items: center;
+        color: var(--vsc-text);
+        font-size: 0.9rem;
       }
 
       .feature-list li:last-child {
@@ -230,37 +285,63 @@
       }
 
       .feature-list li i {
-        color: #48c78e;
+        color: var(--vsc-green);
         margin-right: 0.75rem;
         width: 20px;
+        font-size: 0.8rem;
       }
 
+      /* Stats card */
       .stats-card {
         text-align: center;
         padding: 2rem;
-        border-radius: 12px;
-        background: white;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        background: var(--vsc-bg-light);
+        border: 1px solid var(--vsc-border);
+        box-shadow: none;
       }
 
       .stats-number {
         font-size: 2.5rem;
         font-weight: bold;
-        color: #3273dc;
+        color: var(--vsc-blue);
         display: block;
       }
 
       .stats-label {
-        color: #666;
+        color: var(--vsc-text-muted);
         font-size: 0.875rem;
         text-transform: uppercase;
         letter-spacing: 1px;
       }
 
+      /* Misc text */
+      .is-size-7.has-text-grey,
+      p.has-text-grey {
+        color: var(--vsc-text-muted) !important;
+      }
+
+      /* Footer */
+      .footer {
+        background-color: var(--vsc-section-alt);
+        border-top: 1px solid var(--vsc-border);
+        padding: 2rem 1.5rem;
+      }
+
+      .footer .content p,
+      .footer .content a {
+        color: var(--vsc-text-muted);
+      }
+
+      .footer .content a:hover {
+        color: var(--vsc-blue);
+      }
+
+      /* Animations */
       @keyframes fadeInUp {
         from {
           opacity: 0;
-          transform: translateY(30px);
+          transform: translateY(20px);
         }
         to {
           opacity: 1;
@@ -269,7 +350,7 @@
       }
 
       .animate-fade-in {
-        animation: fadeInUp 0.6s ease-out;
+        animation: fadeInUp 0.5s ease-out;
       }
 
       .animate-delay-1 { animation-delay: 0.1s; animation-fill-mode: both; }
@@ -277,11 +358,47 @@
       .animate-delay-3 { animation-delay: 0.3s; animation-fill-mode: both; }
       .animate-delay-4 { animation-delay: 0.4s; animation-fill-mode: both; }
 
-      /* Linux Download Modal styles */
+      /* Linux Download Modal — dark theme */
+      .modal-card {
+        background-color: var(--vsc-bg-light);
+      }
+
+      .modal-card-head {
+        background-color: var(--vsc-bg-lighter);
+        border-bottom: 1px solid var(--vsc-border);
+      }
+
+      .modal-card-title {
+        color: var(--vsc-text-bright);
+      }
+
+      .modal-card-body {
+        background-color: var(--vsc-bg-light);
+        color: var(--vsc-text);
+      }
+
+      .modal-card-foot {
+        background-color: var(--vsc-bg-lighter);
+        border-top: 1px solid var(--vsc-border);
+      }
+
+      .modal-card-foot .button {
+        background-color: var(--vsc-bg-lighter);
+        border-color: var(--vsc-border);
+        color: var(--vsc-text);
+      }
+
+      .modal-card-foot .button:hover {
+        border-color: var(--vsc-text-muted);
+      }
+
       #linuxDownloadModal .card {
         height: 100%;
         display: flex;
         flex-direction: column;
+        background: var(--vsc-bg-lighter);
+        border: 1px solid var(--vsc-border);
+        border-radius: 8px;
       }
 
       #linuxDownloadModal .card-content {
@@ -289,6 +406,14 @@
         flex-direction: column;
         height: 100%;
         min-height: 280px;
+      }
+
+      #linuxDownloadModal .card .title {
+        color: var(--vsc-text-bright);
+      }
+
+      #linuxDownloadModal .card .subtitle {
+        color: var(--vsc-text-muted) !important;
       }
 
       #linuxDownloadModal .card-content .subtitle {
@@ -301,6 +426,32 @@
 
       #linuxDownloadModal .column {
         display: flex;
+      }
+
+      /* Requirements table (dark) */
+      .requirements-table {
+        background: var(--vsc-bg-lighter);
+        border-radius: 8px;
+        padding: 1.5rem;
+        color: var(--vsc-text);
+      }
+
+      /* Scrollbar styling (VS Code feel) */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--vsc-bg);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--vsc-bg-lighter);
+        border-radius: 5px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--vsc-text-muted);
       }
     </style>
   </head>
