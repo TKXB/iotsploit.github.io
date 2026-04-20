@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Disallow: /docs/
+Disallow: /blog-src/
+Disallow: /navbar.html
+
+Sitemap: https://www.iotsploit.org/sitemap.xml
+Sitemap: https://www.iotsploit.org/blog/sitemap-index.xml
