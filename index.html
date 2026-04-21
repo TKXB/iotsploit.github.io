@@ -4,20 +4,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <meta name="generator" content="Hugo 0.120.3">
-    <meta name="description" content="An open-source universal messaging library" />
+    <meta name="description" content="IoTSploit — The Swiss Army Knife for IoT security testing. Modular hardware, plugin-based framework, and protocol fuzzing for UART, JTAG, BLE, and more." />
 
-    <meta property="og:title" content="IoTSploit">
+    <meta property="og:title" content="IoTSploit — IoT Security Testing Toolkit">
     <meta property="og:url" content="https://www.iotsploit.org/">
     <meta property="og:locale" content="en_US">
-    <meta property="og:description" content="An open-source universal messaging library">
+    <meta property="og:description" content="IoTSploit — The Swiss Army Knife for IoT security testing. Modular hardware, plugin-based framework, and protocol fuzzing for UART, JTAG, BLE, and more.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://www.iotsploit.org/images/iotsploit.png">
-    <meta property="og:image:alt" content="IoTSploit project logo">
+    <meta property="og:image:alt" content="IoTSploit — IoT Security Testing Toolkit">
     <meta property="og:image:type" content="image/png">
 
-    <meta name="twitter:card" content="summary">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@iotsploit">
     <meta name="twitter:creator" content="@iotsploit">
+    <meta name="twitter:title" content="IoTSploit — IoT Security Testing Toolkit">
+    <meta name="twitter:description" content="The Swiss Army Knife for IoT security testing. Modular hardware, plugin-based framework, and protocol fuzzing.">
+    <meta name="twitter:image" content="https://www.iotsploit.org/images/iotsploit.png">
 
     <link rel="canonical" href="https://www.iotsploit.org/">
 
@@ -34,9 +37,7 @@
     <meta name="msapplication-TileImage" content="/mstile-144x144.png">
     <meta name="theme-color" content="#9c3838">
 
-    <title>
-      IoTSploit
-    </title>
+    <title>IoTSploit — IoT Security Testing Toolkit</title>
 
     <link rel="stylesheet" href="css/bulma.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -73,6 +74,37 @@
           })
           .catch(function(){ /* 忽略导航加载失败 */ });
       })();
+    </script>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "IoTSploit",
+      "url": "https://www.iotsploit.org",
+      "logo": "https://www.iotsploit.org/images/iotsploit.png",
+      "description": "IoTSploit — The Swiss Army Knife for IoT security testing.",
+      "sameAs": [
+        "https://github.com/TKXB/iotsploit",
+        "https://twitter.com/iotsploit",
+        "https://discord.gg/Hmu7JbQb9z"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "support@iotsploit.org",
+        "contactType": "customer support"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "IoTSploit",
+      "url": "https://www.iotsploit.org",
+      "description": "IoTSploit — The Swiss Army Knife for IoT security testing. Modular hardware, plugin-based framework, and protocol fuzzing for UART, JTAG, BLE, and more."
+    }
     </script>
 
     <!-- Google tag (gtag.js) -->
@@ -614,9 +646,9 @@
         <div class="hero-overlay"></div>
         <div class="hero-body">
           <div class="container">
-            <p class="title is-size-1 is-size-2-mobile is-spaced has-text-white" data-i18n="heroTitle">
+            <h1 class="title is-size-1 is-size-2-mobile is-spaced has-text-white" data-i18n="heroTitle">
               IoTSploit
-            </p>
+            </h1>
             
             <p class="subtitle is-size-2 is-size-3-mobile has-text-weight-light has-text-white" data-i18n="heroSubtitle">
               The Swiss Army Knife in the field of IoT security testing
@@ -643,7 +675,7 @@
       <section class="section">
         <div class="container">
           <div class="content has-text-centered">
-            <h1 class="has-text-primary" data-i18n="whyTitle">Why IoTSploit?</h1>
+            <h2 class="has-text-primary" data-i18n="whyTitle">Why IoTSploit?</h2>
             <p data-i18n="whyDescription">
               IoTSploit is a cybersecurity testing framework that modularizes testing scripts and hardware, enabling security assessments of various IoT devices. It provides a comprehensive suite of tools and features to identify vulnerabilities and ensure the robustness of IoT systems against potential threats.
             </p>
@@ -775,9 +807,9 @@
                   <div class="content">
       
                     
-                    <a href=/community>
+                    <a href="https://discord.gg/Hmu7JbQb9z" target="_blank">
                       <h4 class="title is-size-4 is-size-5-mobile has-text-weight-light has-text-primary" style="margin-bottom: 0.5rem;" data-i18n="communityTitle">
-      
+
                         Community
                       </h4>
                     </a>
@@ -806,9 +838,9 @@
                   <div class="content">
       
                     
-                    <a href=http://zguide.zeromq.org/>
+                    <a href="https://iotsploit-tutorial.readthedocs.io/en/latest/" target="_blank">
                       <h4 class="title is-size-4 is-size-5-mobile has-text-weight-light has-text-primary" style="margin-bottom: 0.5rem;" data-i18n="automationTitle">
-      
+
                         Automation Features
                       </h4>
                     </a>
@@ -1022,7 +1054,7 @@
                   </span>
                   <span data-i18n="commandLine">Command Line</span>
                 </a>
-                <a class="button is-info" href="#">
+                <a class="button is-info" href="download.html">
                   <span class="icon">
                     <i class="fas fa-mobile-alt"></i>
                   </span>
@@ -1856,12 +1888,12 @@
           <p class="has-text-weight-light" data-i18n="copyright">
             &copy; 2024 The IoTSploit authors
           </p>
-          <a style="font-size: 12px" href="community/code-of-conduct.html">
+          <a style="font-size: 12px" href="https://github.com/TKXB/iotsploit" target="_blank">
             <span data-i18n="codeOfConduct">Code of Conduct</span>
           </a>
           |
-          <a style="font-size: 12px" href="https://www.netlify.com">
-            <span data-i18n="poweredBy">This site is powered by github pages.</span>
+          <a style="font-size: 12px" href="https://pages.github.com/" target="_blank">
+            <span data-i18n="poweredBy">This site is powered by GitHub Pages.</span>
           </a>
           |
           <a style="font-size: 12px" href="mailto:support@iotsploit.org">support@iotsploit.org</a>
