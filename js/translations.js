@@ -97,7 +97,6 @@ const translations = {
     copyright: "© 2024 The IoTSploit authors",
     codeOfConduct: "Code of Conduct",
     privacyPolicy: "Privacy Policy",
-    poweredBy: "This site is powered by github pages.",
     
     // Fuzzer Page
     fuzzerTitle: "IoT Protocol Fuzzer",
@@ -290,7 +289,6 @@ const translations = {
     copyright: "© 2024 IoTSploit 作者",
     codeOfConduct: "行为准则",
     privacyPolicy: "隐私政策",
-    poweredBy: "本站由 github pages 提供支持。",
     
     // 模糊器页面
     fuzzerTitle: "物联网协议模糊器",
