@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — IoTSploit</title>
+<meta name="description" content="IoTSploit Privacy Policy — what information we collect, what we don't collect, and how we handle data when you use our website, account system, and IoT security testing tools." />
+
+<meta property="og:title" content="Privacy Policy — IoTSploit">
+<meta property="og:url" content="https://www.iotsploit.org/privacy.html">
+<meta property="og:locale" content="en_US">
+<meta property="og:description" content="How IoTSploit handles personal information. Data-minimization approach: testing data stays under your control.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://www.iotsploit.org/images/iotsploit.png">
+<meta property="og:image:alt" content="IoTSploit — IoT Security Testing Toolkit">
+<meta property="og:image:type" content="image/png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@iotsploit">
+<meta name="twitter:title" content="Privacy Policy — IoTSploit">
+<meta name="twitter:description" content="How IoTSploit handles personal information. Data-minimization approach: testing data stays under your control.">
+<meta name="twitter:image" content="https://www.iotsploit.org/images/iotsploit.png">
+
+<link rel="canonical" href="https://www.iotsploit.org/privacy.html">
+
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #f4f6f9; color: #0f1724; font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    background: rgba(255,255,255,0.97);
+    border-bottom: 1px solid #dde3ed;
+    backdrop-filter: blur(10px);
+    height: 52px;
+    display: flex; align-items: center;
+  }
+  .nav-inner {
+    max-width: 1280px; margin: 0 auto; padding: 0 36px;
+    width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px;
+    color: #0f1724; text-decoration: none; letter-spacing: -0.01em;
+  }
+  .nav-brand span { color: #00adb5; }
+  .nav-links { display: flex; align-items: center; gap: 0; }
+  .nav-links a {
+    font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 500;
+    color: #64748b; padding: 5px 10px; border-radius: 4px;
+    text-decoration: none; transition: color 0.2s; white-space: nowrap;
+  }
+  .nav-links a:hover { color: #0f1724; }
+  .nav-actions { display: flex; gap: 8px; align-items: center; }
+  .btn-gh {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 11px;
+    background: #00adb5; color: #ffffff; border-radius: 4px;
+    padding: 5px 12px; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+
+  /* Layout */
+  .page-wrap {
+    max-width: 1280px; margin: 0 auto; padding: 0 40px;
+    display: grid; grid-template-columns: 220px 1fr; gap: 64px;
+    padding-top: 100px; padding-bottom: 96px;
+  }
+
+  /* Sidebar TOC */
+  .toc {
+    position: sticky; top: 72px; height: fit-content;
+    border-right: 1px solid #dde3ed; padding-right: 32px;
+  }
+  .toc-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 500;
+    color: #00adb5; letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 16px; display: flex; align-items: center; gap: 6px;
+  }
+  .toc-label::before { content: ''; display: inline-block; width: 14px; height: 1px; background: #00adb5; }
+  .toc ul { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+  .toc a {
+    display: block; font-family: 'Inter', sans-serif; font-size: 12px;
+    color: #94a3b8; text-decoration: none; padding: 5px 0 5px 12px;
+    border-left: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    line-height: 1.4;
+  }
+  .toc a:hover, .toc a.active { color: #00adb5; border-left-color: #00adb5; }
+  .toc-meta {
+    margin-top: 28px; padding-top: 20px; border-top: 1px solid #dde3ed;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #94a3b8;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .toc-meta span { display: flex; align-items: center; gap: 6px; }
+  .toc-meta i { color: #00adb5; width: 12px; }
+
+  /* Content */
+  .content-header {
+    padding-bottom: 36px; margin-bottom: 48px;
+    border-bottom: 1px solid #dde3ed;
+  }
+  .section-chip {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 500;
+    color: #00adb5; background: rgba(0,173,181,0.10);
+    padding: 3px 10px; border-radius: 2px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    display: inline-block; margin-bottom: 18px;
+  }
+  .content-header h1 {
+    font-family: 'Space Grotesk', sans-serif; font-size: 42px; font-weight: 700;
+    color: #0f1724; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px;
+  }
+  .content-header p {
+    font-family: 'Inter', sans-serif; font-size: 15px; color: #64748b;
+    line-height: 1.75; max-width: 560px;
+  }
+  .last-updated {
+    margin-top: 16px; display: flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #94a3b8;
+  }
+  .last-updated::before {
+    content: ''; display: inline-block; width: 6px; height: 6px;
+    border-radius: 50%; background: #3ddc84;
+  }
+
+  /* Policy sections */
+  .policy-section {
+    margin-bottom: 56px; scroll-margin-top: 80px;
+  }
+  .policy-section h2 {
+    font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700;
+    color: #0f1724; letter-spacing: -0.02em; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .policy-section h2 .sec-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 500;
+    color: #00adb5; background: rgba(0,173,181,0.10);
+    padding: 2px 7px; border-radius: 2px; letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+  .section-rule {
+    width: 100%; height: 1px; background: #dde3ed; margin-bottom: 20px;
+  }
+  .policy-section p {
+    font-family: 'Inter', sans-serif; font-size: 15px; color: #374151;
+    line-height: 1.8; margin-bottom: 14px; text-wrap: pretty;
+  }
+  .policy-section p:last-child { margin-bottom: 0; }
+  .policy-section ul {
+    list-style: none; display: flex; flex-direction: column; gap: 8px;
+    margin: 12px 0 14px;
+  }
+  .policy-section ul li {
+    font-family: 'Inter', sans-serif; font-size: 15px; color: #374151;
+    padding-left: 18px; position: relative; line-height: 1.7;
+  }
+  .policy-section ul li::before {
+    content: '—'; position: absolute; left: 0;
+    color: #00adb5; font-weight: 600;
+  }
+  .policy-section a { color: #00adb5; text-decoration: none; }
+  .policy-section a:hover { color: #00d4dd; text-decoration: underline; }
+
+  /* Notice box */
+  .notice {
+    background: rgba(0,173,181,0.06); border: 1px solid rgba(0,173,181,0.2);
+    border-left: 3px solid #00adb5; border-radius: 0 4px 4px 0;
+    padding: 14px 18px; margin: 20px 0;
+  }
+  .notice p {
+    font-family: 'Inter', sans-serif; font-size: 14px; color: #374151;
+    line-height: 1.7; margin: 0;
+  }
+  .notice-warn {
+    background: rgba(240,165,0,0.06); border: 1px solid rgba(240,165,0,0.2);
+    border-left: 3px solid #f0a500; border-radius: 0 4px 4px 0;
+  }
+  .notice-warn p { color: #374151; }
+
+  /* Contact card */
+  .contact-card {
+    background: #ffffff; border: 1px solid #dde3ed; border-radius: 4px;
+    padding: 24px; display: flex; align-items: flex-start; gap: 18px;
+    margin-top: 20px;
+  }
+  .contact-icon {
+    width: 38px; height: 38px; border-radius: 4px;
+    background: rgba(0,173,181,0.10); border: 1px solid rgba(0,173,181,0.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: #00adb5; font-size: 14px;
+  }
+  .contact-card h4 {
+    font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700;
+    color: #0f1724; margin-bottom: 4px;
+  }
+  .contact-card p {
+    font-family: 'Inter', sans-serif; font-size: 13px; color: #64748b;
+    line-height: 1.5; margin: 0;
+  }
+  .contact-card a { color: #00adb5; text-decoration: none; }
+  .contact-card a:hover { color: #00d4dd; }
+
+  /* Data table */
+  .data-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  .data-table th {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: #64748b; text-align: left;
+    padding: 8px 12px; background: #f4f6f9;
+    border: 1px solid #dde3ed;
+  }
+  .data-table td {
+    font-family: 'Inter', sans-serif; font-size: 13px; color: #374151;
+    padding: 10px 12px; border: 1px solid #dde3ed; vertical-align: top;
+    line-height: 1.5;
+  }
+  .data-table tr:hover td { background: rgba(0,173,181,0.03); }
+  .tag {
+    display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: #00adb5; background: rgba(0,173,181,0.10);
+    padding: 1px 6px; border-radius: 2px; letter-spacing: 0.05em;
+  }
+  .tag-warn { color: #f0a500; background: rgba(240,165,0,0.10); }
+
+  /* Footer */
+  footer {
+    background: #1a1d27; border-top: 1px solid #2d3347;
+    padding: 40px 0 28px;
+  }
+  .footer-inner {
+    max-width: 1280px; margin: 0 auto; padding: 0 40px;
+  }
+  .footer-bottom {
+    border-top: 1px solid #2d3347; padding-top: 20px; margin-top: 32px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-copy {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #d1d9e6;
+  }
+  .footer-links { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  .footer-links a {
+    font-family: 'Inter', sans-serif; font-size: 11px; color: #d1d9e6;
+    text-decoration: none; transition: color 0.2s;
+  }
+  .footer-links a:hover { color: #94a3b8; }
+  .footer-social { display: flex; gap: 16px; }
+  .footer-social a {
+    color: #d1d9e6; font-size: 15px; text-decoration: none; transition: color 0.2s;
+  }
+  .footer-social a:hover { color: #00adb5; }
+
+  @media (max-width: 900px) {
+    .page-wrap { grid-template-columns: 1fr; gap: 32px; padding-top: 80px; }
+    .toc { position: static; border-right: none; border-bottom: 1px solid #dde3ed; padding-right: 0; padding-bottom: 24px; }
+    .toc ul { flex-direction: row; flex-wrap: wrap; }
+    .toc a { border-left: none; border-bottom: 2px solid transparent; padding: 4px 8px; }
+    .toc a:hover, .toc a.active { border-left: none; border-bottom-color: #00adb5; }
+    .content-header h1 { font-size: 30px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">iot<span>sploit</span></a>
+    <div class="nav-links">
+      <a href="https://iotsploit-tutorial.readthedocs.io/en/latest/" target="_blank" rel="noopener">Documentation</a>
+      <a href="https://discord.gg/Hmu7JbQb9z" target="_blank" rel="noopener">Community</a>
+      <a href="blog/">Blog</a>
+      <a href="download.html">Download</a>
+    </div>
+    <div class="nav-actions">
+      <a href="https://github.com/TKXB/iotsploit" target="_blank" rel="noopener" class="btn-gh">
+        <i class="fab fa-github"></i> GitHub
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE -->
+<div class="page-wrap">
+
+  <!-- SIDEBAR TOC -->
+  <aside class="toc">
+    <div class="toc-label">Contents</div>
+    <ul>
+      <li><a href="#information-we-collect" class="active">Information We Collect</a></li>
+      <li><a href="#not-collected">What We Don't Collect</a></li>
+      <li><a href="#local-data">Local &amp; Self-Hosted</a></li>
+      <li><a href="#how-we-use">How We Use Data</a></li>
+      <li><a href="#cookies">Cookies</a></li>
+      <li><a href="#data-sharing">Data Sharing</a></li>
+      <li><a href="#data-retention">Data Retention</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#user-responsibilities">User Responsibilities</a></li>
+      <li><a href="#your-rights">Your Rights</a></li>
+      <li><a href="#children">Children</a></li>
+      <li><a href="#changes">Changes</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <header class="content-header">
+      <div class="section-chip">Legal</div>
+      <h1>Privacy Policy</h1>
+      <p>IoTSploit respects your privacy. This policy explains what information we collect, what we do not collect, and how we handle data when you use our website, account system, and IoT security testing tools.</p>
+      <div class="last-updated">Last updated April 30, 2026</div>
+    </header>
+
+    <!-- Intro notice -->
+    <div class="notice" style="margin-bottom: 48px;">
+      <p>IoTSploit follows a <strong>data-minimization approach</strong> — we only collect the limited information necessary to provide account access, login verification, security protection, and basic support. Data generated by IoTSploit tools remains under your control.</p>
+    </div>
+
+    <!-- 1. Information We Collect -->
+    <section class="policy-section" id="information-we-collect">
+      <h2><span class="sec-num">01</span> Information We Collect</h2>
+      <div class="section-rule"></div>
+      <p>IoTSploit only collects limited information required for account and service operation.</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Examples</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag">Account</span></td>
+            <td>Username, phone number, login credentials, account status</td>
+            <td>Account creation and access</td>
+          </tr>
+          <tr>
+            <td><span class="tag">Technical</span></td>
+            <td>IP address, browser type, device type, OS, access time, security event logs</td>
+            <td>Security, troubleshooting, abuse prevention</td>
+          </tr>
+          <tr>
+            <td><span class="tag">Communication</span></td>
+            <td>Name or account ID, phone/contact details, support message content</td>
+            <td>Responding to support requests</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-warn">Never</span></td>
+            <td>Scan results, exploit results, target device info, network packet contents, vulnerability reports, payloads, local files</td>
+            <td>Not collected</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 2. Information We Do Not Collect -->
+    <section class="policy-section" id="not-collected">
+      <h2><span class="sec-num">02</span> Information We Do Not Collect</h2>
+      <div class="section-rule"></div>
+      <p>IoTSploit does <strong>not</strong> collect, upload, monitor, sell, or share users' security testing data. Specifically, we do not collect:</p>
+      <ul>
+        <li>IoT device credentials or target device information</li>
+        <li>Network packet contents or scan results</li>
+        <li>Exploit results or vulnerability reports generated by users</li>
+        <li>Payloads used in testing or test environment data</li>
+        <li>Local files from users' devices</li>
+        <li>Sensitive personal information such as race, religion, political opinions, health information, biometric data, or precise location data</li>
+      </ul>
+      <div class="notice">
+        <p>Unless explicitly stated otherwise, data generated by IoTSploit tools remains entirely under the user's control.</p>
+      </div>
+    </section>
+
+    <!-- 3. Local and Self-Hosted -->
+    <section class="policy-section" id="local-data">
+      <h2><span class="sec-num">03</span> Local and Self-Hosted Tool Data</h2>
+      <div class="section-rule"></div>
+      <p>IoTSploit tools may be used in local, private, or self-hosted testing environments. For local or self-hosted use, IoTSploit does not have access to:</p>
+      <ul>
+        <li>Your local test environment or target devices</li>
+        <li>Your scan outputs or test logs</li>
+        <li>Your exploit results or vulnerability analysis data</li>
+      </ul>
+      <p>Users are responsible for managing, protecting, and lawfully using any data generated in their own testing environments.</p>
+    </section>
+
+    <!-- 4. How We Use -->
+    <section class="policy-section" id="how-we-use">
+      <h2><span class="sec-num">04</span> How We Use Information</h2>
+      <div class="section-rule"></div>
+      <p>We use the limited information we collect only for the following purposes:</p>
+      <ul>
+        <li>Creating and managing user accounts</li>
+        <li>Verifying login or account ownership</li>
+        <li>Providing access to IoTSploit services</li>
+        <li>Maintaining website and account security</li>
+        <li>Preventing abuse, unauthorized access, fraud, or attacks</li>
+        <li>Responding to user support requests</li>
+        <li>Improving service stability and reliability</li>
+        <li>Complying with applicable legal obligations</li>
+      </ul>
+      <div class="notice notice-warn">
+        <p>We do <strong>not</strong> sell personal information. We do <strong>not</strong> use user testing data for advertising, profiling, or third-party marketing.</p>
+      </div>
+    </section>
+
+    <!-- 5. Cookies -->
+    <section class="policy-section" id="cookies">
+      <h2><span class="sec-num">05</span> Cookies and Tracking</h2>
+      <div class="section-rule"></div>
+      <p>IoTSploit may use essential cookies or similar technologies for basic website functionality, such as:</p>
+      <ul>
+        <li>Login sessions and account authentication</li>
+        <li>Security protection and service availability</li>
+      </ul>
+      <p>We do <strong>not</strong> use advertising cookies. We do <strong>not</strong> sell tracking data. If analytics tools are introduced in the future, this Privacy Policy will be updated to explain what data is collected and how it is used.</p>
+    </section>
+
+    <!-- 6. Data Sharing -->
+    <section class="policy-section" id="data-sharing">
+      <h2><span class="sec-num">06</span> Data Sharing and Disclosure</h2>
+      <div class="section-rule"></div>
+      <p>IoTSploit does not sell, rent, or trade personal information. We may disclose limited information only in the following situations:</p>
+      <ul>
+        <li>When required by law, regulation, legal process, or government request</li>
+        <li>When necessary to protect the security, rights, or integrity of IoTSploit, our users, or the public</li>
+        <li>To trusted service providers who help operate our website or account system, under appropriate confidentiality and security obligations</li>
+        <li>With your explicit consent</li>
+      </ul>
+      <p>We do not share users' scan results, exploit results, target information, or vulnerability testing data with third parties.</p>
+    </section>
+
+    <!-- 7. Data Retention -->
+    <section class="policy-section" id="data-retention">
+      <h2><span class="sec-num">07</span> Data Retention</h2>
+      <div class="section-rule"></div>
+      <p>We retain personal information only for as long as necessary for the purposes described in this Privacy Policy.</p>
+      <ul>
+        <li><strong>Account information</strong> — retained while the account is active</li>
+        <li><strong>Security logs</strong> — retained for a limited period for abuse prevention and security investigation</li>
+        <li><strong>Support communications</strong> — retained as needed to respond to requests and maintain support history</li>
+      </ul>
+      <p>Users may request deletion of their account information by contacting us.</p>
+    </section>
+
+    <!-- 8. Security -->
+    <section class="policy-section" id="security">
+      <h2><span class="sec-num">08</span> Security</h2>
+      <div class="section-rule"></div>
+      <p>We use reasonable technical and organizational measures to protect the limited personal information we collect. These measures may include:</p>
+      <ul>
+        <li>Access control and secure credential storage</li>
+        <li>Encryption in transit where applicable</li>
+        <li>Security logging and abuse detection</li>
+        <li>Data minimization and regular review of security practices</li>
+      </ul>
+      <p>However, no internet-based service or software system can be guaranteed to be completely secure. Users are responsible for protecting their own accounts, passwords, devices, test environments, and authorization scope.</p>
+    </section>
+
+    <!-- 9. User Responsibilities -->
+    <section class="policy-section" id="user-responsibilities">
+      <h2><span class="sec-num">09</span> User Responsibilities</h2>
+      <div class="section-rule"></div>
+      <p>IoTSploit is intended only for lawful and authorized security testing. Users are responsible for ensuring that they have proper permission before using IoTSploit tools against any device, system, network, firmware, or application.</p>
+      <div class="notice notice-warn">
+        <p>IoTSploit is not responsible for unauthorized, illegal, or improper use of its tools.</p>
+      </div>
+    </section>
+
+    <!-- 10. Your Rights -->
+    <section class="policy-section" id="your-rights">
+      <h2><span class="sec-num">10</span> Your Rights</h2>
+      <div class="section-rule"></div>
+      <p>Depending on your location and applicable law, you may have the right to:</p>
+      <ul>
+        <li>Access your personal information</li>
+        <li>Correct inaccurate information</li>
+        <li>Request deletion of your personal information</li>
+        <li>Withdraw consent where processing is based on consent</li>
+        <li>Object to or restrict certain processing</li>
+        <li>Request information about how your data is used</li>
+      </ul>
+      <p>To exercise these rights, please contact us using the contact information below.</p>
+    </section>
+
+    <!-- 11. Children -->
+    <section class="policy-section" id="children">
+      <h2><span class="sec-num">11</span> Children's Privacy</h2>
+      <div class="section-rule"></div>
+      <p>IoTSploit is not intended for children. We do not knowingly collect personal information from children. If you believe that a child has provided personal information to us, please contact us and we will take appropriate action.</p>
+    </section>
+
+    <!-- 12. Changes -->
+    <section class="policy-section" id="changes">
+      <h2><span class="sec-num">12</span> Changes to This Policy</h2>
+      <div class="section-rule"></div>
+      <p>We may update this Privacy Policy from time to time. When we make changes, we will update the "Last Updated" date at the top of this page. Significant changes may be communicated through the website or other appropriate means.</p>
+    </section>
+
+    <!-- 13. Contact -->
+    <section class="policy-section" id="contact">
+      <h2><span class="sec-num">13</span> Contact Us</h2>
+      <div class="section-rule"></div>
+      <p>If you have any questions about this Privacy Policy or how IoTSploit handles personal information, please contact us:</p>
+      <div class="contact-card">
+        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+        <div>
+          <h4>The IoTSploit Authors</h4>
+          <p>
+            Website: <a href="https://www.iotsploit.org" target="_blank" rel="noopener">iotsploit.org</a><br>
+            Email: <a href="mailto:support@iotsploit.org">support@iotsploit.org</a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom">
+      <div class="footer-links">
+        <span class="footer-copy">&copy; 2024 The IoTSploit authors</span>
+        <a href="index.html">Home</a>
+        <a href="https://github.com/TKXB/iotsploit" target="_blank" rel="noopener">Code of Conduct</a>
+        <a href="mailto:support@iotsploit.org">support@iotsploit.org</a>
+      </div>
+      <div class="footer-social">
+        <a href="https://github.com/TKXB/iotsploit" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://twitter.com/" target="_blank" rel="noopener" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="https://discord.gg/Hmu7JbQb9z" target="_blank" rel="noopener" aria-label="Discord"><i class="fab fa-discord"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* Active TOC highlight on scroll */
+  const sections = document.querySelectorAll('.policy-section');
+  const links = document.querySelectorAll('.toc a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.toc a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
