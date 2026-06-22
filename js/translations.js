@@ -160,7 +160,7 @@ const translations = {
     
     // Mobile
     mobileTitle: "Mobile Apps",
-    mobileDesc: "Control IoTSploit from your mobile device",
+    mobileDesc: "Standalone toolkit for offline security testing on the go. Includes file obfuscation, ECC key generation, port scanning, and SSH client — all running locally on your Android device without requiring a server connection.",
     iosApp: "iOS App",
     androidApp: "Android App",
     
@@ -352,7 +352,7 @@ const translations = {
     
     // 移动端
     mobileTitle: "移动应用",
-    mobileDesc: "从移动设备控制 IoTSploit",
+    mobileDesc: "独立离线安全测试工具包。包含文件隐写加密、ECC 密钥生成、端口扫描和 SSH 客户端 — 全部在 Android 设备上本地运行，无需服务器连接。",
     iosApp: "iOS 应用",
     androidApp: "Android 应用",
     
