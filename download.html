@@ -291,6 +291,159 @@
         box-shadow: none !important;
       }
 
+      /* Mobile app cards (horizontal) */
+      .mobile-cards {
+        max-width: 880px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.125rem;
+      }
+
+      .mobile-card {
+        background: var(--vsc-bg-light);
+        border: 1px solid var(--vsc-border);
+        border-radius: 8px;
+        padding: 1.5rem 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        transition: border-color 0.2s ease;
+      }
+
+      .mobile-card:hover {
+        border-color: var(--vsc-blue);
+      }
+
+      .mobile-app-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+      }
+
+      .mobile-app-icon.is-android {
+        background: rgba(61, 220, 132, 0.12);
+        color: #3ddc84;
+      }
+
+      .mobile-app-icon.is-apple {
+        background: var(--vsc-bg-lighter);
+        border: 1px solid var(--vsc-border);
+        color: var(--vsc-text-muted);
+      }
+
+      .mobile-card-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .mobile-card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--vsc-text-bright);
+        margin-bottom: 0.25rem;
+      }
+
+      .mobile-card-desc {
+        font-size: 0.875rem;
+        color: var(--vsc-text-muted);
+        margin: 0;
+      }
+
+      /* Google Play badge button */
+      .gplay-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        background: #000;
+        border: 1px solid var(--vsc-border);
+        border-radius: 7px;
+        padding: 0.55rem 1.25rem 0.55rem 1rem;
+        text-decoration: none;
+        transition: border-color 0.2s ease;
+        flex-shrink: 0;
+      }
+
+      .gplay-badge:hover {
+        border-color: #3ddc84;
+      }
+
+      .gplay-badge i {
+        color: #fff;
+        font-size: 1.25rem;
+      }
+
+      .gplay-badge-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+        text-align: left;
+      }
+
+      .gplay-badge-top {
+        font-size: 0.5625rem;
+        color: #cfd6e0;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .gplay-badge-name {
+        font-size: 0.9375rem;
+        font-weight: 700;
+        color: #fff;
+      }
+
+      /* QR code */
+      .app-qr {
+        display: block;
+        background: #fff;
+        border: 1px solid var(--vsc-border);
+        padding: 8px;
+        border-radius: 8px;
+        line-height: 0;
+        flex-shrink: 0;
+      }
+
+      .app-qr img {
+        display: block;
+        width: 76px;
+        height: 76px;
+      }
+
+      /* Coming Soon pill badge */
+      .coming-soon-badge {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #b97e00;
+        background: rgba(240, 165, 0, 0.1);
+        border: 1px solid rgba(240, 165, 0, 0.25);
+        padding: 0.35rem 0.75rem;
+        border-radius: 4px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      @media screen and (max-width: 640px) {
+        .mobile-card {
+          flex-wrap: wrap;
+          justify-content: center;
+          text-align: center;
+          padding: 1.5rem;
+        }
+
+        .mobile-card-info {
+          flex-basis: 100%;
+          text-align: center;
+        }
+      }
+
       /* Feature list */
       .feature-list {
         list-style: none;
@@ -612,44 +765,37 @@
         <div class="container">
           <h2 class="title is-size-2 has-text-centered mb-6" data-i18n="mobileTitle">Mobile Apps</h2>
           <p class="subtitle has-text-centered mb-6" data-i18n="mobileDesc">Control IoTSploit from your mobile device</p>
-          <div class="columns is-centered">
-            <div class="column is-4">
-              <div class="card download-card animate-fade-in animate-delay-1">
-                <div class="card-content has-text-centered">
-                  <div class="platform-icon">
-                    <i class="fab fa-apple"></i>
-                  </div>
-                  <h3 class="title is-size-4" data-i18n="iosApp">iOS App</h3>
-                  <p class="subtitle is-size-6 mb-4">iOS 13.0 or later</p>
-                  <div class="buttons is-centered">
-                    <a class="button coming-soon-button is-medium" disabled>
-                      <span class="icon">
-                        <i class="fas fa-clock"></i>
-                      </span>
-                      <span data-i18n="comingSoon">Coming Soon</span>
-                    </a>
-                  </div>
-                </div>
+          <div class="mobile-cards">
+            <!-- Android — available on Google Play -->
+            <div class="mobile-card animate-fade-in animate-delay-1">
+              <div class="mobile-app-icon is-android">
+                <i class="fab fa-android"></i>
               </div>
+              <div class="mobile-card-info">
+                <h3 class="mobile-card-title" data-i18n="androidApp">Android App</h3>
+                <p class="mobile-card-desc" data-i18n="androidAppDesc">Now available on Google Play</p>
+              </div>
+              <a class="gplay-badge" href="https://play.google.com/store/apps/details?id=org.iotsploit.app.toolkit" target="_blank" rel="noopener">
+                <i class="fab fa-google-play"></i>
+                <span class="gplay-badge-text">
+                  <span class="gplay-badge-top" data-i18n="getItOn">Get it on</span>
+                  <span class="gplay-badge-name">Google Play</span>
+                </span>
+              </a>
+              <a class="app-qr" href="https://play.google.com/store/apps/details?id=org.iotsploit.app.toolkit" target="_blank" rel="noopener" title="Scan to install">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&qzone=0&color=1e2430&bgcolor=ffffff&data=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.iotsploit.app.toolkit" alt="Scan to download IoTSploit on Google Play" width="76" height="76">
+              </a>
             </div>
-            <div class="column is-4">
-              <div class="card download-card animate-fade-in animate-delay-2">
-                <div class="card-content has-text-centered">
-                  <div class="platform-icon">
-                    <i class="fab fa-android"></i>
-                  </div>
-                  <h3 class="title is-size-4" data-i18n="androidApp">Android App</h3>
-                  <p class="subtitle is-size-6 mb-4">Android 7.0 or later</p>
-                  <div class="buttons is-centered">
-                    <a class="button coming-soon-button is-medium" disabled>
-                      <span class="icon">
-                        <i class="fas fa-clock"></i>
-                      </span>
-                      <span data-i18n="comingSoon">Coming Soon</span>
-                    </a>
-                  </div>
-                </div>
+            <!-- iOS — coming soon -->
+            <div class="mobile-card animate-fade-in animate-delay-2">
+              <div class="mobile-app-icon is-apple">
+                <i class="fab fa-apple"></i>
               </div>
+              <div class="mobile-card-info">
+                <h3 class="mobile-card-title" data-i18n="iosApp">iOS App</h3>
+                <p class="mobile-card-desc" data-i18n="iosAppDesc">Requires iOS 13.0 or later</p>
+              </div>
+              <span class="coming-soon-badge" data-i18n="comingSoon">Coming Soon</span>
             </div>
           </div>
         </div>

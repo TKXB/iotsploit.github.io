@@ -162,7 +162,10 @@ const translations = {
     mobileTitle: "Mobile Apps",
     mobileDesc: "Standalone toolkit for offline security testing on the go. Includes file obfuscation, ECC key generation, port scanning, and SSH client — all running locally on your Android device without requiring a server connection.",
     iosApp: "iOS App",
+    iosAppDesc: "Requires iOS 13.0 or later",
     androidApp: "Android App",
+    androidAppDesc: "Now available on Google Play",
+    getItOn: "Get it on",
     
     // Web Source
     webSourceTitle: "Web Source Downloads",
@@ -354,7 +357,10 @@ const translations = {
     mobileTitle: "移动应用",
     mobileDesc: "独立离线安全测试工具包。包含文件隐写加密、ECC 密钥生成、端口扫描和 SSH 客户端 — 全部在 Android 设备上本地运行，无需服务器连接。",
     iosApp: "iOS 应用",
+    iosAppDesc: "需要 iOS 13.0 或更高版本",
     androidApp: "Android 应用",
+    androidAppDesc: "现已上架 Google Play",
+    getItOn: "下载渠道",
     
     // Web 源码
     webSourceTitle: "Web 源码下载",
