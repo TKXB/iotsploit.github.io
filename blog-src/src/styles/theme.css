@@ -1,0 +1,149 @@
+/* ============================================================
+   IoTSploit — "Terminal Blue" Starlight theme
+   Dark-default, near-black background, brand-blue accents.
+   Palette mirrors the app design system (ui/lib/constants.dart):
+     primary   #0052D9   secondary #3377FF   deep     #004FEE
+     focus     #A5C7FE   info/cyan #0096D1   success  #34D399
+     warning   #FFC107   error     #DC3545
+     text 1/2/3 #181818 / #4B5B76 / #97A3B7
+     surfaces  #FFFFFF / #F2F4F8   borders #E6E9EF / #D6DBE3
+     mono      Source Code Pro
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap');
+
+/* ---------- Fonts ---------- */
+:root {
+  --sl-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif;
+  --sl-font-mono: 'Source Code Pro', 'SF Mono', Menlo, Consolas,
+    'Roboto Mono', monospace;
+}
+
+/* ============================================================
+   DARK THEME (default) — GitHub-dark near-black + brand blue
+   ============================================================ */
+:root,
+:root[data-theme='dark'] {
+  /* Brand-blue accent ramp (tuned for contrast on near-black) */
+  --sl-color-accent-low: #10233f;  /* selected-item background */
+  --sl-color-accent: #3377ff;      /* secondary blue — buttons/borders */
+  --sl-color-accent-high: #9cc0ff; /* bright link text */
+
+  /* Grayscale — near-black GitHub-dark surface stack */
+  --sl-color-white: #f0f6fc; /* strongest text */
+  --sl-color-gray-1: #e6edf3;
+  --sl-color-gray-2: #b1bac4;
+  --sl-color-gray-3: #6e7681;
+  --sl-color-gray-4: #30363d;
+  --sl-color-gray-5: #21262d;
+  --sl-color-gray-6: #161b22;
+  --sl-color-black: #0d1117; /* page background */
+
+  --sl-color-text-accent: var(--sl-color-accent-high);
+
+  /* Brand tokens */
+  --iot-brand: #3377ff;
+  --iot-info: #0096d1;
+  --iot-success: #34d399;
+  --iot-warning: #ffc107;
+  --iot-error: #dc3545;
+}
+
+/* ============================================================
+   LIGHT THEME (optional, via toggle) — app light design system
+   ============================================================ */
+:root[data-theme='light'] {
+  --sl-color-accent-low: #dbe7ff;
+  --sl-color-accent: #0052d9;      /* primary blue */
+  --sl-color-accent-high: #003ba6; /* deep blue text */
+
+  --sl-color-white: #181818;       /* text primary */
+  --sl-color-gray-1: #26313f;
+  --sl-color-gray-2: #4b5b76;      /* text secondary */
+  --sl-color-gray-3: #97a3b7;      /* text disabled */
+  --sl-color-gray-4: #d6dbe3;      /* border medium */
+  --sl-color-gray-5: #e6e9ef;      /* border */
+  --sl-color-gray-6: #f2f4f8;      /* light background */
+  --sl-color-gray-7: #f3f5f8;
+  --sl-color-black: #ffffff;       /* page background */
+
+  --sl-color-text-accent: var(--sl-color-accent);
+}
+
+/* ---------- Site header: subtle brand underglow ---------- */
+.header {
+  border-bottom: 1px solid var(--sl-color-gray-5);
+  background-color: color-mix(in srgb, var(--sl-color-black) 88%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.site-title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Active sidebar item: blue pill ---------- */
+.sidebar-content a[aria-current='page'],
+.sidebar-content a[aria-current='page']:hover {
+  color: var(--sl-color-accent-high);
+  background-color: var(--sl-color-accent-low);
+  font-weight: 600;
+}
+
+/* ---------- Inline code: blue-tinted chip ---------- */
+.sl-markdown-content
+  code:not(:where(.not-content *)):not(pre code) {
+  background-color: var(--sl-color-accent-low);
+  color: var(--sl-color-accent-high);
+  border: 1px solid color-mix(in srgb, var(--sl-color-accent) 30%, transparent);
+  border-radius: 5px;
+  padding: 0.15em 0.4em;
+  font-size: 0.9em;
+}
+
+:root[data-theme='light']
+  .sl-markdown-content
+  code:not(:where(.not-content *)):not(pre code) {
+  color: var(--sl-color-accent);
+}
+
+/* ============================================================
+   Code blocks are rendered by Expressive Code (see astro.config).
+   Its native terminal frame carries the terminal motif; we only
+   deepen the shadow here.
+   ============================================================ */
+.sl-markdown-content .expressive-code .frame {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- Headings: mono-flavored, tighter tracking ---------- */
+.sl-markdown-content :is(h1, h2) {
+  letter-spacing: -0.02em;
+}
+
+/* h2 gets a small blue marker — nod to a shell prompt */
+.sl-markdown-content h2::before {
+  content: '# ';
+  color: var(--sl-color-accent);
+  font-family: var(--sl-font-mono);
+  font-weight: 600;
+}
+
+/* ---------- Blockquotes: brand left rail ---------- */
+.sl-markdown-content blockquote {
+  border-inline-start: 3px solid var(--sl-color-accent);
+}
+
+/* ---------- Hero (landing splash pages) ---------- */
+.hero > .stack .actions a.primary {
+  background: var(--sl-color-accent);
+  border-color: var(--sl-color-accent);
+  color: #ffffff;
+}
+
+/* ---------- Focus ring in brand focus-blue ---------- */
+:focus-visible {
+  outline: 2px solid #a5c7fe;
+  outline-offset: 2px;
+}

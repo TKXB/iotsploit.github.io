@@ -19,6 +19,30 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'IoTSploit',
+      // 品牌 Logo（与主站导航栏一致）
+      logo: {
+        src: './src/assets/iotsploit.svg',
+        alt: 'IoTSploit',
+      },
+      // 站点图标
+      favicon: '/favicon.svg',
+      // 代码块（Expressive Code）：暗色 + 终端等宽字体 + 品牌绿点
+      expressiveCode: {
+        themes: ['github-dark'],
+        styleOverrides: {
+          borderRadius: '10px',
+          codeFontFamily:
+            "'Source Code Pro', 'SF Mono', Menlo, Consolas, monospace",
+          frames: {
+            terminalTitlebarDotsForeground: '#3377ff',
+            terminalTitlebarBackground: '#161b22',
+            terminalTitlebarBorderBottom: '#30363d',
+            terminalBackground: '#0b0f14',
+            editorTabBarBackground: '#161b22',
+            editorBackground: '#0b0f14',
+          },
+        },
+      },
       // 多语言配置：zh 和 en 都带前缀
       locales: {
         zh: {
@@ -53,8 +77,16 @@ export default defineConfig({
           ],
         },
       ],
-      // 自定义 CSS（可选）
-      customCss: [],
+      // 自定义 CSS：Terminal Green 主题
+      customCss: ['./src/styles/theme.css'],
+      // 暗色为默认主题（未手动选择过则强制 dark；切换后仍保留用户选择）
+      head: [
+        {
+          tag: 'script',
+          content:
+            "try{if(!localStorage.getItem('starlight-theme')){localStorage.setItem('starlight-theme','dark');document.documentElement.dataset.theme='dark';}}catch(e){document.documentElement.dataset.theme='dark';}",
+        },
+      ],
       // 禁用搜索（可选，如需要可启用）
       // pagefind: false,
     }),
