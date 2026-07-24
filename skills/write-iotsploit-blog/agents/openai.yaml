@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write IoTSploit Blog"
+  short_description: "Draft clear, evidence-based IoTSploit articles"
+  default_prompt: "Use $write-iotsploit-blog to draft a bilingual IoTSploit application article from my notes."
