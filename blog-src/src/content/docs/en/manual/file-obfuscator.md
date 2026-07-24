@@ -1,324 +1,151 @@
 ---
-title: File Obfuscator User Manual
-description: Complete guide to hiding files in images using steganography and encryption in the iotsploit client.
+title: File Obfuscator user manual
+description: Hide a file inside an image, recover it with a password, and understand the format's security and transfer limits.
 ---
 
-## Table of Contents
-1. [Overview](#overview)
-2. [How It Works](#how-it-works)
-3. [Features](#features)
-4. [Usage Guide](#usage-guide)
-5. [Security Features](#security-features)
-6. [Troubleshooting](#troubleshooting)
-7. [Examples](#examples)
-8. [Best Practices](#best-practices)
+The File Obfuscator packages one file with an image so that the image remains viewable while IoTSploit can recover the attached file. The tool runs its primary hide and extract operations on the device and is available in the offline application flavor.
 
-## Overview
+This is a convenience format for controlled use, not a replacement for a vetted encrypted archive or secure file-sharing service. The current implementation appends data to the image rather than hiding data inside image pixels. File inspection tools can find the appended ZIP data.
 
-File Obfuscation is a feature in **iotsploit client** that combines steganography and encryption to hide files within images. It provides a secure way to conceal sensitive documents, messages, or any digital content within seemingly innocent image files, effectively bypassing regulatory monitoring and content filtering systems.
-
-**Location**: In **iotsploit client**, the File Obfuscation tool is available in the **Toolkit** section under the "File Obfuscation" card.
-
-![Tool Screenshot](/images/file_obfucation.png)
-
-### What is Steganography?
-Steganography is the practice of concealing information within other non-secret data or a physical object. In our case, we hide files within images in a way that is invisible to the human eye and difficult to detect without the proper tools.
-
-### What is File Obfuscation?
-File obfuscation involves making files unreadable or unrecognizable to unauthorized users while maintaining their original functionality for authorized users.
-
-### Regulatory Bypass Benefits
-By embedding files within images, this tool provides an effective method to bypass regulatory monitoring systems:
-- **Content Filtering Evasion**: Image files are typically not subject to the same content scanning as document files
-- **Network Monitoring Avoidance**: Image transfers often pass through monitoring systems without triggering alerts
-- **Platform Restrictions Bypass**: Many platforms allow image sharing while restricting document uploads
-- **Stealth Communication**: Enables secure file transmission that appears as normal image sharing
-
-## How It Works
-
-The File Obfuscator uses a multi-layered approach to securely hide files:
-
-### 1. Encryption Layer
-- **AES-256 Encryption**: Industry-standard encryption algorithm
-- **Salt Generation**: Random 16-byte salt for each operation
-- **IV (Initialization Vector)**: Random 16-byte IV for each encryption
-- **Key Derivation**: PBKDF2-like key derivation using HMAC-SHA256
-
-### 2. Compression Layer
-- **ZIP Archive**: Compresses encrypted data for efficient storage
-- **Metadata Storage**: Stores file information and encryption parameters
-- **File Organization**: Structured archive with encrypted file and metadata
-
-### 3. Steganography Layer
-- **Image Carrier**: Uses your selected image as the carrier
-- **Data Appending**: Appends the encrypted archive to the image data
-- **Seamless Integration**: The image remains visually identical
-
-## Features
-
-### 🔒 **Advanced Security**
-- AES-256 encryption with CBC mode
-- Unique salt and IV for each operation
-- Strong password-based key derivation
-- Tamper-resistant metadata storage
-
-### 🖼️ **Image Compatibility**
-- Supports all common image formats
-- Maintains original image quality
-- No visible changes to the carrier image
-- Efficient data embedding
-
-### 📦 **Smart Compression**
-- ZIP compression for optimal storage
-- Metadata preservation
-- Fast compression and decompression
-- Cross-platform compatibility
-
-### 🔑 **Password Protection**
-- User-defined passwords
-- Salt-based key derivation
-- No password storage in the system
-- Secure key generation
-
-### 🚫 **Regulatory Bypass**
-- Bypasses content filtering systems
-- Evades network monitoring
-- Overcomes platform restrictions
-- Enables stealth file transmission
-
-## Usage Guide
-
-### How to Find the File Obfuscator Tool
-
-The File Obfuscator tool is located in the **Toolkit** section of your Flutter application:
-
-1. **Launch the Application**
-   - Open your Flutter application
-   - Look for the main navigation menu
-
-2. **Navigate to Toolkit**
-   - Find and click on the "Toolkit" menu item
-   - This will take you to the tools overview page
-
-3. **Locate File Obfuscation**
-   - Look for the "File Obfuscation" card
-   - It displays the description: "Hide files in images using steganography and encryption"
-   - The card has a distinctive icon representing file obfuscation
-
-4. **Access the Tool**
-   - Click on the "File Obfuscation" card
-   - This will open the File Obfuscator interface
-
-### Prerequisites
-- Flutter GUI application with the File Obfuscator tool
-- Image file to use as carrier
-- File to hide
-- Strong password for encryption
-
-### Step 1: Hiding Files
-
-1. **Open the File Obfuscator Tool**
-   - Launch your Flutter application
-   - Navigate to the **Toolkit** section
-   - Click on the "File Obfuscation" card
-   - Select "Hide File" option from the tool interface
-
-2. **Select Your Files**
-   - Choose the file you want to hide
-   - Select the image to use as carrier
-   - Enter a strong password for encryption
-
-3. **Configure Settings**
-   - Verify file and image selections
-   - Check encryption settings
-   - Confirm output location
-
-4. **Execute the Process**
-   - Click the "Hide File" button
-   - Wait for the process to complete
-   - Save the resulting obfuscated image
-
-### Step 2: Extracting Files
-
-1. **Open the Extraction Tool**
-   - Navigate to the **Toolkit** section
-   - Click on the "File Obfuscation" card
-   - Select "Extract File" option from the tool interface
-
-2. **Load the Obfuscated Image**
-   - Select the image containing hidden data
-   - Enter the password used for encryption
-
-3. **Extract the File**
-   - Click the "Extract File" button
-   - Wait for the decryption process
-   - Choose where to save the extracted file
-
-4. **Verify Results**
-   - Check that the file was extracted correctly
-   - Verify original filename is preserved
-   - Ensure file integrity is maintained
-
-:::caution[Important Warning]
-If the obfuscated image is compressed or modified by chat applications (WeChat, WhatsApp, Telegram, etc.), file extraction may fail. Always use the original obfuscated image file for extraction.
+:::caution[Use only with authorization]
+Use File Obfuscator only with files you own or are authorized to handle. Do not use it to evade security controls, conceal malicious content, or bypass an organization's data-handling rules.
 :::
 
-## Security Features
+## Open the tool
 
-### Encryption Details
+In the IoTSploit application:
 
-- **Algorithm**: AES-256 with CBC mode
-- **Key Size**: 256 bits (32 bytes)
-- **Salt**: 16 bytes random salt per operation
-- **IV**: 16 bytes random IV per encryption
-- **Key Derivation**: HMAC-SHA256 with salt
+1. Open **Toolkit**.
+2. Select **File Obfuscation**.
+3. Choose the **Hide Files** or **Extract Files** tab.
 
-### Security Benefits
-- **Confidentiality**: Files are encrypted and unreadable without the password
-- **Integrity**: Tampering with the image will corrupt the hidden data
-- **Authentication**: Only users with the correct password can access files
-- **Non-repudiation**: Each operation uses unique encryption parameters
+![File Obfuscation screen showing the file, carrier image, and password steps](/blog/images/file_obfucation.png)
 
-### Threat Protection
-- **Brute Force**: Strong encryption makes password guessing extremely difficult
-- **Known Plaintext**: Salt and IV prevent pattern analysis
-- **Side Channel**: No timing or memory leaks in implementation
-- **Data Recovery**: Corrupted images cannot be used to recover hidden files
-- **Regulatory Detection**: Steganography techniques make detection extremely difficult
-- **Content Analysis**: Bypasses automatic content scanning and filtering systems
+## Before you start
+
+To hide a file, prepare:
+
+- one file to package;
+- one carrier image accepted by your platform's image picker;
+- a password you can store safely;
+- enough free memory for the input file, carrier image, and generated output.
+
+IoTSploit reads both inputs into memory. Large files or images may fail on devices with limited memory. The generated image is also larger than the original carrier because it contains the original image bytes plus an appended ZIP payload.
+
+The password is required for extraction. IoTSploit does not provide password recovery.
+
+## Hide a file in an image
+
+1. Open the **Hide Files** tab.
+2. Under **Select File to Hide**, click **Select File** and choose the file to package.
+3. Under **Select Carrier Image**, click **Select Image** and choose the carrier.
+4. Under **Set Password**, enter the password that will be required during extraction.
+5. Click **Process Obfuscation**.
+
+On the web, the browser downloads a file named `obfuscated_<carrier-name>`. On other supported platforms, IoTSploit opens a save dialog with the same suggested name.
+
+Keep the result as a file. Services that resize, optimize, or re-encode the image can remove the appended payload even when the visible image still looks unchanged.
+
+### Optional server upload
+
+After a successful operation, non-offline builds may show **Upload to Server**. This sends the generated file to the server configured in the application and returns a download URL.
+
+Uploading is separate from local obfuscation. Before using it, confirm that the configured server is trusted and that uploading the selected content complies with your organization's rules. The offline build does not show this option.
+
+## Extract the original file
+
+1. Open the **Extract Files** tab.
+2. Under **Select Obfuscated Image**, click **Select Image** and choose a file created by File Obfuscator.
+3. Under **Enter Decryption Password**, enter the original password.
+4. Click **Extract File**.
+5. Save the recovered file when prompted.
+
+IoTSploit reads the original filename from the embedded metadata and uses it as the suggested output name.
+
+The web application first attempts extraction in the browser. If that attempt fails, a configured build may try its server extraction endpoint. Non-web builds do not use that server fallback.
+
+## How the file format works
+
+The implementation performs these steps:
+
+1. Derive a 32-byte key from the password and a 16-byte salt using HMAC-SHA-256.
+2. Encrypt the selected file with AES in CBC mode.
+3. Store the encrypted bytes and `metadata.json` in a ZIP archive. The metadata contains the original filename, salt, and creation time.
+4. Append the ZIP bytes to the unmodified carrier-image bytes.
+
+During extraction, IoTSploit searches for the ZIP header, reads the metadata and encrypted file, derives the same key from the password, and decrypts the content.
+
+The carrier is usually still viewable because many image decoders ignore trailing bytes. This behavior depends on the decoder and file format; it is not a guarantee that every image tool will preserve or accept the output.
+
+## Security limits
+
+Understand these limits before relying on the output:
+
+- **The payload is discoverable.** A ZIP signature and appended data can be identified by file-analysis tools.
+- **The container is not authenticated.** AES-CBC in this implementation does not include a message authentication code, so the format does not provide a reliable tamper check.
+- **Password hardening is limited.** The current key derivation is a single HMAC-SHA-256 operation, not PBKDF2, scrypt, or Argon2. A weak password is easier to guess offline.
+- **Randomness is not cryptographically strong throughout the current implementation.** Do not treat the format as a reviewed cryptographic storage system.
+- **Metadata is not encrypted.** The ZIP entry `metadata.json` contains the original filename and creation time in readable form.
+- **The visible image is not proof of recovery.** An image can still open after its appended data has been removed or corrupted.
+
+For sensitive material, use an authenticated encryption format maintained for secure storage or transfer. File Obfuscator is better suited to demonstrations, format experiments, and controlled workflows where its limitations are understood.
+
+## Transfer the generated image without breaking it
+
+The output must arrive byte for byte. Use a transfer method that preserves the file as an attachment or archive.
+
+Before deleting the original output:
+
+1. transfer the file;
+2. compare its byte size or cryptographic hash at both ends;
+3. run an extraction test with the intended recipient;
+4. keep a separate backup of the original file.
+
+Do not paste the image into a chat composer or photo editor. Many applications decode and save a new image, which discards the appended ZIP payload. Sending as a document may preserve the bytes, but verify the received file rather than assuming it did.
 
 ## Troubleshooting
 
-### Common Issues and Solutions
+### "Please select both a file to hide and a carrier image"
 
-#### 1. "Failed to create ZIP archive"
-**Cause**: Memory issues or corrupted input data
-**Solution**:
-- Ensure sufficient memory is available
-- Verify input file integrity
-- Check file size limits
+Both inputs must be selected before **Process Obfuscation** is available. Re-select either input if its name no longer appears in the form.
 
-#### 2. "No hidden file found in image"
-**Cause**: Image doesn't contain hidden data or is corrupted
-**Solution**:
-- Verify the image contains hidden data
-- Check if image was modified after hiding
-- Ensure you're using the correct image file
+### "Please enter a password for encryption"
 
-#### 3. "Metadata file not found in hidden data"
-**Cause**: Corrupted or incomplete hidden data
-**Solution**:
-- Verify image wasn't truncated
-- Check for file corruption
-- Ensure complete image loading
+Enter a non-empty password under **Set Password**. Store it before creating the output because the application cannot recover it.
 
-#### 4. "Error extracting file"
-**Cause**: Incorrect password or data corruption
-**Solution**:
-- Verify password is correct
-- Check for typos in password
-- Ensure image wasn't modified
+### "No hidden file found in the image"
 
-#### 5. "File extraction failed after chat transmission"
-**Cause**: Chat application compressed or modified the image
-**Solution**:
-- Always use original obfuscated image file
-- Avoid sharing through chat apps that compress images
-- Use direct file transfer methods (email, cloud storage, USB)
-- Verify image file size hasn't changed after transmission
+The selected file does not contain the expected ZIP header, or another application removed or changed the appended data.
 
-### Performance Tips
-- Use appropriate image sizes for hiding files
-- Consider file compression before hiding
-- Use strong but memorable passwords
-- Keep backups of original files
+- select the original `obfuscated_...` file;
+- compare its size with the file created by IoTSploit;
+- repeat the hide operation if the output was re-encoded.
 
-## Use Cases
+### "Metadata file not found" or "Encrypted file not found"
 
-### Scenario 1: Hiding Personal Documents
+The appended ZIP is incomplete or is not an IoTSploit File Obfuscator container. Use the original output and avoid tools that modify the file.
 
-**Use Case**: You want to hide important personal documents like contracts, certificates, or financial statements within seemingly innocent photos.
+### Extraction fails with the correct image
 
-**Process**:
-1. Select your sensitive document file
-2. Choose a family photo or vacation picture as carrier
-3. Set a strong, memorable password
-4. Hide the file and save the result
-5. Store the obfuscated image securely
+Check the password exactly, including capitalization and spaces. If the password is correct, the encrypted data may be truncated or modified. Create a fresh output and test extraction before transferring it.
 
-**Benefit**: Your documents are now hidden in plain sight, appearing as just another photo in your collection.
+### The operation fails with a large file
 
-### Scenario 2: Secure File Sharing
+The tool holds the selected file, image, archive, and output in memory. Try a smaller input file or carrier image, close other applications, and repeat the operation.
 
-**Use Case**: You need to share confidential files with colleagues or clients via email or cloud storage.
+### Saving was canceled
 
-**Process**:
-1. Hide the confidential file within a professional-looking image
-2. Share the image file through your preferred channel
-3. Provide the password separately through secure communication
-4. Recipient uses the tool to extract the hidden file
+The operation may have completed even if the save dialog was canceled. Run it again and choose a destination when prompted.
 
-**Benefit**: Files can be shared through any channel without revealing their sensitive nature.
+## Recommended workflow
 
-### Scenario 3: Backup and Archival
+For each output:
 
-**Use Case**: You want to create secure backups of important files that won't attract attention.
+1. use a unique password from a password manager;
+2. create the obfuscated image;
+3. extract it immediately as a round-trip test;
+4. transfer it using a byte-preserving method;
+5. verify extraction again at the destination;
+6. retain the original file in an appropriate secure backup.
 
-**Process**:
-1. Hide multiple important files in individual images
-2. Use memorable images as carriers
-3. Store obfuscated images in multiple locations
-4. Access your files anytime with the password
-
-**Benefit**: Secure backups that blend in with your regular photo collection.
-
-## Best Practices
-
-### Security Best Practices
-1. **Use Strong Passwords**
-   - Minimum 12 characters
-   - Mix of uppercase, lowercase, numbers, and symbols
-   - Avoid common words or patterns
-   - Use unique passwords for different purposes
-
-2. **Choose Appropriate Carrier Images**
-   - Use high-quality images
-   - Avoid heavily compressed formats
-   - Consider image size vs hidden file size
-   - Use images that won't raise suspicion
-
-3. **File Management**
-   - Keep backups of original files
-   - Store passwords securely
-   - Don't share obfuscated images publicly
-   - Regularly update passwords
-
-4. **Image Transmission Security**
-   - **Never share through chat apps that compress images** (WeChat, WhatsApp, Telegram, etc.)
-   - Use direct file transfer methods (email, cloud storage, USB drives)
-   - Verify file integrity after transmission
-   - Keep original obfuscated images for extraction
-
-### Performance Best Practices
-1. **File Size Optimization**
-   - Consider file size before hiding (larger files take longer to process)
-   - Use appropriate image formats (JPEG for photos, PNG for graphics)
-   - Balance image quality with processing speed
-   - Be patient with large files
-
-2. **Tool Usage**
-   - Don't interrupt processes while running
-   - Close other applications to free system resources
-   - Ensure stable network connection if using cloud features
-   - Keep application updated for best performance
-
----
-
-## Support and Contact
-
-For technical support or questions about the File Obfuscator:
-
-- **Documentation**: Refer to this manual
-- **Troubleshooting**: Use the troubleshooting guide
-- **Security**: Review security best practices
-
+The round-trip test matters more than whether the carrier still looks like an ordinary image.

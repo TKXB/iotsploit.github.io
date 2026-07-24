@@ -44,12 +44,17 @@ def parse_front_matter(text: str) -> tuple[dict[str, str], int]:
     return fields, match.end()
 
 
-def locale_and_slug(path: Path) -> tuple[str | None, str | None]:
+def locale_section_and_slug(
+    path: Path,
+) -> tuple[str | None, str | None, str | None]:
     normalized = path.as_posix()
-    match = re.search(r"/docs/(en|zh)/blog/([^/]+\.md)$", normalized)
+    match = re.search(
+        r"/docs/(en|zh)/(blog|manual)/([^/]+\.md)$",
+        normalized,
+    )
     if not match:
-        return None, None
-    return match.group(1), match.group(2)
+        return None, None, None
+    return match.group(1), match.group(2), match.group(3)
 
 
 def validate(path: Path) -> tuple[list[str], list[str], dict[str, str]]:
@@ -70,10 +75,10 @@ def validate(path: Path) -> tuple[list[str], list[str], dict[str, str]]:
     if fields.get("title") == fields.get("description"):
         errors.append("title and description must not be identical")
 
-    locale, slug = locale_and_slug(path.resolve())
+    locale, section, slug = locale_section_and_slug(path.resolve())
     if locale is None:
         warnings.append(
-            "path is outside blog-src/src/content/docs/{en,zh}/blog/"
+            "path is outside blog-src/src/content/docs/{en,zh}/{blog,manual}/"
         )
     elif slug and not SLUG.fullmatch(slug):
         errors.append("article filename must be lowercase kebab-case")
@@ -96,20 +101,34 @@ def validate(path: Path) -> tuple[list[str], list[str], dict[str, str]]:
             "review vague/promotional terms: " + ", ".join(marketing_hits)
         )
 
-    image_paths = re.findall(r"!\[[^\]]*\]\((/images/[^)\s]+)", body)
+    image_paths = re.findall(
+        r"!\[[^\]]*\]\(((?:/blog)?/images/[^)\s]+)",
+        body,
+    )
     repo_root = Path(__file__).resolve().parents[3]
     for image_path in image_paths:
-        target = repo_root / "blog-src" / "public" / image_path.lstrip("/")
+        if not image_path.startswith("/blog/images/"):
+            errors.append(
+                f"image URL must include the /blog base path: {image_path}"
+            )
+        public_path = image_path.removeprefix("/blog/")
+        target = repo_root / "blog-src" / "public" / public_path
         if not target.is_file():
             errors.append(f"missing image: {image_path}")
 
     expected_prefix = f"/blog/{locale}/" if locale else None
     if expected_prefix:
         for link in re.findall(r"\[[^\]]+\]\((/blog/[^)\s]+)", body):
+            if link.startswith("/blog/images/"):
+                continue
             if not link.startswith(expected_prefix):
                 warnings.append(f"cross-locale or mismatched local link: {link}")
 
-    return errors, warnings, {"locale": locale or "", "slug": slug or ""}
+    return errors, warnings, {
+        "locale": locale or "",
+        "section": section or "",
+        "slug": slug or "",
+    }
 
 
 def main(argv: list[str]) -> int:
@@ -138,9 +157,13 @@ def main(argv: list[str]) -> int:
 
     if len(paths) == 2:
         locales = {item["locale"] for item in metadata}
+        sections = {item["section"] for item in metadata}
         slugs = {item["slug"] for item in metadata}
         if locales != {"en", "zh"}:
             print("PAIR ERROR: expected one English and one Chinese article")
+            failed = True
+        if len(sections) != 1 or "" in sections:
+            print("PAIR ERROR: bilingual articles must use the same section")
             failed = True
         if len(slugs) != 1 or "" in slugs:
             print("PAIR ERROR: bilingual articles must use the same slug")

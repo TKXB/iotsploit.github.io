@@ -136,7 +136,7 @@ For a new article:
 2. Add valid `title` and `description` front matter.
 3. Add the source file under the correct locale path.
 4. Add or update the `Articles`/`文章` sidebar group in `blog-src/astro.config.mjs` when the user wants the page discoverable in site navigation.
-5. Put new images in `blog-src/public/images/` with descriptive lowercase filenames. Reference them as `/images/<filename>`.
+5. Put new images in `blog-src/public/images/` with descriptive lowercase filenames. Because this site uses Astro base path `/blog`, reference them as `/blog/images/<filename>`.
 6. Run the bundled validator:
 
 ```bash

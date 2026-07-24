@@ -77,7 +77,7 @@ Keep labels concise. Do not add a locale prefix to the sidebar slug; Starlight h
 - Link English articles to English manuals and Chinese articles to Chinese manuals.
 - Use descriptive link text; avoid "click here."
 - Store new images under `blog-src/public/images/`.
-- Reference those images as `/images/<filename>`.
+- Reference those images as `/blog/images/<filename>` because the Astro site is deployed under the `/blog` base path.
 - Use lowercase descriptive filenames and preserve the correct extension.
 - Write alt text that describes the information the image contributes. Do not start alt text with "image of."
 - Never expose API keys, access tokens, private endpoints, customer data, or secrets in screenshots, code, commands, or alt text.
