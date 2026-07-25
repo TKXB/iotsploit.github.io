@@ -1,0 +1,268 @@
+---
+title: CAN 总线帧发送与接收
+description: 监控 SocketCAN 接口、实时捕获 CAN 帧、通过 IoTSploit API 服务器注入自定义报文。
+---
+
+**CAN Analysis** 用于监控 SocketCAN 接口的 CAN 总线流量，将收到的帧显示在表格中，并支持注入自定义 CAN 报文。与 Toolkit 中的 Rust 工具不同，此工具完全用 Dart 编写，通过 HTTP 和 WebSocket 与 IoTSploit API 服务器通信，不涉及 Rust 原生代码。本文档对应代码提交 `c3f20ff8`（版本 `0.0.17+17`）。
+
+:::caution[授权]
+车辆和工业设备的 CAN 总线流量可能受安全法规和制造商保修条款约束。在活动总线上发送任意帧可能影响车辆行为。仅在你拥有或获得授权的总线上使用此工具，建议优先在台架环境中测试，而非实车。
+:::
+
+## 前置条件
+
+- **平台**：所有平台，包括 Web。不依赖 Rust 原生代码（`requiresRust: false`）。
+- **构建**：生产和开发 flavor 可用。标记为 `offlineCapable: false`——需要连接 IoTSploit API 服务器。
+- **服务器**：必须运行且可访问。工具通过 HTTP 发现和控制设备，通过 WebSocket 流式传输 CAN 帧。
+- **CAN 硬件**：服务器上必须注册有 SocketCAN 兼容接口。工具筛选 `device_type == 'CAN'`、`source == 'dynamic'`、名称以 `SocketCAN_` 开头的设备。
+
+## 打开 CAN Analysis
+
+1. 打开 IoTSploit 应用。
+2. 在侧边栏选择 **Toolkit**。
+3. 找到 **CAN Analysis** 卡片（描述为 "Vehicle network protocol analysis and testing"），点击进入。
+
+屏幕标题为 **CAN Bus Monitor**。界面分为三部分：顶部控制面板、左侧数据表格、右侧发送面板，底部为状态栏。
+
+## 控制面板
+
+| 控件 | 标签 | 选项 / 默认值 | 说明 |
+|---|---|---|---|
+| 设备下拉框 | 设备选择 | 从服务器获取 | 列出服务器上发现的所有 SocketCAN 设备 |
+| 波特率下拉框 | 波特率 | 125000、250000、**500000**（默认）、1000000 | 以 `set_bitrate` 命令发送到服务器 |
+| 连接/断开按钮 | 打开端口 / 关闭端口 | 断开时绿色，连接时红色 | 打开或关闭 CAN 端口 |
+| 清空按钮 | 清空数据 | — | 清空表格中所有已接收的帧 |
+
+界面标签为中文。这是因为屏幕实现中使用了硬编码的中文字符串，而非本地化键。表格列名（序号、ID、帧计数、数据长度、数据）同样为中文。
+
+### 设备发现
+
+屏幕加载时，工具调用 API 服务器的 `GET /api/list_devices/`，对返回结果进行筛选：
+
+- `device_type == 'CAN'`
+- `source == 'dynamic'`
+- `name` 以 `SocketCAN_` 开头
+
+每个设备条目提取 `device_id`、`name`、`interface`、`attributes`。若无匹配设备，下拉框为空——请确认 CAN 接口已连接到服务器且被识别为 SocketCAN 设备。
+
+### 波特率
+
+选中设备后更改波特率会立即向服务器发送 `set_bitrate` 命令。波特率应与目标 CAN 网络的速率一致。汽车高速 CAN 常见速率为 500 kbps，CAN-C 常见为 125 kbps。
+
+## 连接总线
+
+1. 在下拉框中选择设备。
+2. 选择波特率（500000 为默认，高速 CAN 最常见）。
+3. 点击 **打开端口**。
+
+此操作向服务器发送 `start` 命令，随后建立 WebSocket 连接以接收 CAN 帧。按钮变为红色，文字变为 **关闭端口**。
+
+### 连接流程
+
+| 步骤 | 协议 | 端点 | 请求体 / 参数 |
+|---|---|---|---|
+| 1. 启动 CAN 端口 | HTTP POST | `/api/execute_device_command/drv_socketcan/` | `{"command": "start", "device_id": "<id>"}` |
+| 2. 建立 WebSocket 流 | WebSocket | `/ws/device/stream/<device_id>/` | — |
+| 3. 接收帧 | WebSocket（入站） | — | `action: "data"` 的 JSON 消息 |
+
+断开连接请点击 **关闭端口**。此操作关闭 WebSocket 并向服务器发送 `stop` 命令。
+
+## 接收帧表格
+
+收到的 CAN 帧显示在 DataTable 中，各列如下：
+
+| 列 | 标签 | 内容 |
+|---|---|---|
+| 序号 | 序号 | 行号，从 1 开始 |
+| ID | ID | CAN 标识符（十六进制字符串） |
+| 帧计数 | 帧计数 | 该帧已出现的次数 |
+| 数据长度 | 数据长度 | DLC 值（0–8） |
+| 数据 | 数据 | 负载字节，十六进制字符串 |
+
+新帧插入表格顶部。列表最多保留 100 条——到达上限时最早的条目被移除。点击 **清空数据** 可清空表格。
+
+### 帧格式
+
+每条入站 WebSocket 消息是一个 JSON 对象。工具检查 `action == "data"` 且 `data` 字段非空，然后解析 `data` 子对象：
+
+```json
+{
+  "action": "data",
+  "data": {
+    "id": "7E0",
+    "data": "22019F0100000000",
+    "dlc": 8
+  }
+}
+```
+
+`id` 和 `data` 为十六进制字符串，`dlc` 为 0–8 的整数。
+
+## 发送 CAN 报文
+
+右侧面板（发送数据包）用于向总线注入自定义 CAN 帧。
+
+### 字段
+
+| 字段 | 标签 | 输入 | 示例 |
+|---|---|---|---|
+| CAN ID | CAN ID (hex) | 十六进制字符串 | `7DF` |
+| 数据长度 | 数据长度 (DLC) | 整数 1–8 | `8` |
+| 数据 | 数据 (hex) | 十六进制字符串 | `0102030405060708` |
+
+### 发送
+
+1. 选择设备并连接（点击 **打开端口**）。
+2. 输入 CAN ID（十六进制，不带 `0x` 前缀）。
+3. 输入 DLC（1–8）。
+4. 输入数据字节（十六进制）。
+5. 点击 **发送数据包**。
+
+### 校验
+
+| 检查项 | 错误 |
+|---|---|
+| 未选择设备或未连接 | `请先连接设备` |
+| ID 为空、数据为空、DLC < 1 或 > 8 | `无效的输入数据` |
+| DLC 非有效整数 | 未处理的解析异常 |
+
+### 消息格式
+
+发送的消息为 JSON 对象，通过 WebSocket 发出：
+
+```json
+{
+  "stream_type": "can",
+  "channel": "<device_id>",
+  "timestamp": 1234567890.123,
+  "source": "client",
+  "action": "send",
+  "data": {
+    "id": "7DF",
+    "data": "0102030405060708",
+    "dlc": 8
+  },
+  "metadata": {
+    "is_extended_id": false,
+    "interface": "socketcan"
+  }
+}
+```
+
+`is_extended_id` 硬编码为 `false`——仅支持标准 11 位 CAN ID。`interface` 固定为 `socketcan`。
+
+发送后数据字段被清空。CAN ID 和 DLC 字段不清空，便于以相同帧类型重复发送不同负载。
+
+## 状态栏
+
+底部状态栏显示：
+
+- 连接/断开图标（连接时绿色，断开时灰色）。
+- 文字 `Connected` 或 `Disconnected`。
+- 如有错误，以红色文字显示错误信息。
+
+设备加载失败、连接失败或发送失败时均会在此显示错误。
+
+## 实现原理
+
+### 依赖 API 服务器
+
+CAN Analysis 是纯 Dart 屏幕——不调用任何 Rust 桥接函数。所有 CAN 操作通过 IoTSploit API 服务器完成：
+
+| 操作 | 方法 | 端点 | 用途 |
+|---|---|---|---|
+| 列出设备 | GET | `/api/list_devices/` | 发现 SocketCAN 接口 |
+| 启动端口 | POST | `/api/execute_device_command/drv_socketcan/` | 打开 CAN 端口开始流式传输 |
+| 停止端口 | POST | `/api/execute_device_command/drv_socketcan/` | 关闭 CAN 端口 |
+| 设置波特率 | POST | `/api/execute_device_command/drv_socketcan/` | 配置 CAN 速率 |
+| 接收帧 | WebSocket | `/ws/device/stream/<device_id>/` | 实时 CAN 帧流 |
+| 发送帧 | WebSocket | `/ws/device/stream/<device_id>/` | 向总线注入 CAN 帧 |
+
+服务器侧的 `drv_socketcan` 驱动负责实际的 SocketCAN ioctl 调用和套接字管理。
+
+### 设备命令 API
+
+所有设备命令使用同一端点，请求体为 JSON：
+
+```json
+{
+  "command": "start | stop | set_bitrate",
+  "device_id": "<device_id>",
+  "args": "<可选，如波特率>"
+}
+```
+
+`args` 仅在非空时包含。`set_bitrate` 的 args 值为波特率字符串（如 `"500000"`）。
+
+### WebSocket 协议
+
+WebSocket 连接为双向：
+
+- **入站**（服务器 → 客户端）：`action: "data"` 的 JSON 消息包含 CAN 帧。其他 action 类型被忽略。
+- **出站**（客户端 → 服务器）：`action: "send"` 的 JSON 消息注入 CAN 帧。
+
+客户端不发送心跳或保活消息。服务器关闭 WebSocket 或出错时，状态栏更新为 Disconnected。
+
+## 局限性
+
+- **仅标准 CAN。** `is_extended_id` 硬编码为 `false`，不支持扩展 29 位 CAN ID。
+- **仅 SocketCAN。** 工具筛选名称以 `SocketCAN_` 开头的设备，使用 `drv_socketcan` 驱动。不支持其他 CAN 接口类型。
+- **无帧过滤。** 所有接收到的帧都会显示。没有 ID 过滤器、掩码或捕获缓冲区。表格保留最近 100 条帧。
+- **无日志或导出。** 接收到的帧不会保存到文件。清空表格或离开页面即丢弃所有数据。
+- **无 DBC 或解码。** 仅显示原始十六进制数据。不支持信号解码、DBC 文件导入或人类可读解释。
+- **依赖服务器。** 没有 API 服务器无法运行。CAN 硬件必须连接到服务器，而非运行 UI 的设备。
+- **中文界面标签。** 屏幕标签（设备选择、波特率、打开端口 等）为硬编码中文字符串，此屏幕无英文本地化。
+- **无波特率自动检测。** 必须手动设置正确的总线速率。设置错误会导致数据乱码或无数据。
+- **DLC 不校验数据长度。** 工具检查 DLC 为 1–8，但不验证十六进制数据字符串长度是否为 `DLC * 2` 个字符。不匹配的值会原样发送。
+- **单设备。** 同时只能选择一个设备。不支持同时监控多条 CAN 总线。
+
+## 故障排除
+
+### Toolkit 页面看不到 CAN Analysis 卡片
+
+此工具不依赖 Rust，所有构建（包括 Web）均应可见。若不可见，检查 flavor 配置——它不是离线可用工具，在离线 flavor 中可能被隐藏。
+
+### 设备下拉框为空
+
+服务器上未发现 SocketCAN 设备。请确认：
+
+- CAN 接口已物理连接到服务器主机。
+- 内核将其识别为 `can` 接口（在服务器上运行 `ip link` 检查）。
+- 设备已在 IoTSploit 服务器注册，且在 `/api/list_devices/` 中以 `device_type == 'CAN'`、`source == 'dynamic'`、名称以 `SocketCAN_` 开头出现。
+
+### `Connection failed: <错误>`
+
+`start` 命令返回了错误。服务器可能无权访问 CAN 接口、接口已被占用、或不支持该波特率。检查服务器日志。
+
+### 连接后无帧出现
+
+总线可能空闲，或波特率错误。尝试：
+
+- 确认波特率与目标网络一致。
+- 在总线上产生流量（打开点火、按下按钮）。
+- 确认 CAN 接口位于正确的总线段。
+
+### `请先连接设备`
+
+尝试在未选择设备或未点击打开端口的情况下发送报文。请先选择设备并连接。
+
+### `无效的输入数据`
+
+CAN ID 或数据字段为空，或 DLC 不在 1–8 范围。填写所有字段的有效值。
+
+### WebSocket 立即断开
+
+服务器可能拒绝了 WebSocket 升级，或设备在 start 命令和 WebSocket 连接之间被移除。重试连接。若持续发生，检查服务器 WebSocket 端点是否可达。
+
+## 推荐工作流
+
+1. 将 SocketCAN 兼容接口连接到 IoTSploit 服务器主机。
+2. 确认设备出现在下拉框中。
+3. 选择设备并设置正确的波特率。
+4. 点击 **打开端口** 开始监控。
+5. 在表格中观察接收到的帧，留意 ID 和数据模式。
+6. 需要注入帧时，在发送面板输入 CAN ID、DLC 和十六进制数据，点击 **发送数据包**。
+7. 表格填满时点击 **清空数据** 重置。
+8. 完成后点击 **关闭端口**。
+
+如需 BLE 广播发现，请继续阅读 [Ubertooth BLE scan](/blog/zh/manual/ubertooth-ble-scan/)。

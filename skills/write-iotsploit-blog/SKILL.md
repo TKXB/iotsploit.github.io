@@ -11,9 +11,11 @@ Write useful product journalism, not generic product marketing. Ground every tec
 
 1. Read `references/site-publishing.md` completely before creating or moving an article.
 2. Read `references/editorial-quality.md` completely before drafting or revising prose.
-3. Inspect `README.md`, `blog-src/astro.config.mjs`, the relevant product page, and nearby content in `blog-src/src/content/docs/`.
-4. Inspect application source, commits, screenshots, issues, or documentation supplied by the user. Treat existing website copy as context, not automatically as proof.
-5. Browse primary sources when a current external fact, API, standard, product version, or security claim needs verification. Add a direct link near the supported claim.
+3. For a product-wide feature introduction, read
+   `references/full-feature-introduction.md` completely before collecting evidence.
+4. Inspect `README.md`, `blog-src/astro.config.mjs`, the relevant product page, and nearby content in `blog-src/src/content/docs/`.
+5. Inspect application source, commits, screenshots, issues, or documentation supplied by the user. Treat existing website copy as context, not automatically as proof.
+6. Browse primary sources when a current external fact, API, standard, product version, or security claim needs verification. Add a direct link near the supported claim.
 
 Do not use `docs/_posts/`; that directory is legacy theme sample content. Do not edit generated `blog/` output.
 
