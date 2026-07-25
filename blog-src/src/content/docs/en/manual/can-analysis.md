@@ -3,7 +3,7 @@ title: CAN bus frame send and receive
 description: Monitor a SocketCAN interface, capture CAN frames in real time, and inject custom packets via the IoTSploit API server.
 ---
 
-The **CAN Analysis** tool monitors a SocketCAN interface for CAN bus traffic, displays received frames in a table, and lets you inject custom CAN packets. Unlike the Rust-powered tools in the Toolkit, this tool runs entirely in Dart and communicates with the IoTSploit API server over HTTP and WebSocket — no Rust native code is involved. This guide documents the tool at commit `c3f20ff8` (version `0.0.17+17`).
+The **CAN Analysis** tool monitors a SocketCAN interface for CAN bus traffic, displays received frames in a table, and lets you inject custom CAN packets. It communicates with the IoTSploit API server over HTTP and WebSocket.
 
 :::caution[Authorization]
 CAN bus traffic on vehicles and industrial equipment may be subject to safety regulations and manufacturer warranties. Sending arbitrary frames on a live CAN bus can affect vehicle behavior. Use this tool only on buses you own or are authorized to test, and prefer a bench setup over a live vehicle.
@@ -11,7 +11,7 @@ CAN bus traffic on vehicles and industrial equipment may be subject to safety re
 
 ## Before you start
 
-- **Platform**: All platforms, including web. The tool does not depend on Rust native code (`requiresRust: false`).
+- **Platform**: All platforms, including web.
 - **Build**: Available in production and development flavors. Marked `offlineCapable: false` — it requires a connection to the IoTSploit API server.
 - **Server**: Required. The API server must be running and accessible. The tool uses HTTP to discover and control devices, and WebSocket to stream CAN frames.
 - **CAN hardware**: A SocketCAN-compatible interface must be registered on the server. The tool filters for devices with `device_type == 'CAN'`, `source == 'dynamic'`, and a name starting with `SocketCAN_`.
@@ -61,7 +61,7 @@ This sends a `start` command to the server, then opens a WebSocket connection to
 
 | Step | Protocol | Endpoint | Body / Params |
 |---|---|---|---|
-| 1. Start the CAN port | HTTP POST | `/api/execute_device_command/drv_socketcan/` | `{"command": "start", "device_id": "<id>"}` |
+| 1. Start the CAN port | HTTP POST | `/api/execute_device_command/<driver>/` | `{"command": "start", "device_id": "<id>"}` |
 | 2. Open WebSocket stream | WebSocket | `/ws/device/stream/<device_id>/` | — |
 | 3. Receive frames | WebSocket (inbound) | — | JSON messages with `action: "data"` |
 
@@ -163,50 +163,10 @@ The status bar at the bottom shows:
 
 Errors appear when device loading fails, the connection fails, or a send operation fails. The error text is displayed inline.
 
-## How it works
-
-### API server dependency
-
-The CAN Analysis tool is a pure-Dart screen — it does not call any Rust bridge functions. All CAN operations go through the IoTSploit API server:
-
-| Operation | Method | Endpoint | Purpose |
-|---|---|---|---|
-| List devices | GET | `/api/list_devices/` | Discover SocketCAN interfaces |
-| Start port | POST | `/api/execute_device_command/drv_socketcan/` | Open the CAN port for streaming |
-| Stop port | POST | `/api/execute_device_command/drv_socketcan/` | Close the CAN port |
-| Set bitrate | POST | `/api/execute_device_command/drv_socketcan/` | Configure the CAN baud rate |
-| Receive frames | WebSocket | `/ws/device/stream/<device_id>/` | Real-time CAN frame stream |
-| Send frame | WebSocket | `/ws/device/stream/<device_id>/` | Inject a CAN frame onto the bus |
-
-The `drv_socketcan` driver on the server side handles the actual SocketCAN ioctl calls and socket management.
-
-### Device command API
-
-All device commands use the same endpoint with a JSON body:
-
-```json
-{
-  "command": "start | stop | set_bitrate",
-  "device_id": "<device_id>",
-  "args": "<optional, e.g. baud rate>"
-}
-```
-
-The `args` field is only included when non-empty. For `set_bitrate`, the args value is the baud rate as a string (e.g. `"500000"`).
-
-### WebSocket protocol
-
-The WebSocket connection is bidirectional:
-
-- **Inbound** (server → client): JSON messages with `action: "data"` contain CAN frames. Other action types are ignored.
-- **Outbound** (client → server): JSON messages with `action: "send"` inject CAN frames.
-
-The client does not send heartbeats or keepalive messages. If the server closes the WebSocket or an error occurs, the status bar updates to Disconnected.
-
 ## Limitations
 
 - **Standard CAN only.** The `is_extended_id` field is hardcoded to `false`. Extended 29-bit CAN IDs are not supported.
-- **SocketCAN only.** The tool filters for devices with names starting with `SocketCAN_` and uses the `drv_socketcan` driver. Other CAN interface types are not supported.
+- **SocketCAN only.** The tool filters for devices with names starting with `SocketCAN_`. Other CAN interface types are not supported.
 - **No frame filtering.** All received frames are displayed. There is no ID filter, mask, or capture buffer. The table holds the last 100 unique frame entries.
 - **No logging or export.** Received frames are not saved to a file. Clearing the table or navigating away discards all data.
 - **No DBC or decoding.** Raw hex data is displayed. There is no signal decoding, DBC file import, or human-readable interpretation.

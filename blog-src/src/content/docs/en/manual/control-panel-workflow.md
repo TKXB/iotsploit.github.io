@@ -5,7 +5,7 @@ description: Select a target, manage drivers, execute a plugin, and read executi
 
 The Control Panel is where you run an authorized plugin test against a selected target. It puts the target inventory, the plugin catalogue, a streaming execution terminal, and backend server logs on one screen. You pick a target, choose a plugin, press Execute, and read the result as it arrives — sync or streamed over WebSocket.
 
-This guide documents every label and behavior using the production build source at commit `c3f20ff8` (version `0.0.17+17`). It covers the initial data load, target and device selection, driver management, plugin parameter prompts, sync and async execution, the two log tabs, and the boundary where the application stops and expert analysis begins.
+This guide documents every label and behavior in the production build. It covers the initial data load, target and device selection, driver management, plugin parameter prompts, sync and async execution, the two log tabs, and the boundary where the application stops and expert analysis begins.
 
 :::caution[Use only with authorization]
 Plugin execution sends commands to the configured backend, which may interact with real devices, networks, or firmware. Running a plugin against a system you do not own or are not authorized to test can be illegal. Define a lab scope and permission boundary before pressing Execute.
@@ -210,18 +210,6 @@ The Control Panel workflow ends when the plugin result is saved to the test-resu
 3. The result is persisted and viewable in **Test Results**.
 
 What happens next is expert interpretation. The application does not classify findings, assign severity, or recommend remediation. The saved result contains the raw `data` map and a success flag. A human analyst must read the data, correlate it with the System log, and decide what it means for the engagement.
-
-## How it works
-
-The Control Panel does not run plugins locally. It sends HTTP requests to the configured API server and streams progress over a WebSocket connection to the configured WebSocket server. The application holds no plugin code; the backend owns execution.
-
-Three services back the screen:
-
-- **PluginService** — `GET /api/list_plugin_info/` for the catalogue, `POST /api/execute_plugin/` to start a run, and `ws://<ws_base_url>/ws/exploit/<task_id>/` for async progress.
-- **TargetsService** — `GET /api/list_targets/` for the inventory, `POST /api/select_target/` to tell the backend which target to test.
-- **TestResultService** — stores completed and failed results in SharedPreferences on the device, not on the server. The key is `plugin_test_results`.
-
-The System Log panel is a separate component. It connects to `ws://<ws_base_url>/ws/console_logs/` for live backend logs, with `GET /api/console_logs/` as a fallback. It is independent of plugin execution.
 
 ## Troubleshooting
 

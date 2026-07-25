@@ -3,7 +3,7 @@ title: SSH 终端与 SFTP
 description: 连接 SSH 服务器、运行交互式终端、通过 SFTP 传输文件——全部由 Rust 原生驱动。
 ---
 
-**SSH Client** 用于连接远程主机、打开交互式终端会话，并通过 SFTP 上传和下载文件。SSH 协议和 SFTP 子系统均由 Rust 实现，分别使用 `russh` 和 `russh_sftp` 库，不会调用外部 SSH 程序。本文档对应代码提交 `c3f20ff8`（版本 `0.0.17+17`）。
+**SSH Client** 用于连接远程主机、打开交互式终端会话，并通过 SFTP 上传和下载文件。SSH 协议和 SFTP 子系统由应用内置实现，不会调用外部 SSH 程序。
 
 :::caution[授权]
 仅连接你拥有或获得授权的主机。SSH Client 不验证服务器主机密钥（详见[主机密钥处理](#主机密钥处理)），因此无法检测中间人攻击。请在可信网络环境中使用此工具；若目标较为敏感，请通过带外方式核对服务器指纹。
@@ -11,7 +11,7 @@ description: 连接 SSH 服务器、运行交互式终端、通过 SFTP 传输�
 
 ## 前置条件
 
-- **平台**：仅限原生构建（Android、iOS、macOS、Windows、Linux）。Web 构建中不可见，因为依赖 Rust 原生代码（`requiresRust: true`）。
+- **平台**：仅限原生构建（Android、iOS、macOS、Windows、Linux）。Web 构建中不可见，因为依赖 Rust 原生代码。
 - **构建**：生产、开发、离线三种 flavor 均可用。工具目录中标记为 `offlineCapable: true`、`prodCapable: true`。
 - **服务器**：不需要。SSH Client 从设备直接连接目标 SSH 服务器，不经过 IoTSploit API 服务器。
 - **网络**：设备必须能访问目标主机的 SSH 端口（默认 22）。防火墙、NAT 或网络隔离会影响连接。
@@ -40,7 +40,7 @@ description: 连接 SSH 服务器、运行交互式终端、通过 SFTP 传输�
 | 方式 | 字段 | 说明 |
 |---|---|---|
 | Password | 密码 | 密码输入框，内容不可见 |
-| Public Key | PEM 私钥、口令（可选） | 在等宽文本框中粘贴 PEM 格式的私钥。口令仅在非空时发送。Rust 侧使用 `russh_keys::decode_secret_key` 解码私钥。 |
+| Public Key | PEM 私钥、口令（可选） | 在等宽文本框中粘贴 PEM 格式的私钥。口令仅在非空时发送。 |
 | None | — | 调用 `authenticate_none`。适用于无认证的服务器或测试场景。 |
 
 ### 最近目标
@@ -72,13 +72,13 @@ description: 连接 SSH 服务器、运行交互式终端、通过 SFTP 传输�
 
 | 失败原因 | 信息 |
 |---|---|
-| TCP 连接错误 | `Connection failed: <russh 错误>` |
+| TCP 连接错误 | `Connection failed: <错误>` |
 | 超时 | `Connection timed out` |
 | 认证被拒 | `Authentication failed` |
 
 ## 终端
 
-终端是基于 `xterm` Flutter 包实现的全功能 PTY shell，支持 10,000 行回滚，使用 JetBrains Mono 等宽字体。
+终端是全功能 PTY shell，支持 10,000 行回滚，使用 JetBrains Mono 等宽字体。
 
 ### 终端类型
 
@@ -86,7 +86,7 @@ PTY 请求的终端类型为 `xterm-256color`。传入服务器的行列数取�
 
 ### 键盘输入
 
-**桌面端**（macOS、Windows、Linux、Web）：通过全局 `HardwareKeyboard` 监听器捕获按键并转发到终端。剪贴板快捷键被拦截，交给 xterm 快捷键管理器处理，不会发送到远程 shell：
+**桌面端**（macOS、Windows、Linux、Web）：通过全局键盘监听器捕获按键并转发到终端。剪贴板快捷键被拦截，不会发送到远程 shell：
 
 | 操作 | 快捷键 |
 |---|---|
@@ -113,8 +113,8 @@ PTY 请求的终端类型为 `xterm-256color`。传入服务器的行列数取�
 
 ### 会话生命周期
 
-- **Disconnect 按钮**：取消所有进行中的传输，向服务器发送 `Disconnect::ByApplication`，返回连接表单。
-- **服务器关闭**：服务器发送 `ExitStatus`、`Eof`、`Close`，或流结束时，终端标记会话已结束并返回表单，显示 `Session ended: <error>`。
+- **Disconnect 按钮**：取消所有进行中的传输，向服务器发送断开请求，返回连接表单。
+- **服务器关闭**：服务器关闭连接或流结束时，终端标记会话已结束并返回表单，显示 `Session ended: <error>`。
 - **页面销毁**：离开页面时，会话被断开，所有传输订阅被取消。
 
 ## SFTP 文件传输
@@ -155,7 +155,7 @@ SSH Client 内置双向 SFTP，支持上传（Push）和下载（Pull）。SFTP 
 
 ### 取消传输
 
-每个进行中的传输可单独取消。取消操作在 Rust 侧设置一个 `AtomicBool` 标志——传输循环在每次读取块之间检查该标志并中止。上传和下载的 `.part` 临时文件都会被删除。断开 SSH 连接会取消所有进行中的传输。
+每个进行中的传输可单独取消。取消操作设置一个取消标志——传输循环在每次读取块之间检查该标志并中止。上传和下载的 `.part` 临时文件都会被删除。断开 SSH 连接会取消所有进行中的传输。
 
 ## 远程工作目录
 
@@ -182,126 +182,11 @@ SSH Client 内置双向 SFTP，支持上传（Push）和下载（Pull）。SFTP 
 
 连接成功后，客户端尝试通过 `sshSftpRealpath(path: '.')` 解析家目录。若服务器未启用 SFTP，此调用静默失败，CWD 保持在 `.`——芯片显示 `~ (server default)`。实际使用 Push/Pull 时会给出更明确的错误。
 
-## 实现原理
-
-### Rust 架构
-
-SSH 实现位于 `rust/src/api/ssh_client.rs`，使用以下库：
-
-- `russh`：纯 Rust 实现的 SSH 客户端协议。
-- `russh_keys`：公钥认证所需的私钥解码。
-- `russh_sftp`：SFTP 子系统客户端。
-- `tokio`：异步运行时，通过一个专用的多线程运行时（`SSH_RUNTIME`）运行，与 `flutter_rust_bridge` 自身的运行时隔离。
-
-会话存储在静态 `HashMap<String, SshSession>` 中，以 UUID v4 会话 ID 为键。每个会话持有一个共享的 `HandleArc`（`russh::client::Handle` 的包装）、可选的输入和调整大小通道发送端，以及缓存的 shell PID。
-
-### 连接流程
-
-1. 生成 UUID v4 会话 ID。
-2. 创建 `russh::client::Config`，设置 `keepalive_interval: 15s`、`keepalive_max: 3`、无不活动超时。
-3. 以 `timeout_secs` 为超时连接到 `<host>:<port>`。
-4. 使用选定的认证方式（密码、公钥或无认证）进行认证。
-5. 认证失败则断开连接，返回 `Authentication failed`。
-6. 将会话句柄存入静态映射。
-7. 返回会话 ID、服务器横幅（密钥类型 + 指纹）和成功标志。
-
-### Shell I/O 循环
-
-调用 `sshShellOpen` 时：
-
-1. 在 SSH 连接上打开一个新的会话通道。
-2. 请求 PTY，终端类型为 `xterm-256color`，附带列数和行数。
-3. 请求 shell。
-4. 创建两个 `mpsc` 通道：一个用于键盘输入（容量 256），一个用于调整大小事件（容量 16）。
-5. 启动 `tokio::select!` 循环，同时处理三种事件：
-   - **服务器 → Dart**：`ChannelMsg::Data` 和 `ChannelMsg::ExtendedData` 字节转发到 Dart `StreamSink`。
-   - **Dart → 服务器**：输入通道的键盘数据通过 `channel.data()` 写入。
-   - **调整大小**：调整大小通道的 `(cols, rows)` 触发 `channel.windowchange()`。
-6. 收到 `ExitStatus`、`Eof`、`Close` 或通道结束时，退出循环，发送 EOF，从映射中移除会话。
-
-### SFTP 传输内部机制
-
-上传和下载均使用 64 KB 块（`SFTP_CHUNK = 64 * 1024`），进度事件节流到至少 50 ms 间隔（`PROGRESS_MIN_INTERVAL_MS`）。
-
-**上传**（`do_upload`）：
-1. 打开本地文件，读取总大小。
-2. 在远程创建 `<远程路径>.part`。
-3. 以 64 KB 块读取本地文件，写入远程 `.part` 文件。
-4. 每次读块之间检查取消标志。若已设置，删除 `.part` 并退出。
-5. 每隔最多 50 ms 发送一次进度事件（已完成 / 总计）。
-6. 最后一块写入后，刷新并关闭远程文件。
-7. 尽力删除目标文件（OpenSSH 的 SFTP rename 不允许覆盖）。
-8. 将 `.part` 重命名为最终远程路径。
-9. 始终发送最终的 `done` 事件——即使成功时周期性发送器也可能跳过 100% 标记。
-
-**下载**（`do_download`）：
-1. 获取远程文件元数据以得到总大小。
-2. 打开远程文件进行读取。
-3. 在本地文件系统创建 `<本地路径>.part`。
-4. 以 64 KB 块读取远程，写入本地 `.part` 文件。
-5. 每次读块之间检查取消标志。若已设置，删除 `.part` 并退出。
-6. 每隔最多 50 ms 发送一次进度事件。
-7. 刷新并关闭本地文件。
-8. 使用 `std::fs::rename` 将 `.part` 重命名为最终本地路径（同一文件系统上为原子操作）。
-9. 始终发送最终的 `done` 事件。
-
-### 取消机制
-
-每个传输在静态 `CANCEL_FLAGS` 映射中注册一个 `Arc<AtomicBool>`，以 16 字节随机十六进制传输 ID 为键。`sshSftpCancel` 将标志设为 `true`。传输循环在每个块迭代开始时检查该标志。传输完成（或出错）后，该标志被注销。
-
 ## 主机密钥处理
 
-`ClientHandler` 的 `check_server_key` 方法**始终返回 `Ok(true)`**。这意味着 SSH Client 接受所有服务器主机密钥，不做任何验证。密钥类型和 SHA-256 指纹会被捕获并显示在状态栏中，但不会与已知主机数据库比对。
+SSH Client **接受所有服务器主机密钥**，不做任何验证。密钥类型和 SHA-256 指纹会被捕获并显示在状态栏中，但不会与已知主机数据库比对。
 
 这是为了在嵌入式和 IoT 测试场景中获得更好的可用性而做出的权衡——这些场景中 rarely 有 known_hosts 文件，且主机密钥经常变化。代价是客户端无法检测中间人攻击。如需主机密钥验证，请使用标准 SSH 客户端并启用 `StrictHostKeyChecking`。
-
-## 数据结构
-
-**SshConnectionConfig**（Dart → Rust）：
-
-| 字段 | Dart 类型 | Rust 类型 |
-|---|---|---|
-| host | String | String |
-| port | int | u16 |
-| username | String | String |
-| authMethod | SshAuthMethod | SshAuthMethod（枚举） |
-| timeoutSecs | int | u32 |
-
-**SshAuthMethod**（freezed 密封类）：
-
-| 变体 | 字段 |
-|---|---|
-| password | password: String |
-| publicKey | privateKeyPem: String, passphrase: String? |
-| none | — |
-
-**SshConnectionResult**（Rust → Dart）：
-
-| 字段 | Rust 类型 | Dart 类型 |
-|---|---|---|
-| success | bool | bool |
-| session_id | String | String |
-| server_banner | String | String |
-| error_message | Option<String> | String? |
-
-**SftpDirEntry**（Rust → Dart）：
-
-| 字段 | Rust 类型 | Dart 类型 |
-|---|---|---|
-| name | String | String |
-| size | u64 | BigInt |
-| is_dir | bool | bool |
-| modified_secs | u64 | BigInt |
-
-**SftpProgress**（Rust → Dart，通过 StreamSink）：
-
-| 字段 | Rust 类型 | Dart 类型 |
-|---|---|---|
-| transfer_id | String | String |
-| bytes_done | u64 | BigInt |
-| bytes_total | u64 | BigInt |
-| done | bool | bool |
-| error | Option<String> | String? |
 
 ## 局限性
 
@@ -329,7 +214,7 @@ SSH 实现位于 `rust/src/api/ssh_client.rs`，使用以下库：
 
 ### `Connection failed: <错误>`
 
-TCP 连接已建立，但 SSH 握手或认证失败。错误信息来自 `russh`。常见原因：端口错误、该端口上运行的不是 SSH 服务、或协议不匹配。
+TCP 连接已建立，但 SSH 握手或认证失败。常见原因：端口错误、该端口上运行的不是 SSH 服务、或协议不匹配。
 
 ### `Authentication failed`
 
@@ -337,7 +222,7 @@ TCP 连接已建立，但 SSH 握手或认证失败。错误信息来自 `russh`
 
 ### 连接后终端无输出
 
-Shell 可能未启动，或服务器发送了终端无法解码的数据。终端使用 `utf8.decode(data, allowMalformed: true)` 解码输出，无效 UTF-8 字节会被替换而非崩溃。若服务器发送二进制数据或 shell 非交互式，可能看不到输出。尝试按回车或运行 `ls` 等命令。
+Shell 可能未启动，或服务器发送了终端无法解码的数据。终端会尽可能解码输出，无效字节会被替换而非崩溃。若服务器发送二进制数据或 shell 非交互式，可能看不到输出。尝试按回车或运行 `ls` 等命令。
 
 ### CWD 芯片显示 `~ (server default)`
 

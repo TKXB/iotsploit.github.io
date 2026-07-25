@@ -3,7 +3,7 @@ title: 端口扫描配置与结果
 description: 使用 Rust 驱动的端口扫描器从设备本地执行 TCP 或 UDP 端口扫描。
 ---
 
-**端口扫描器**对目标 IP 地址的开放 TCP 或 UDP 端口进行探测。扫描完全在设备本地运行——扫描引擎为 Rust 原生代码，使用 `rustscan` crate，不向 API 服务器发送或经其转发扫描数据。本文基于 commit `c3f20ff8`（版本 `0.0.17+17`）记录该工具的使用方式。
+**端口扫描器**对目标 IP 地址的开放 TCP 或 UDP 端口进行探测。扫描完全在设备本地运行，不向 API 服务器发送或经其转发扫描数据。
 
 :::caution[授权]
 端口扫描会对目标产生网络流量。扫描不属于你或未经授权的主机可能违反网络策略或法律。请仅对你有权限扫描的主机使用此工具。
@@ -11,7 +11,7 @@ description: 使用 Rust 驱动的端口扫描器从设备本地执行 TCP 或 U
 
 ## 前提条件
 
-- **平台**：仅限原生构建（Android、iOS、macOS、Windows、Linux）。端口扫描器依赖 Rust 原生代码（`requiresRust: true`），在 Web 构建中被隐藏。
+- **平台**：仅限原生构建（Android、iOS、macOS、Windows、Linux）。端口扫描器依赖 Rust 原生代码，在 Web 构建中被隐藏。
 - **构建类型**：生产、开发、离线构建均可用。工具目录中标记为 `offlineCapable: true` 且 `prodCapable: true`。
 - **服务器**：不需要。扫描器在本地运行，不需要连接 IoTSploit API 服务器。
 - **网络**：运行扫描的设备必须能访问目标 IP。设备与目标之间的防火墙、NAT 或网络隔离会影响扫描结果。
@@ -45,7 +45,7 @@ description: 使用 Rust 驱动的端口扫描器从设备本地执行 TCP 或 U
 
 ### UDP 扫描
 
-启用后扫描器发送 UDP 探测而非 TCP SYN。UDP 扫描比 TCP 更慢且可靠性更低——开放的 UDP 端口可能不响应空探测，从而被判定为关闭。`rustscan` 对每个端口仅尝试一次。
+启用后扫描器发送 UDP 探测而非 TCP SYN。UDP 扫描比 TCP 更慢且可靠性更低——开放的 UDP 端口可能不响应空探测，从而被判定为关闭。扫描器对每个端口仅尝试一次。
 
 ## 执行扫描
 
@@ -55,7 +55,7 @@ description: 使用 Rust 驱动的端口扫描器从设备本地执行 TCP 或 U
 4. 如需 UDP 扫描则切换 **UDP Scan** 开关。
 5. 按 **Start Scan**。
 
-扫描期间按钮显示 `Scanning...` 并带旋转加载圈，按钮禁用。扫描在 Rust 侧同步执行，使用 `async_std` 运行时（与 `flutter_rust_bridge` 的 Tokio 运行时隔离）。
+扫描期间按钮显示 `Scanning...` 并带旋转加载圈，按钮禁用。扫描为同步执行。
 
 ### 输入校验
 
@@ -66,7 +66,7 @@ description: 使用 Rust 驱动的端口扫描器从设备本地执行 TCP 或 U
 | 端口起始 < 1 或结束 > 65535 | 同上 |
 | 端口起始 > 端口结束 | 同上 |
 
-如果目标 IP 无法被 Rust 的 `std::net::IpAddr::parse` 解析为有效 `IpAddr`，扫描失败并显示 `Invalid IP address '<input>': <error>`。
+如果目标 IP 无法被解析为有效 IP 地址，扫描失败并显示 `Invalid IP address '<input>': <error>`。
 
 ## 结果
 
@@ -90,52 +90,10 @@ description: 使用 Rust 驱动的端口扫描器从设备本地执行 TCP 或 U
 
 按结果卡片标题栏的复制图标，将开放端口号以逗号分隔的字符串复制到剪贴板，提示 `Open ports copied to clipboard`。
 
-## 工作原理
-
-`rust/src/api/port_scanner.rs` 中的 `run_port_scan` 函数：
-
-1. 将目标字符串解析为 `std::net::IpAddr`。
-2. 用起始和结束值创建 `PortRange`。
-3. 通过 `PortStrategy::pick` 选择扫描策略，使用 `ScanOrder::Serial`——端口按升序探测，不随机化。
-4. 创建 `rustscan::scanner::Scanner`：
-   - 目标地址。
-   - 批量大小作为并发上限。
-   - 超时作为 `Duration::from_millis`。
-   - 每端口 1 次尝试。
-   - `greppable = true`（抑制 RustScan 的标准输出打印）。
-   - `accessible = false`。
-   - 不排除任何端口。
-   - UDP 标志。
-5. 通过 `async_std::task::block_on(scanner.run())` 执行扫描，返回开放套接字列表。
-6. 从开放套接字提取端口号、排序，并计算 `total_scanned` = `port_end - port_start + 1`。
-
-扫描为同步调用，阻塞 Dart Future 直到完成。使用 `async_std` 运行时而非 Tokio，以避免与 `flutter_rust_bridge` 自身运行时冲突。
-
-### 数据结构
-
-**PortScanConfig**（从 Dart 传入 Rust）：
-
-| 字段 | Dart 类型 | Rust 类型 |
-|---|---|---|
-| target | String | String（解析为 IpAddr） |
-| portStart | int | u16 |
-| portEnd | int | u16 |
-| batchSize | int | u32（传入 Scanner 时转为 u16） |
-| timeoutMs | int | u32（转为 Duration） |
-| udp | bool | bool |
-
-**PortScanResult**（从 Rust 返回 Dart）：
-
-| 字段 | Rust 类型 | Dart 类型 |
-|---|---|---|
-| open_ports | Vec<u16> | Uint16List |
-| scan_duration_ms | u64 | BigInt |
-| total_scanned | u32 | int |
-
 ## 已知限制
 
 - **无服务识别。** 扫描器仅报告端口号，不进行 banner 抓取、协议识别或服务猜测。可使用 [SSH 客户端](/blog/zh/manual/ssh-client/)或其他工具与发现的服务交互。
-- **不支持域名解析。** 目标字段只接受 IP 地址。Rust 侧使用 `IpAddr::parse` 解析，不执行 DNS 查询。请输入已解析的 IP。
+- **不支持域名解析。** 目标字段只接受 IP 地址。不执行 DNS 查询。请输入已解析的 IP。
 - **扫描结果不持久化。** 结果仅存在于界面状态中。离开页面后丢失。离开前请先复制开放端口。
 - **UDP 可靠性。** UDP 探测可能无法从开放端口获得响应，导致被判定为关闭。单次尝试的 UDP 扫描精度本质上低于 TCP。
 - **串行扫描顺序。** 端口按升序扫描，不随机化。这是唯一可用的扫描顺序。
@@ -158,7 +116,7 @@ description: 使用 Rust 驱动的端口扫描器从设备本地执行 TCP 或 U
 
 ### `Invalid IP address '<input>': <error>`
 
-目标字符串无法被 Rust 的 `IpAddr::parse` 解析。该函数接受 IPv4（如 `192.168.1.1`）和 IPv6（如 `::1`），但不接受主机名。如输入了主机名，请先解析为 IP。
+目标字符串无法被解析为有效 IP 地址。扫描器接受 IPv4（如 `192.168.1.1`）和 IPv6（如 `::1`），但不接受主机名。如输入了主机名，请先解析为 IP。
 
 ### 扫描耗时很长
 

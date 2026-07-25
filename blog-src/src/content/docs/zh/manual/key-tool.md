@@ -3,7 +3,7 @@ title: ECC 密钥生成与证书验证
 description: 本地生成 P-256 密钥对、验证 x509 证书链、检查远程 HTTPS 端点。
 ---
 
-**密钥工具**生成 NIST P-256 椭圆曲线密钥对并验证 x509 证书链。全部操作在设备本地完成——密钥生成和证书解析由 Rust 原生代码执行，不经过服务器。本文基于 commit `c3f20ff8`（版本 `0.0.17+17`）记录该工具的使用方式。
+**密钥工具**生成 NIST P-256 椭圆曲线密钥对并验证 x509 证书链。全部操作在设备本地完成，不经过服务器。
 
 :::caution[私钥处理]
 生成的私钥以 PEM 字符串形式显示在界面上，可复制到剪贴板。多数操作系统的剪贴板内容可被其他应用读取。复制私钥后，请尽快清空或覆盖剪贴板内容。不要将私钥粘贴到聊天工具、问题追踪系统或未加密渠道中。
@@ -11,10 +11,10 @@ description: 本地生成 P-256 密钥对、验证 x509 证书链、检查远程
 
 ## 前提条件
 
-- **平台**：仅限原生构建（Android、iOS、macOS、Windows、Linux）。密钥工具依赖 Rust 原生代码（`requiresRust: true`），在 Web 构建中被隐藏（`kIsWeb` 为 `true` 时 `isRustSupported` 返回 `false`）。
+- **平台**：仅限原生构建（Android、iOS、macOS、Windows、Linux）。密钥工具依赖 Rust 原生代码，在 Web 构建中被隐藏。
 - **构建类型**：生产、开发、离线构建均可用。该工具在工具目录中标记为 `offlineCapable: true` 且 `prodCapable: true`。
 - **服务器**：不需要。密钥生成和证书验证（第二个标签页）完全离线。HTTPS 验证（第三个标签页）需要网络访问目标主机。
-- **文件**：证书验证需要设备上的 PEM 文件。文件选择器将文件内容读入内存（`withData: true`），不存储或发送文件路径。
+- **文件**：证书验证需要设备上的 PEM 文件。文件选择器将文件内容读入内存，不存储或发送文件路径。
 
 ## 打开密钥工具
 
@@ -34,16 +34,6 @@ description: 本地生成 P-256 密钥对、验证 x509 证书链、检查远程
    - **Public Key (hex)** — 压缩点编码为十六进制字符串。
    - **Private Key (PEM)** — PKCS#8 PEM 格式。
 4. 每个字段有复制图标。按下后将文本复制到剪贴板，提示 `<label> copied to clipboard`。
-
-### 密钥生成原理
-
-`rust/src/api/crypto.rs` 中的 `generate_ecc_key_pair` 函数使用 `p256` crate：
-
-1. `SigningKey::random(&mut rand::thread_rng())` 生成新的签名密钥。
-2. 私钥通过 `to_pkcs8_pem(Default::default())` 编码为 PKCS#8 PEM 字符串。
-3. 验证密钥编码为压缩点（`to_encoded_point(true)`），再做十六进制编码。
-
-返回的 `EccKeyPair` 结构包含 `publicKey` 和 `privateKey` 两个字符串字段。全程不发起网络请求，密钥不离开设备。
 
 ### 输出格式
 
@@ -81,23 +71,6 @@ description: 本地生成 P-256 密钥对、验证 x509 证书链、检查远程
 | Serial | 原始序列号 |
 | Sig alg | 签名算法 |
 
-### 验证原理
-
-`rust/src/api/crypto.rs` 中的 `verify_cert_with_local_ca` 函数：
-
-1. 安装 `ring` 加密提供者为进程默认（仅执行一次）。
-2. 用 `rustls_pemfile::certs` 将证书 PEM 解析为 DER。第一个证书为叶子，其余为中间证书。
-3. 解析 CA 包 PEM，用 `webpki::anchor_from_trusted_cert` 构建信任锚点。
-4. 调用 `end_entity.verify_for_usage`：
-   - 使用 ring 提供者的签名验证算法。
-   - CA 锚点作为信任根。
-   - 证书文件中的中间证书。
-   - `UnixTime::now()` 检查有效期。
-   - `KeyUsage::server_auth()`。
-5. 如果提供了主机名，调用 `end_entity.verify_is_valid_for_subject_name` 检查 SAN。
-
-返回 `CertVerifyResult`，包含 `valid`、`message` 和 `chain`。证书链始终返回（即使验证失败），方便检查所呈递的证书内容。
-
 ### 失败消息
 
 | 消息 | 原因 |
@@ -127,22 +100,6 @@ description: 本地生成 P-256 密钥对、验证 x509 证书链、检查远程
 
 格式与证书验证标签页相同：**Trusted** / **Not trusted**、消息、证书链卡片。
 
-### HTTPS 验证原理
-
-`rust/src/api/crypto.rs` 中的 `verify_https_with_local_ca` 函数：
-
-1. 构建 `RootCertStore`：
-   - 如果提供了非空的 CA 包 PEM，解析后将其证书加入根存储。
-   - 如果未提供，使用 `webpki_roots::TLS_SERVER_ROOTS`（Mozilla 根证书库）。
-2. 创建带根存储的 `rustls::ClientConfig`，无客户端认证。
-3. 向 `(host, port)` 发起 TCP 连接并完成 TLS 握手。
-4. 握手成功则证书链受信任。通过 `conn.peer_certificates()` 提取对端证书链用于展示。
-5. 握手失败（证书错误、过期、主机名不匹配、不受信任）则结果为 `valid: false`，附带 TLS 错误消息。
-6. 连接超时（默认 10 秒）则结果为 `valid: false`，消息为 `Connection to <host>:<port> timed out`。
-7. 提取完成后干净关闭 TLS 连接。
-
-该函数在独立的 Tokio 运行时（`TLS_RUNTIME`）上运行，与 `flutter_rust_bridge` 自身的运行时隔离。
-
 ### 结果消息
 
 | 消息 | 原因 |
@@ -161,15 +118,15 @@ description: 本地生成 P-256 密钥对、验证 x509 证书链、检查远程
 | 生产 | 是 | 仅限原生平台 |
 | 开发 | 是 | 仅限原生平台 |
 | 离线 | 是 | 证书验证完全离线；HTTPS 需要网络 |
-| Web | 否 | 被隐藏——`requiresRust: true` 且 Web 上 `isRustSupported` 为 `false` |
+| Web | 否 | 被隐藏——依赖 Rust 原生代码，Web 构建不可用 |
 
 ## 已知限制
 
 - **密钥不持久化。** 生成的密钥仅存在于界面状态中。标签页切换时通过 `AutomaticKeepAliveClientMixin` 保持状态，但关闭页面或退出应用后丢失。离开前请先复制密钥。
 - **不支持导入密钥。** 生成标签页只创建新密钥对，没有加载已有私钥的入口。
-- **仅限服务器认证。** 证书验证使用 `KeyUsage::server_auth()`，不支持客户端证书验证。
+- **仅限服务器认证。** 证书验证仅支持服务器认证用途，不支持客户端证书验证。
 - **无 OCSP 或 CRL。** 不检查吊销状态。已被吊销的证书在签名链和有效期完整时仍会通过。
-- **仅支持 P-256。** 密钥生成只使用 `p256` crate，不提供 P-384、P-521、Ed25519 等其他曲线。
+- **仅支持 P-256。** 密钥生成仅支持 NIST P-256 曲线，不提供 P-384、P-521、Ed25519 等其他曲线。
 - **公钥为十六进制而非 PEM。** 公钥是十六进制压缩点，不是 PEM 格式的 SubjectPublicKeyInfo。如需 SPKI 格式请自行转换。
 
 ## 故障排查
@@ -200,7 +157,7 @@ description: 本地生成 P-256 密钥对、验证 x509 证书链、检查远程
 
 ### 证书链卡片显示 `<unparseable: ...>`
 
-`x509-parser` crate 无法解码该证书的 DER。可能是证书使用了不支持的扩展或编码。证书链验证本身使用 `webpki`，即使 `x509-parser` 无法显示详情也可能通过。
+证书详情无法解码。可能是证书使用了不支持的扩展或编码。证书链验证本身可能仍然通过，即使详情无法显示。
 
 ## 推荐流程
 

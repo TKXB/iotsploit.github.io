@@ -3,7 +3,7 @@ title: BLE advertisement discovery
 description: Use an Ubertooth One hardware device to scan for Bluetooth Low Energy advertisements on advertising channels 37, 38, and 39.
 ---
 
-The **Ubertooth BLE Scan** tool uses an Ubertooth One hardware dongle connected to the IoTSploit server to capture Bluetooth Low Energy (BLE) advertisements. It sends HTTP commands to the API server, which drives the Ubertooth via the `drv_ubertooth` driver. This guide documents the tool at commit `c3f20ff8` (version `0.0.17+17`).
+The **Ubertooth BLE Scan** tool uses an Ubertooth One hardware dongle connected to the IoTSploit server to capture Bluetooth Low Energy (BLE) advertisements. It sends HTTP commands to the API server, which drives the Ubertooth.
 
 :::caution[Regulatory compliance]
 Bluetooth operates in the 2.4 GHz ISM band. Capturing BLE traffic may be subject to radio regulations in your jurisdiction. Use this tool only in authorized testing environments.
@@ -11,9 +11,9 @@ Bluetooth operates in the 2.4 GHz ISM band. Capturing BLE traffic may be subject
 
 ## Before you start
 
-- **Platform**: All platforms, including web. The tool does not depend on Rust native code (`requiresRust: false`).
+- **Platform**: All platforms, including web.
 - **Build**: Available in production and development flavors. Marked `offlineCapable: false` — it requires a connection to the IoTSploit API server.
-- **Server**: Required. The Ubertooth One must be physically connected to the server host, and the `drv_ubertooth` driver must be installed.
+- **Server**: Required. The Ubertooth One must be physically connected to the server host, and the Ubertooth driver must be installed.
 - **Hardware**: An Ubertooth One USB dongle. The tool discovers it automatically on screen load.
 
 ## Open Ubertooth BLE Scan
@@ -30,7 +30,7 @@ On screen load, the tool automatically scans for Ubertooth devices:
 
 | Step | Method | Endpoint |
 |---|---|---|
-| 1 | GET | `/api/scan_device/drv_ubertooth/` |
+| 1 | GET | `/api/scan_device/<driver>/` |
 | 2 | Parse | Take the first device from `body['devices']` |
 | 3 | Display | `Device: <device_id>` or `Device: 未发现` (not found) |
 
@@ -42,7 +42,7 @@ Common causes:
 
 - The Ubertooth One is not plugged into the server host.
 - The server host does not have USB permissions for the device.
-- The `drv_ubertooth` driver is not installed on the server.
+- The Ubertooth driver is not installed on the server.
 - The device is in use by another process.
 
 The error from the server is displayed in the error state widget with a retry button.
@@ -75,7 +75,7 @@ How long the scan runs. The default is 10 seconds. The scan is a synchronous HTT
 The tool sends:
 
 ```
-POST /api/execute_device_command/drv_ubertooth/
+POST /api/execute_device_command/<driver>/
 {
   "command": "ble_scan",
   "device_id": "<device_id>",
@@ -142,7 +142,7 @@ This state also appears when the screen is first loaded before any scan has been
 Press **Device Info** to query the Ubertooth for its hardware and firmware details. The tool sends:
 
 ```
-POST /api/execute_device_command/drv_ubertooth/
+POST /api/execute_device_command/<driver>/
 {
   "command": "get_info",
   "device_id": "<device_id>",
@@ -151,31 +151,6 @@ POST /api/execute_device_command/drv_ubertooth/
 ```
 
 The raw JSON response is displayed in a dialog titled `Ubertooth 设备信息` (Ubertooth Device Info). The dialog contains a scrollable, selectable text area with indented JSON. Press **关闭** (Close) to dismiss.
-
-## How it works
-
-### API server dependency
-
-The Ubertooth BLE Scan is a pure-Dart screen. It uses HTTP only — no WebSocket streaming and no Rust bridge. All operations go through the API server:
-
-| Operation | Method | Endpoint | Command |
-|---|---|---|---|
-| Device discovery | GET | `/api/scan_device/drv_ubertooth/` | — |
-| BLE scan | POST | `/api/execute_device_command/drv_ubertooth/` | `ble_scan` |
-| Device info | POST | `/api/execute_device_command/drv_ubertooth/` | `get_info` |
-
-The server-side `drv_ubertooth` driver handles USB communication with the Ubertooth One, firmware loading, and BLE frame capture.
-
-### Scan lifecycle
-
-1. Screen loads → automatic device discovery via `GET /api/scan_device/drv_ubertooth/`.
-2. User configures timeout and channel.
-3. User presses BLE Scan → `POST` with `ble_scan` command.
-4. Server captures BLE advertisements for the specified duration.
-5. Server returns the collected device list.
-6. UI renders the results as cards.
-
-The scan is not real-time — it is a request-response cycle. The UI blocks with a loading indicator until the full scan duration completes and the server returns all results at once.
 
 ## Limitations
 
@@ -202,18 +177,18 @@ No Ubertooth device was found on the server. Verify:
 
 - The Ubertooth One is plugged into the server host via USB.
 - The server has USB permissions (on Linux, the user running the server may need udev rules for the Ubertooth vendor/product ID).
-- The `drv_ubertooth` driver is installed and loaded on the server.
+- The Ubertooth driver is installed and loaded on the server.
 - No other process is using the device.
 
 Press **Scan Device** to retry discovery.
 
 ### `扫描设备失败` (Device scan failed)
 
-The GET request to `/api/scan_device/drv_ubertooth/` returned an error. The full error message is shown in the error state widget. Check the server logs for details.
+The device discovery request returned an error. The full error message is shown in the error state widget. Check the server logs for details.
 
 ### `BLE 扫描失败` (BLE scan failed)
 
-The POST to `/api/execute_device_command/drv_ubertooth/` with `ble_scan` returned an error. The server may not have firmware loaded for the Ubertooth, the device may have been disconnected, or the channel/timeout arguments may be invalid. Check the server logs.
+The BLE scan request returned an error. The server may not have firmware loaded for the Ubertooth, the device may have been disconnected, or the channel/timeout arguments may be invalid. Check the server logs.
 
 ### No BLE devices found after scanning
 

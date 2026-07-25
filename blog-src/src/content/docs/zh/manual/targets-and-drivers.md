@@ -5,7 +5,7 @@ description: 创建、编辑、选择和删除测试目标；发现驱动程序�
 
 **Targets** 页面用于定义你要测试什么。**Drivers** 页面用于管理后端与真实设备通信所用的硬件接口。两个页面都向控制面板使用的同一个 API 服务器发送请求，均不在本地运行任何操作。
 
-本指南依据正式版源码（提交 `c3f20ff8`，版本 `0.0.17+17`）记录两个页面。涵盖目标增删改查、目标编辑对话框的四个选项卡、驱动程序发现与启用/禁用、设备命令的广播与执行，以及命令结果的呈现。
+本指南记录正式版中两个页面的使用方式。涵盖目标增删改查、目标编辑对话框的四个选项卡、驱动程序发现与启用/禁用、设备命令的广播与执行，以及命令结果的呈现。
 
 :::caution[Use only with authorization]
 通过 Drivers 页面发送的设备命令可能与真实硬件交互——读取芯片 ID、扫描总线或发送控制帧。对不属于你或未获授权的硬件运行这些命令可能损坏设备或违反法律。仅在授权的实验室环境中启用驱动程序并执行命令。
@@ -179,36 +179,6 @@ Status 列有一个开关。切换时发送：
 点击 **Connected Devices** 列中的数字。应用调用 `GET /api/scan_device/<driver_id>/` 并打开标题为 `Connected Devices - <driver_id>` 的对话框，列出每个设备及其名称和属性。
 
 如果没有设备连接，提示 `No devices connected to this driver`。
-
-## 实现原理
-
-Targets 和 Drivers 页面不在本地存储数据。每个操作都是向已配置的 API 服务器发送的 HTTP 请求。
-
-**目标操作：**
-
-| 操作 | 方法 | 端点 | 请求体 |
-|---|---|---|---|
-| 列出 | GET | `/api/list_targets/` | — |
-| 选择 | POST | `/api/select_target/` | `{"target_id": "<id>"}` |
-| 创建 | POST | `/api/create_target/` | 完整目标对象 |
-| 编辑 | POST | `/api/edit_target/` | `{"target_id": "<id>", "updates": {...}}` |
-| 删除 | POST | `/api/delete_target/` | `{"target_id": "<id>"}` |
-| 获取类型 | GET | `/api/get_target_types/` | — |
-| 获取组件类型 | GET | `/api/get_component_types/` | — |
-
-**驱动程序操作：**
-
-| 操作 | 方法 | 端点 | 请求体 |
-|---|---|---|---|
-| 列出驱动程序 | GET | `/api/list_device_drivers/` | — |
-| 驱动状态 | GET | `/api/get_driver_states/` | — |
-| 启用 | POST | `/api/enable_driver/` | `{"driver_name": "<name>", "description": "..."}` |
-| 禁用 | POST | `/api/disable_driver/` | 相同 |
-| 列出命令 | GET | `/api/list_device_commands/<driver>/` | — |
-| 扫描设备 | GET | `/api/scan_device/<driver>/` | — |
-| 执行命令 | POST | `/api/execute_device_command/<driver>/` | `{"command": "<cmd>", "device_id": "<id>"}` |
-
-目标编辑对话框在打开时从后端获取目标类型和组件类型。如果这些请求失败，下拉菜单回退到硬编码默认值。
 
 ## 故障排除
 

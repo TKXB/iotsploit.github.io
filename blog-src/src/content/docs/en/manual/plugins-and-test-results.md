@@ -3,7 +3,7 @@ title: From plugin selection to test result
 description: Browse the plugin catalogue, execute individual plugins or groups, read execution progress, and review stored test results.
 ---
 
-The **Plugins** page lists what the backend can run. The **Plugin Groups** page bundles plugins into ordered sequences. The **Test Results** page shows what happened after each execution. This guide walks through all three using the production build at commit `c3f20ff8` (version `0.0.17+17`).
+The **Plugins** page lists what the backend can run. The **Plugin Groups** page bundles plugins into ordered sequences. The **Test Results** page shows what happened after each execution. This guide walks through all three in the production build.
 
 :::caution[Authorization]
 Plugins execute against the selected target. If that target is real hardware or a production service, plugin output depends on what the plugin does — it may read data, send frames, or modify state. Run plugins only against targets you are authorized to test.
@@ -92,7 +92,7 @@ The `result` object has the same shape as the synchronous result: `status` (`"su
 
 On completion:
 
-1. The application saves the result to local storage via `TestResultService.saveTestResult`.
+1. The application saves the result to local storage on the device.
 2. A toast appears with a **View Details** action.
 3. The execution state is removed from the UI after 10 seconds.
 
@@ -100,7 +100,7 @@ If the WebSocket connection itself fails (not the plugin), the execution state i
 
 ### Stop button
 
-While a plugin is running, the Execute button changes to **Stop**. Pressing it calls `_stopAsyncExecution`, which updates the UI state to failed with the message `Stopped by user`. The source code marks this as not yet implemented — there is no backend cancel endpoint, so the backend task continues running. Stopping only changes what the UI shows.
+While a plugin is running, the Execute button changes to **Stop**. Pressing it updates the UI state to failed with the message `Stopped by user`. There is no backend cancel endpoint — the backend task continues running. Stopping only changes what the UI shows.
 
 ## Execution state indicators
 
@@ -239,43 +239,6 @@ Press the **Clear All Results** icon (trash with red color) to remove all result
 
 Press **Clear All** to confirm.
 
-## How it works
-
-The Plugins page and Plugin Groups page communicate with the backend via HTTP. The Test Results page reads from local storage only.
-
-**Plugin operations:**
-
-| Action | Method | Endpoint | Body |
-|---|---|---|---|
-| List plugins | GET | `/api/list_plugin_info/` | — |
-| Execute plugin | POST | `/api/execute_plugin/` | `{"plugin_name": "<name>", "parameters": {...}}` |
-| Load source | POST | `/api/get_plugin_code/` | `{"plugin_path": "<relative>"}` |
-| Save source | POST | `/api/save_plugin_code/` | `{"plugin_path": "<relative>", "code": "<source>"}` |
-
-**Plugin group operations:**
-
-| Action | Method | Endpoint | Body |
-|---|---|---|---|
-| List groups | GET | `/api/list_groups/` | — |
-| List plugin names | GET | `/api/list_plugins/` | — |
-| Create group | POST | `/api/create_group/` | Group definition with `selected_plugins`, `nest_group`, `parent_group_name`, `parent_options` |
-| Execute group | POST | `/api/execute_group/` | `{"group_name": "<name>"}` |
-| Delete group | POST | `/api/delete_group/` | `{"group_name": "<name>"}` |
-
-**Async progress:**
-
-| Connection | URL | Purpose |
-|---|---|---|
-| WebSocket | `<wsBaseUrl>/ws/exploit/<task_id>/` | Stream progress frames for async plugin execution |
-
-**Test result storage:**
-
-| Layer | Mechanism | Key |
-|---|---|---|
-| Local | `SharedPreferences` | `plugin_test_results` |
-
-The `PluginService` class owns the HTTP calls and WebSocket connection logic. It distinguishes sync results (returned inline in the `result` field) from async tasks (identified by a `task_id`). Screens own their own execution-state presentation — the service only performs requests and returns parsed data.
-
 ## Limitations
 
 - **Stop does not cancel backend work.** The Stop button changes the UI state but does not send a cancel request. The backend task continues to completion.
@@ -296,7 +259,7 @@ The plugin's `status` field is not `'success'`. The backend returned the plugin 
 
 ### `Plugin "<name>" is already executing`
 
-The plugin is already in the `_executingPlugins` map. Wait for it to finish (state is removed after 3 seconds for sync, 10 seconds for async), then execute again.
+The plugin is already executing. Wait for it to finish (state is removed after 3 seconds for sync, 10 seconds for async), then execute again.
 
 ### `Error executing plugin: <error>`
 

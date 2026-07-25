@@ -3,7 +3,7 @@ title: SSH terminal and SFTP
 description: Connect to an SSH server, run an interactive terminal, and transfer files with SFTP — all powered by native Rust.
 ---
 
-The **SSH Client** opens an interactive terminal session to a remote host and transfers files over SFTP. Both the SSH protocol and SFTP subsystem are implemented in Rust using the `russh` and `russh_sftp` crates — no external SSH binary is spawned. This guide documents the tool at commit `c3f20ff8` (version `0.0.17+17`).
+The **SSH Client** opens an interactive terminal session to a remote host and transfers files over SFTP. No external SSH binary is spawned — the SSH protocol and SFTP subsystem are built in.
 
 :::caution[Authorization]
 Only connect to hosts you own or are authorized to access. The SSH Client does not verify server host keys (see [Host key handling](#host-key-handling)), which means it cannot detect a man-in-the-middle attack. Use this tool on networks you trust, and verify the server fingerprint out-of-band if the target is sensitive.
@@ -11,7 +11,7 @@ Only connect to hosts you own or are authorized to access. The SSH Client does n
 
 ## Before you start
 
-- **Platform**: Native only (Android, iOS, macOS, Windows, Linux). The SSH Client is hidden on web builds because it depends on Rust native code (`requiresRust: true`).
+- **Platform**: Native only (Android, iOS, macOS, Windows, Linux). The SSH Client is hidden on web builds because it depends on native code not available in the browser.
 - **Build**: Available in all flavors — production, development, and offline. Marked `offlineCapable: true` and `prodCapable: true` in the toolkit catalog.
 - **Server**: Not required. The SSH Client connects directly from the device to the SSH server. No connection to the IoTSploit API server is needed.
 - **Network**: The device must be able to reach the target host on the SSH port (default 22). Firewalls, NAT, or network isolation will prevent or interrupt the connection.
@@ -40,7 +40,7 @@ The screen shows a connection form. Once connected, the form is replaced by a te
 | Method | Fields | Details |
 |---|---|---|
 | Password | Password | Obscured text field |
-| Public Key | Private Key (PEM), Passphrase (optional) | Paste the PEM-encoded private key into a monospace textarea. Passphrase is sent only if non-empty. The Rust side decodes the key with `russh_keys::decode_secret_key`. |
+| Public Key | Private Key (PEM), Passphrase (optional) | Paste the PEM-encoded private key into a monospace textarea. Passphrase is sent only if non-empty. |
 | None | — | Calls `authenticate_none` on the server. Useful for servers with no auth or for testing. |
 
 ### Recent targets
@@ -72,13 +72,13 @@ On failure, an error card appears below the form with the message from the Rust 
 
 | Failure | Message |
 |---|---|
-| TCP connect error | `Connection failed: <russh error>` |
+| TCP connect error | `Connection failed: <error>` |
 | Timeout | `Connection timed out` |
 | Auth rejected | `Authentication failed` |
 
 ## Terminal
 
-The terminal is a full PTY shell rendered with the `xterm` Flutter package. It supports 10,000 scrollback lines and uses the JetBrains Mono font.
+The terminal is a full PTY shell. It supports 10,000 scrollback lines and uses the JetBrains Mono font.
 
 ### Terminal type
 
@@ -86,7 +86,7 @@ The PTY is requested with the terminal type `xterm-256color`. The column and row
 
 ### Keyboard input
 
-**Desktop** (macOS, Windows, Linux, web): Input is handled by a global `HardwareKeyboard` listener that routes keystrokes to the terminal. Clipboard shortcuts are intercepted and sent to the xterm shortcut manager instead of the remote shell:
+**Desktop** (macOS, Windows, Linux, web): Input is handled by a global keyboard listener that routes keystrokes to the terminal. Clipboard shortcuts are intercepted and sent to the terminal's shortcut handler instead of the remote shell:
 
 | Action | Shortcut |
 |---|---|
@@ -113,8 +113,8 @@ When the terminal viewport changes size (window resize, orientation change), the
 
 ### Session lifecycle
 
-- **Disconnect button**: Cancels all in-flight transfers, sends `Disconnect::ByApplication` to the server, and returns to the connection form.
-- **Server-side close**: If the server sends `ExitStatus`, `Eof`, or `Close`, or the stream ends, the terminal marks the session as ended and returns to the form with an error message (`Session ended: <error>`).
+- **Disconnect button**: Cancels all in-flight transfers, disconnects from the server, and returns to the connection form.
+- **Server-side close**: If the server closes the connection or the stream ends, the terminal marks the session as ended and returns to the form with an error message (`Session ended: <error>`).
 - **Screen disposal**: When the screen is disposed (navigated away), the session is disconnected and all transfer subscriptions are cancelled.
 
 ## SFTP file transfer
@@ -155,7 +155,7 @@ The SSH Client includes bidirectional SFTP for uploading (Push) and downloading 
 
 ### Cancellation
 
-Each active transfer can be cancelled individually via the close button. Cancelling sets an `AtomicBool` flag on the Rust side — the transfer loop checks this flag between chunks and aborts. The partial `.part` file is deleted on both upload and download. Disconnecting the SSH session cancels all active transfers.
+Each active transfer can be cancelled individually via the close button. The transfer loop checks the cancellation flag between chunks and aborts. The partial `.part` file is deleted on both upload and download. Disconnecting the SSH session cancels all active transfers.
 
 ## Remote working directory
 
@@ -182,126 +182,11 @@ Tap the CWD chip to open a dialog where you can type a path. The path is resolve
 
 After connecting, the client attempts to resolve the home directory via `sshSftpRealpath(path: '.')`. If SFTP is disabled on the server, this fails silently and the CWD stays at `.` — the chip displays `~ (server default)`. Push and Pull will surface a clearer error when actually used.
 
-## How it works
-
-### Rust architecture
-
-The SSH implementation lives in `rust/src/api/ssh_client.rs`. It uses:
-
-- `russh` — pure-Rust SSH client protocol.
-- `russh_keys` — secret key decoding for public key auth.
-- `russh_sftp` — SFTP subsystem client.
-- `tokio` — async runtime, via a dedicated multi-threaded runtime (`SSH_RUNTIME`) separate from `flutter_rust_bridge`'s own runtime.
-
-Sessions are stored in a static `HashMap<String, SshSession>` keyed by a UUID v4 session ID. Each session holds a shared `HandleArc` (wrapper around `russh::client::Handle`), optional input and resize channel senders, and a cached shell PID.
-
-### Connection flow
-
-1. Generate a UUID v4 session ID.
-2. Create a `russh::client::Config` with `keepalive_interval: 15s`, `keepalive_max: 3`, no inactivity timeout.
-3. Connect to `<host>:<port>` with a timeout of `timeout_secs`.
-4. Authenticate using the selected method (password, public key, or none).
-5. If auth fails, disconnect and return `Authentication failed`.
-6. Store the session handle in the static map.
-7. Return the session ID, server banner (key type + fingerprint), and success flag.
-
-### Shell I/O loop
-
-When `sshShellOpen` is called:
-
-1. Open a new session channel on the SSH connection.
-2. Request a PTY with terminal type `xterm-256color`, cols, and rows.
-3. Request a shell.
-4. Create two `mpsc` channels: one for keyboard input (capacity 256), one for resize events (capacity 16).
-5. Spawn a `tokio::select!` loop that handles three cases simultaneously:
-   - **Server → Dart**: `ChannelMsg::Data` and `ChannelMsg::ExtendedData` bytes are forwarded to the Dart `StreamSink`.
-   - **Dart → Server**: Keyboard input from the input channel is written to the channel via `channel.data()`.
-   - **Resize**: `(cols, rows)` pairs from the resize channel trigger `channel.windowchange()`.
-6. On `ExitStatus`, `Eof`, `Close`, or channel end: break the loop, send EOF, and remove the session from the map.
-
-### SFTP transfer internals
-
-Both upload and download use 64 KB chunks (`SFTP_CHUNK = 64 * 1024`) and throttle progress events to a minimum interval of 50 ms (`PROGRESS_MIN_INTERVAL_MS`).
-
-**Upload** (`do_upload`):
-1. Open the local file and read its total size.
-2. Create `<remote_path>.part` on the remote.
-3. Read local file in 64 KB chunks, write to remote `.part` file.
-4. Check the cancellation flag between chunks. If set, delete `.part` and bail.
-5. Emit progress events (bytes done / total) at most every 50 ms.
-6. After the last chunk, flush and close the remote file.
-7. Best-effort remove the destination file (OpenSSH enforces no-overwrite on SFTP rename).
-8. Rename `.part` to the final remote path.
-9. Always emit a final `done` event — even on success, since the periodic emitter may have skipped the 100% mark.
-
-**Download** (`do_download`):
-1. Get remote file metadata for total size.
-2. Open the remote file for reading.
-3. Create `<local_path>.part` on the local filesystem.
-4. Read remote in 64 KB chunks, write to local `.part` file.
-5. Check cancellation flag between chunks. If set, delete `.part` and bail.
-6. Emit progress events at most every 50 ms.
-7. Flush and close the local file.
-8. Rename `.part` to the final local path using `std::fs::rename` (atomic on the same filesystem).
-9. Always emit a final `done` event.
-
-### Cancellation
-
-Each transfer registers an `Arc<AtomicBool>` in a static `CANCEL_FLAGS` map, keyed by a 16-byte random hex transfer ID. `sshSftpCancel` sets the flag to `true`. The transfer loop checks the flag at the top of each chunk iteration. After the transfer completes (or errors), the flag is unregistered.
-
 ## Host key handling
 
-The `ClientHandler`'s `check_server_key` method **always returns `Ok(true)`**. This means the SSH Client accepts every server host key without verification. The key type and SHA-256 fingerprint are captured and displayed in the status bar, but they are never compared against a known-hosts database.
+The SSH Client **accepts every server host key without verification**. The key type and SHA-256 fingerprint are captured and displayed in the status bar, but they are never compared against a known-hosts database.
 
 This is a deliberate trade-off for usability on embedded and IoT testing workflows where known-hosts files are rarely available and host keys change frequently. It also means the client cannot detect a man-in-the-middle attack. If you need host key verification, use a standard SSH client with `StrictHostKeyChecking` instead.
-
-## Data structures
-
-**SshConnectionConfig** (Dart → Rust):
-
-| Field | Dart type | Rust type |
-|---|---|---|
-| host | String | String |
-| port | int | u16 |
-| username | String | String |
-| authMethod | SshAuthMethod | SshAuthMethod (enum) |
-| timeoutSecs | int | u32 |
-
-**SshAuthMethod** (freezed sealed class):
-
-| Variant | Fields |
-|---|---|
-| password | password: String |
-| publicKey | privateKeyPem: String, passphrase: String? |
-| none | — |
-
-**SshConnectionResult** (Rust → Dart):
-
-| Field | Rust type | Dart type |
-|---|---|---|
-| success | bool | bool |
-| session_id | String | String |
-| server_banner | String | String |
-| error_message | Option<String> | String? |
-
-**SftpDirEntry** (Rust → Dart):
-
-| Field | Rust type | Dart type |
-|---|---|---|
-| name | String | String |
-| size | u64 | BigInt |
-| is_dir | bool | bool |
-| modified_secs | u64 | BigInt |
-
-**SftpProgress** (Rust → Dart, via StreamSink):
-
-| Field | Rust type | Dart type |
-|---|---|---|
-| transfer_id | String | String |
-| bytes_done | u64 | BigInt |
-| bytes_total | u64 | BigInt |
-| done | bool | bool |
-| error | Option<String> | String? |
 
 ## Limitations
 
@@ -329,7 +214,7 @@ The server did not respond within 10 seconds. Check the host and port, verify ne
 
 ### `Connection failed: <error>`
 
-The TCP connection was established but the SSH handshake or authentication failed. The error message from `russh` is included. Common causes: wrong port, non-SSH service on the port, or a protocol mismatch.
+The TCP connection was established but the SSH handshake or authentication failed. Common causes: wrong port, non-SSH service on the port, or a protocol mismatch.
 
 ### `Authentication failed`
 
@@ -337,7 +222,7 @@ The server rejected the credentials. For password auth, verify the password. For
 
 ### Terminal shows no output after connecting
 
-The shell may not have started, or the server may be sending data the terminal cannot decode. The terminal decodes output with `utf8.decode(data, allowMalformed: true)`, so invalid UTF-8 bytes are replaced rather than crashing. If the server sends binary data or the shell is not interactive, you may see no output. Try pressing Enter or running a command like `ls`.
+The shell may not have started, or the server may be sending data the terminal cannot decode. The terminal replaces invalid UTF-8 bytes rather than crashing. If the server sends binary data or the shell is not interactive, you may see no output. Try pressing Enter or running a command like `ls`.
 
 ### CWD chip shows `~ (server default)`
 

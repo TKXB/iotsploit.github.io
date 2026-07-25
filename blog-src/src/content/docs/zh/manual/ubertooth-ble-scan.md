@@ -3,7 +3,7 @@ title: BLE 广播发现
 description: 使用 Ubertooth One 硬件设备扫描广播信道 37、38、39 上的蓝牙低功耗广播。
 ---
 
-**Ubertooth BLE Scan** 工具使用连接到 IoTSploit 服务器的 Ubertooth One 硬件适配器捕获蓝牙低功耗（BLE）广播。它通过 HTTP 向 API 服务器发送命令，服务器通过 `drv_ubertooth` 驱动控制 Ubertooth。本文档对应代码提交 `c3f20ff8`（版本 `0.0.17+17`）。
+**Ubertooth BLE Scan** 工具使用连接到 IoTSploit 服务器的 Ubertooth One 硬件适配器捕获蓝牙低功耗（BLE）广播。它通过 HTTP 向 API 服务器发送命令，服务器控制 Ubertooth 硬件。
 
 :::caution[合规提醒]
 蓝牙工作在 2.4 GHz ISM 频段。捕获 BLE 流量可能受当地无线电法规约束。仅在授权测试环境中使用此工具。
@@ -11,9 +11,9 @@ description: 使用 Ubertooth One 硬件设备扫描广播信道 37、38、39 �
 
 ## 前置条件
 
-- **平台**：所有平台，包括 Web。不依赖 Rust 原生代码（`requiresRust: false`）。
+- **平台**：所有平台，包括 Web。
 - **构建**：生产和开发 flavor 可用。标记为 `offlineCapable: false`——需要连接 IoTSploit API 服务器。
-- **服务器**：必须运行且可访问。Ubertooth One 必须物理连接到服务器主机，且已安装 `drv_ubertooth` 驱动。
+- **服务器**：必须运行且可访问。Ubertooth One 必须物理连接到服务器主机，且服务器已安装相应驱动。
 - **硬件**：Ubertooth One USB 适配器。屏幕加载时自动发现。
 
 ## 打开 Ubertooth BLE Scan
@@ -30,7 +30,7 @@ description: 使用 Ubertooth One 硬件设备扫描广播信道 37、38、39 �
 
 | 步骤 | 方法 | 端点 |
 |---|---|---|
-| 1 | GET | `/api/scan_device/drv_ubertooth/` |
+| 1 | GET | `/api/scan_device/<driver>/` |
 | 2 | 解析 | 取 `body['devices']` 中的第一个设备 |
 | 3 | 显示 | `Device: <device_id>` 或 `Device: 未发现` |
 
@@ -42,7 +42,7 @@ description: 使用 Ubertooth One 硬件设备扫描广播信道 37、38、39 �
 
 - Ubertooth One 未插入服务器主机。
 - 服务器主机无 USB 访问权限。
-- 服务器未安装 `drv_ubertooth` 驱动。
+- 服务器未安装相应驱动。
 - 设备被其他进程占用。
 
 服务器返回的错误会显示在错误状态组件中，附带重试按钮。
@@ -75,7 +75,7 @@ BLE 设备在三个专用广播信道上发送广播：37、38、39。Ubertooth 
 工具发送：
 
 ```
-POST /api/execute_device_command/drv_ubertooth/
+POST /api/execute_device_command/<driver>/
 {
   "command": "ble_scan",
   "device_id": "<device_id>",
@@ -142,7 +142,7 @@ Company 和 Type 字段仅在响应数据中存在时显示。若字段为空或
 点击 **Device Info** 查询 Ubertooth 的硬件和固件信息。工具发送：
 
 ```
-POST /api/execute_device_command/drv_ubertooth/
+POST /api/execute_device_command/<driver>/
 {
   "command": "get_info",
   "device_id": "<device_id>",
@@ -151,31 +151,6 @@ POST /api/execute_device_command/drv_ubertooth/
 ```
 
 原始 JSON 响应显示在标题为 `Ubertooth 设备信息` 的对话框中。对话框包含可滚动、可选择的缩进 JSON 文本。点击 **关闭** 退出。
-
-## 实现原理
-
-### 依赖 API 服务器
-
-Ubertooth BLE Scan 是纯 Dart 屏幕。仅使用 HTTP——无 WebSocket 流式传输，无 Rust 桥接。所有操作通过 API 服务器完成：
-
-| 操作 | 方法 | 端点 | 命令 |
-|---|---|---|---|
-| 设备发现 | GET | `/api/scan_device/drv_ubertooth/` | — |
-| BLE 扫描 | POST | `/api/execute_device_command/drv_ubertooth/` | `ble_scan` |
-| 设备信息 | POST | `/api/execute_device_command/drv_ubertooth/` | `get_info` |
-
-服务器侧的 `drv_ubertooth` 驱动负责与 Ubertooth One 的 USB 通信、固件加载和 BLE 帧捕获。
-
-### 扫描生命周期
-
-1. 屏幕加载 → 通过 `GET /api/scan_device/drv_ubertooth/` 自动发现设备。
-2. 用户设置超时和信道。
-3. 用户点击 BLE Scan → 发送 `ble_scan` 命令的 POST 请求。
-4. 服务器在指定时长内捕获 BLE 广播。
-5. 服务器返回收集到的设备列表。
-6. UI 将结果渲染为卡片。
-
-扫描非实时——为请求-响应周期。UI 在完整扫描时长结束、服务器一次性返回所有结果前显示加载指示器。
 
 ## 局限性
 
@@ -202,14 +177,14 @@ Ubertooth BLE Scan 是纯 Dart 屏幕。仅使用 HTTP——无 WebSocket 流式
 
 - Ubertooth One 已通过 USB 插入服务器主机。
 - 服务器有 USB 访问权限（Linux 上运行服务器的用户可能需要 Ubertooth 厂商/产品 ID 的 udev 规则）。
-- 服务器已安装并加载 `drv_ubertooth` 驱动。
+- 服务器已安装并加载相应驱动。
 - 无其他进程正在使用该设备。
 
 点击 **Scan Device** 重新发现。
 
 ### `扫描设备失败`
 
-对 `/api/scan_device/drv_ubertooth/` 的 GET 请求返回错误。完整错误信息显示在错误状态组件中。查看服务器日志获取详情。
+对 `/api/scan_device/<driver>/` 的 GET 请求返回错误。完整错误信息显示在错误状态组件中。查看服务器日志获取详情。
 
 ### `BLE 扫描失败`
 

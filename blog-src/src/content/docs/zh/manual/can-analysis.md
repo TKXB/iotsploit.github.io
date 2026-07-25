@@ -3,7 +3,7 @@ title: CAN 总线帧发送与接收
 description: 监控 SocketCAN 接口、实时捕获 CAN 帧、通过 IoTSploit API 服务器注入自定义报文。
 ---
 
-**CAN Analysis** 用于监控 SocketCAN 接口的 CAN 总线流量，将收到的帧显示在表格中，并支持注入自定义 CAN 报文。与 Toolkit 中的 Rust 工具不同，此工具完全用 Dart 编写，通过 HTTP 和 WebSocket 与 IoTSploit API 服务器通信，不涉及 Rust 原生代码。本文档对应代码提交 `c3f20ff8`（版本 `0.0.17+17`）。
+**CAN Analysis** 用于监控 SocketCAN 接口的 CAN 总线流量，将收到的帧显示在表格中，并支持注入自定义 CAN 报文。此工具通过 HTTP 和 WebSocket 与 IoTSploit API 服务器通信。
 
 :::caution[授权]
 车辆和工业设备的 CAN 总线流量可能受安全法规和制造商保修条款约束。在活动总线上发送任意帧可能影响车辆行为。仅在你拥有或获得授权的总线上使用此工具，建议优先在台架环境中测试，而非实车。
@@ -11,7 +11,7 @@ description: 监控 SocketCAN 接口、实时捕获 CAN 帧、通过 IoTSploit A
 
 ## 前置条件
 
-- **平台**：所有平台，包括 Web。不依赖 Rust 原生代码（`requiresRust: false`）。
+- **平台**：所有平台，包括 Web。
 - **构建**：生产和开发 flavor 可用。标记为 `offlineCapable: false`——需要连接 IoTSploit API 服务器。
 - **服务器**：必须运行且可访问。工具通过 HTTP 发现和控制设备，通过 WebSocket 流式传输 CAN 帧。
 - **CAN 硬件**：服务器上必须注册有 SocketCAN 兼容接口。工具筛选 `device_type == 'CAN'`、`source == 'dynamic'`、名称以 `SocketCAN_` 开头的设备。
@@ -61,7 +61,7 @@ description: 监控 SocketCAN 接口、实时捕获 CAN 帧、通过 IoTSploit A
 
 | 步骤 | 协议 | 端点 | 请求体 / 参数 |
 |---|---|---|---|
-| 1. 启动 CAN 端口 | HTTP POST | `/api/execute_device_command/drv_socketcan/` | `{"command": "start", "device_id": "<id>"}` |
+| 1. 启动 CAN 端口 | HTTP POST | `/api/execute_device_command/<driver>/` | `{"command": "start", "device_id": "<id>"}` |
 | 2. 建立 WebSocket 流 | WebSocket | `/ws/device/stream/<device_id>/` | — |
 | 3. 接收帧 | WebSocket（入站） | — | `action: "data"` 的 JSON 消息 |
 
@@ -163,50 +163,10 @@ description: 监控 SocketCAN 接口、实时捕获 CAN 帧、通过 IoTSploit A
 
 设备加载失败、连接失败或发送失败时均会在此显示错误。
 
-## 实现原理
-
-### 依赖 API 服务器
-
-CAN Analysis 是纯 Dart 屏幕——不调用任何 Rust 桥接函数。所有 CAN 操作通过 IoTSploit API 服务器完成：
-
-| 操作 | 方法 | 端点 | 用途 |
-|---|---|---|---|
-| 列出设备 | GET | `/api/list_devices/` | 发现 SocketCAN 接口 |
-| 启动端口 | POST | `/api/execute_device_command/drv_socketcan/` | 打开 CAN 端口开始流式传输 |
-| 停止端口 | POST | `/api/execute_device_command/drv_socketcan/` | 关闭 CAN 端口 |
-| 设置波特率 | POST | `/api/execute_device_command/drv_socketcan/` | 配置 CAN 速率 |
-| 接收帧 | WebSocket | `/ws/device/stream/<device_id>/` | 实时 CAN 帧流 |
-| 发送帧 | WebSocket | `/ws/device/stream/<device_id>/` | 向总线注入 CAN 帧 |
-
-服务器侧的 `drv_socketcan` 驱动负责实际的 SocketCAN ioctl 调用和套接字管理。
-
-### 设备命令 API
-
-所有设备命令使用同一端点，请求体为 JSON：
-
-```json
-{
-  "command": "start | stop | set_bitrate",
-  "device_id": "<device_id>",
-  "args": "<可选，如波特率>"
-}
-```
-
-`args` 仅在非空时包含。`set_bitrate` 的 args 值为波特率字符串（如 `"500000"`）。
-
-### WebSocket 协议
-
-WebSocket 连接为双向：
-
-- **入站**（服务器 → 客户端）：`action: "data"` 的 JSON 消息包含 CAN 帧。其他 action 类型被忽略。
-- **出站**（客户端 → 服务器）：`action: "send"` 的 JSON 消息注入 CAN 帧。
-
-客户端不发送心跳或保活消息。服务器关闭 WebSocket 或出错时，状态栏更新为 Disconnected。
-
 ## 局限性
 
 - **仅标准 CAN。** `is_extended_id` 硬编码为 `false`，不支持扩展 29 位 CAN ID。
-- **仅 SocketCAN。** 工具筛选名称以 `SocketCAN_` 开头的设备，使用 `drv_socketcan` 驱动。不支持其他 CAN 接口类型。
+- **仅 SocketCAN。** 工具筛选名称以 `SocketCAN_` 开头的设备。不支持其他 CAN 接口类型。
 - **无帧过滤。** 所有接收到的帧都会显示。没有 ID 过滤器、掩码或捕获缓冲区。表格保留最近 100 条帧。
 - **无日志或导出。** 接收到的帧不会保存到文件。清空表格或离开页面即丢弃所有数据。
 - **无 DBC 或解码。** 仅显示原始十六进制数据。不支持信号解码、DBC 文件导入或人类可读解释。

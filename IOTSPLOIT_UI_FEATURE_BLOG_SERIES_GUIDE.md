@@ -484,15 +484,15 @@ rust/src/api/usbtmc.rs
 test/unit/usbtmc_descriptor_test.dart
 ```
 
-TODO:
+DONE.
 
-- [ ] Confirm desktop operating-system and USB permission requirements.
-- [ ] Document scan, selection, connection, and disconnect states.
-- [ ] Explain SCPI self-description and fallback header discovery.
-- [ ] Document generated Quick Commands and Quick Workflows.
-- [ ] Document interactive prompts and structured result tables.
-- [ ] Document command output and firmware-log consoles.
-- [ ] Explain device-specific behavior and avoid claiming universal commands.
+- [x] Confirm desktop operating-system and USB permission requirements.
+- [x] Document scan, selection, connection, and disconnect states.
+- [x] Explain SCPI self-description and fallback header discovery.
+- [x] Document generated Quick Commands and Quick Workflows.
+- [x] Document interactive prompts and structured result tables.
+- [x] Document command output and firmware-log consoles.
+- [x] Explain device-specific behavior and avoid claiming universal commands.
 - [ ] Reproduce the guide with a named test firmware/device combination.
 
 #### 11. Firmware and Recovery Tools

@@ -13,7 +13,7 @@ Testing features that interact with devices, networks, firmware, or debug interf
 
 ## Evidence and scope
 
-The feature inventory in this guide is verified against the application source at commit `c3f20ff8` (version `0.0.17+17`) and the production flavor configuration. The public download page currently distributes version `0.0.16`. Where source behavior and a released build could differ, the relevant manual states the evidence scope explicitly. Do not treat a development-only route, an unconnected screen, or a bundled asset as proof of a released capability.
+The feature inventory in this guide is verified against the production flavor configuration. Where source behavior and a released build could differ, the relevant manual states the evidence scope explicitly. Do not treat a development-only route, an unconnected screen, or a bundled asset as proof of a released capability.
 
 ## The three application flavors
 
@@ -77,7 +77,7 @@ Tools marked "Requires native" use a Rust bridge that is not available in the we
 
 Two platform checks affect which features a user can open:
 
-- **Threat Modeler** uses an embedded WebView (`flutter_inappwebview`). It is available on macOS, Web, and Windows. On other platforms the menu entry is hidden.
+- **Threat Modeler** uses an embedded WebView. It is available on macOS, Web, and Windows. On other platforms the menu entry is hidden.
 - **Rust-dependent tools** (Key Tool, Port Scanner, SSH Client, FTDI UART) require a native build. The web build hides them because the Rust bridge is unavailable.
 
 ## How the workflow connects

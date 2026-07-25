@@ -3,7 +3,7 @@ title: 从插件选择到测试结果
 description: 浏览插件目录、执行单个插件或插件组、查看执行进度、回顾已保存的测试结果。
 ---
 
-**插件**页面列出后端可以运行的模块。**插件组**页面将多个插件编排为有序序列。**测试结果**页面保存每次执行后的输出。本文基于生产构建源码（commit `c3f20ff8`，版本 `0.0.17+17`）记录这三个页面的完整使用流程。
+**插件**页面列出后端可以运行的模块。**插件组**页面将多个插件编排为有序序列。**测试结果**页面保存每次执行后的输出。本文记录这三个页面的完整使用流程。
 
 :::caution[授权提示]
 插件对当前选中的目标执行操作。如果目标为真实硬件或线上服务，插件的行为取决于其自身逻辑——可能读取数据、发送帧或修改状态。请仅对已获授权的目标运行插件。
@@ -92,7 +92,7 @@ description: 浏览插件目录、执行单个插件或插件组、查看执行�
 
 完成后：
 
-1. 应用通过 `TestResultService.saveTestResult` 将结果保存到本地存储。
+1. 应用将结果保存到本地存储。
 2. 弹出带有 **View Details** 按钮的提示条。
 3. 执行状态在 10 秒后从界面移除。
 
@@ -100,7 +100,7 @@ description: 浏览插件目录、执行单个插件或插件组、查看执行�
 
 ### 停止按钮
 
-插件运行期间，执行按钮变为 **Stop**。按下后调用 `_stopAsyncExecution`，将界面状态更新为失败并显示 `Stopped by user`。源码中标注此功能尚未实现——没有后端取消接口，因此后端任务会继续运行。停止操作只改变界面显示，不影响后端。
+插件运行期间，执行按钮变为 **Stop**。按下后界面状态更新为失败并显示 `Stopped by user`。停止操作只改变界面显示，不向后端发送取消请求，后端任务会继续运行。
 
 ## 执行状态指示
 
@@ -239,43 +239,6 @@ description: 浏览插件目录、执行单个插件或插件组、查看执行�
 
 按 **Clear All** 确认。
 
-## 工作原理
-
-插件页面和插件组页面通过 HTTP 与后端通信。测试结果页面仅从本地存储读取。
-
-**插件操作：**
-
-| 操作 | 方法 | 端点 | 请求体 |
-|---|---|---|---|
-| 列出插件 | GET | `/api/list_plugin_info/` | — |
-| 执行插件 | POST | `/api/execute_plugin/` | `{"plugin_name": "<name>", "parameters": {...}}` |
-| 加载源码 | POST | `/api/get_plugin_code/` | `{"plugin_path": "<relative>"}` |
-| 保存源码 | POST | `/api/save_plugin_code/` | `{"plugin_path": "<relative>", "code": "<source>"}` |
-
-**插件组操作：**
-
-| 操作 | 方法 | 端点 | 请求体 |
-|---|---|---|---|
-| 列出组 | GET | `/api/list_groups/` | — |
-| 列出插件名 | GET | `/api/list_plugins/` | — |
-| 创建组 | POST | `/api/create_group/` | 组定义，含 `selected_plugins`、`nest_group`、`parent_group_name`、`parent_options` |
-| 执行组 | POST | `/api/execute_group/` | `{"group_name": "<name>"}` |
-| 删除组 | POST | `/api/delete_group/` | `{"group_name": "<name>"}` |
-
-**异步进度：**
-
-| 连接 | URL | 用途 |
-|---|---|---|
-| WebSocket | `<wsBaseUrl>/ws/exploit/<task_id>/` | 流式传输异步插件执行的进度帧 |
-
-**测试结果存储：**
-
-| 层 | 机制 | 键 |
-|---|---|---|
-| 本地 | `SharedPreferences` | `plugin_test_results` |
-
-`PluginService` 类封装了 HTTP 调用和 WebSocket 连接逻辑。它区分同步结果（直接返回在 `result` 字段中）和异步任务（由 `task_id` 标识）。界面层自行管理执行状态的展示——Service 只负责请求和返回解析后的数据。
-
 ## 已知限制
 
 - **停止不会取消后端任务。** 停止按钮只改变界面状态，不发送取消请求。后端任务会继续运行至完成。
@@ -296,7 +259,7 @@ description: 浏览插件目录、执行单个插件或插件组、查看执行�
 
 ### `Plugin "<name>" is already executing`
 
-该插件已在 `_executingPlugins` 映射中。等待执行结束后再运行（同步结果 3 秒后移除状态，异步结果 10 秒后移除）。
+该插件已在执行中。等待执行结束后再运行（同步结果 3 秒后移除状态，异步结果 10 秒后移除）。
 
 ### `Error executing plugin: <error>`
 

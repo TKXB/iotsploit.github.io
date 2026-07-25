@@ -5,7 +5,7 @@ description: Create, edit, select, and delete test targets; discover drivers, en
 
 The **Targets** page is where you define what you are testing. The **Drivers** page is where you manage the hardware interfaces the backend uses to talk to real devices. Both pages send requests to the same API server that the Control Panel uses — neither page runs anything locally.
 
-This guide documents both pages using the production build source at commit `c3f20ff8` (version `0.0.17+17`). It covers target CRUD operations, the target edit dialog with its four tabs, driver discovery and enable/disable, advertised device commands, and command result presentation.
+This guide documents both pages in the production build. It covers target CRUD operations, the target edit dialog with its four tabs, driver discovery and enable/disable, advertised device commands, and command result presentation.
 
 :::caution[Use only with authorization]
 Device commands sent through the Drivers page can interact with real hardware — reading chip IDs, scanning buses, or sending control frames. Running these commands against hardware you do not own or are not authorized to test can damage equipment or violate law. Enable drivers and execute commands only in an authorized lab environment.
@@ -179,36 +179,6 @@ Device commands depend entirely on what the backend driver supports. Some comman
 Click the number in the **Connected Devices** column. The application calls `GET /api/scan_device/<driver_id>/` and opens a dialog titled `Connected Devices - <driver_id>` listing each device with its name and attributes.
 
 If no devices are connected, the toast reads `No devices connected to this driver`.
-
-## How it works
-
-The Targets and Drivers pages do not store data locally. Every operation is an HTTP request to the configured API server.
-
-**Target operations:**
-
-| Action | Method | Endpoint | Body |
-|---|---|---|---|
-| List | GET | `/api/list_targets/` | — |
-| Select | POST | `/api/select_target/` | `{"target_id": "<id>"}` |
-| Create | POST | `/api/create_target/` | Full target object |
-| Edit | POST | `/api/edit_target/` | `{"target_id": "<id>", "updates": {...}}` |
-| Delete | POST | `/api/delete_target/` | `{"target_id": "<id>"}` |
-| Get types | GET | `/api/get_target_types/` | — |
-| Get component types | GET | `/api/get_component_types/` | — |
-
-**Driver operations:**
-
-| Action | Method | Endpoint | Body |
-|---|---|---|---|
-| List drivers | GET | `/api/list_device_drivers/` | — |
-| Driver states | GET | `/api/get_driver_states/` | — |
-| Enable | POST | `/api/enable_driver/` | `{"driver_name": "<name>", "description": "..."}` |
-| Disable | POST | `/api/disable_driver/` | Same |
-| List commands | GET | `/api/list_device_commands/<driver>/` | — |
-| Scan devices | GET | `/api/scan_device/<driver>/` | — |
-| Execute command | POST | `/api/execute_device_command/<driver>/` | `{"command": "<cmd>", "device_id": "<id>"}` |
-
-The target edit dialog fetches target types and component types from the backend on open. If those requests fail, the dropdowns fall back to their hardcoded defaults.
 
 ## Troubleshooting
 

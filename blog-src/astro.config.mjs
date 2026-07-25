@@ -70,9 +70,26 @@ export default defineConfig({
           ],
         },
         {
-          label: '手册',
-          translations: { en: 'Manual' },
+          label: '产品基础',
+          translations: { en: 'Product Foundation' },
           items: [
+            { slug: 'manual/iotsploit-ui-overview', label: '功能地图与入门路径', translations: { en: 'Feature Map and Where to Start' } },
+            { slug: 'manual/server-and-build-setup', label: '连接服务并检查配置', translations: { en: 'Connect to Services' } },
+            { slug: 'manual/control-panel-workflow', label: '控制面板工作流', translations: { en: 'Control Panel Workflow' } },
+            { slug: 'manual/targets-and-drivers', label: '目标与硬件驱动', translations: { en: 'Targets and Drivers' } },
+            { slug: 'manual/plugins-and-test-results', label: '插件与测试结果', translations: { en: 'Plugins and Test Results' } },
+          ],
+        },
+        {
+          label: '工具箱',
+          translations: { en: 'Toolkit' },
+          items: [
+            { slug: 'manual/key-tool', label: '密钥工具', translations: { en: 'Key Tool' } },
+            { slug: 'manual/port-scanner', label: '端口扫描', translations: { en: 'Port Scanner' } },
+            { slug: 'manual/ssh-client', label: 'SSH 客户端', translations: { en: 'SSH Client' } },
+            { slug: 'manual/can-analysis', label: 'CAN 总线分析', translations: { en: 'CAN Analysis' } },
+            { slug: 'manual/ubertooth-ble-scan', label: 'Ubertooth BLE 扫描', translations: { en: 'Ubertooth BLE Scan' } },
+            { slug: 'manual/usbtmc-device-control', label: 'USBTMC 设备控制', translations: { en: 'USBTMC Device Control' } },
             { slug: 'manual/file-obfuscator', label: '文件混淆器', translations: { en: 'File Obfuscator' } },
           ],
         },

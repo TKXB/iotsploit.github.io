@@ -3,7 +3,7 @@ title: ECC key generation and certificate verification
 description: Generate P-256 key pairs locally, verify x509 certificate chains against a CA bundle, and check remote HTTPS endpoints.
 ---
 
-The **Key Tool** generates NIST P-256 elliptic curve key pairs and verifies x509 certificate chains. It runs entirely on the device — key generation and certificate parsing happen in native Rust code, not on a server. This guide documents the tool at commit `c3f20ff8` (version `0.0.17+17`).
+The **Key Tool** generates NIST P-256 elliptic curve key pairs and verifies x509 certificate chains. It runs entirely on the device — key generation and certificate parsing happen locally, not on a server.
 
 :::caution[Private key handling]
 Generated private keys are PEM strings shown on screen and copyable to the clipboard. Clipboard contents on most operating systems are readable by other applications. If you copy a private key, clear the clipboard or overwrite it before doing anything else. Do not paste private keys into chat tools, issue trackers, or unencrypted channels.
@@ -11,10 +11,10 @@ Generated private keys are PEM strings shown on screen and copyable to the clipb
 
 ## Before you start
 
-- **Platform**: Native only (Android, iOS, macOS, Windows, Linux). The Key Tool is hidden on web builds because it depends on Rust native code (`requiresRust: true`, `isRustSupported` returns `false` when `kIsWeb` is true).
+- **Platform**: Native only (Android, iOS, macOS, Windows, Linux). The Key Tool is hidden on web builds because it depends on native code not available in the browser.
 - **Build**: Available in all flavors — production, development, and offline. The tool is marked `offlineCapable: true` and `prodCapable: true` in the toolkit catalog.
 - **Server**: Not required. Key generation and certificate verification (Tab 2) work offline. HTTPS verification (Tab 3) requires network access to the target host.
-- **Files**: For certificate verification, you need PEM files on the device. The file picker reads file contents into memory (`withData: true`) — no file paths are stored or sent anywhere.
+- **Files**: For certificate verification, you need PEM files on the device. The file picker reads file contents into memory — no file paths are stored or sent anywhere.
 
 ## Open the Key Tool
 
@@ -34,16 +34,6 @@ The **Generate Key** tab creates a new NIST P-256 (secp256r1) key pair each time
    - **Public Key (hex)** — the compressed point encoded as a hex string.
    - **Private Key (PEM)** — PKCS#8 PEM format.
 4. Each field has a copy icon. Pressing it copies the text to the clipboard and shows a snackbar reading `<label> copied to clipboard`.
-
-### How key generation works
-
-The Rust function `generate_ecc_key_pair` in `rust/src/api/crypto.rs` uses the `p256` crate:
-
-1. `SigningKey::random(&mut rand::thread_rng())` generates a new signing key.
-2. The private key is encoded with `to_pkcs8_pem(Default::default())`, producing a PKCS#8 PEM string.
-3. The verifying key is encoded as a compressed point (`to_encoded_point(true)`) and hex-encoded.
-
-The key pair is returned as an `EccKeyPair` struct with `publicKey` and `privateKey` string fields. No network request is made. The key never leaves the device.
 
 ### Output formats
 
@@ -81,23 +71,6 @@ The result card shows:
 | Serial | Raw serial number |
 | Sig alg | Signature algorithm |
 
-### How verification works
-
-The Rust function `verify_cert_with_local_ca` in `rust/src/api/crypto.rs`:
-
-1. Installs the `ring` crypto provider as the process default (once).
-2. Parses the certificate PEM into DER certificates using `rustls_pemfile::certs`. The first cert is the leaf; the rest are intermediates.
-3. Parses the CA bundle PEM and builds trust anchors using `webpki::anchor_from_trusted_cert`.
-4. Calls `end_entity.verify_for_usage` with:
-   - The ring provider's signature verification algorithms.
-   - The CA anchors as trust roots.
-   - The intermediates from the certificate file.
-   - `UnixTime::now()` for validity window checking.
-   - `KeyUsage::server_auth()`.
-5. If a hostname was provided, calls `end_entity.verify_is_valid_for_subject_name` to check SANs.
-
-The function returns a `CertVerifyResult` with `valid`, `message`, and `chain`. The chain is always returned (even on failure) so you can inspect what was presented.
-
 ### Failure messages
 
 | Message | Cause |
@@ -127,22 +100,6 @@ This tab opens a TCP connection to the host and port you specify. The connection
 
 Same result format as the Verify Certificate tab: **Trusted** / **Not trusted**, message, and certificate chain tiles.
 
-### How HTTPS verification works
-
-The Rust function `verify_https_with_local_ca` in `rust/src/api/crypto.rs`:
-
-1. Builds a `RootCertStore`:
-   - If a CA bundle PEM is provided and non-empty, parses it and adds those certificates as roots.
-   - If no CA bundle is provided, uses `webpki_roots::TLS_SERVER_ROOTS` (Mozilla root store).
-2. Creates a `rustls::ClientConfig` with the root store and no client auth.
-3. Opens a TCP connection to `(host, port)` and performs a TLS handshake.
-4. If the handshake succeeds, the chain is trusted. The peer certificate chain is extracted with `conn.peer_certificates()` for display.
-5. If the handshake fails (certificate error, expired, wrong host, untrusted), the result is `valid: false` with the TLS error message.
-6. If the connection times out (default 10 seconds), the result is `valid: false` with `Connection to <host>:<port> timed out`.
-7. The TLS connection is cleanly shut down after extraction.
-
-The function runs on a dedicated Tokio runtime (`TLS_RUNTIME`), separate from `flutter_rust_bridge`'s own runtime.
-
 ### Result messages
 
 | Message | Cause |
@@ -161,15 +118,15 @@ The function runs on a dedicated Tokio runtime (`TLS_RUNTIME`), separate from `f
 | Production | Yes | Native platforms only |
 | Development | Yes | Native platforms only |
 | Offline | Yes | Certificate verification works fully offline; HTTPS needs network |
-| Web | No | Hidden — `requiresRust: true` and `isRustSupported` is `false` on web |
+| Web | No | Hidden — requires Rust native code, not available on web |
 
 ## Limitations
 
 - **No key persistence.** Generated keys exist only in the UI state. Navigating away from the tab and back preserves state (via `AutomaticKeepAliveClientMixin`), but closing the screen or the app discards them. Copy keys before leaving.
 - **No key import.** The Generate tab only creates new pairs. There is no field to load an existing private key.
-- **Server auth only.** Certificate verification uses `KeyUsage::server_auth()`. Client certificate verification is not supported.
+- **Server auth only.** Certificate verification supports server authentication usage only. Client certificate verification is not supported.
 - **No OCSP or CRL.** Revocation status is not checked. A certificate that has been revoked will still pass if its chain and validity window are intact.
-- **P-256 only.** Key generation uses the `p256` crate exclusively. No other curves (P-384, P-521, Ed25519) are available.
+- **P-256 only.** Key generation supports NIST P-256 exclusively. No other curves (P-384, P-521, Ed25519) are available.
 - **Hex public key, not PEM.** The public key is a hex-encoded compressed point, not a PEM-encoded SubjectPublicKeyInfo. If you need SPKI format, convert it externally.
 
 ## Troubleshooting
@@ -200,7 +157,7 @@ The TCP connect or TLS handshake to the target did not complete within 10 second
 
 ### Certificate chain shows `<unparseable: ...>` for a tile
 
-The `x509-parser` crate could not decode that certificate's DER. The certificate may use an unsupported extension or encoding. The chain verification itself uses `webpki`, which may still succeed even if `x509-parser` cannot display the details.
+The certificate's DER could not be decoded for display. The certificate may use an unsupported extension or encoding. The chain verification itself may still succeed even if the details cannot be displayed.
 
 ## Recommended workflow
 
