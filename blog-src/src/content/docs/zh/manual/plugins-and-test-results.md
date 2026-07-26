@@ -1,295 +1,139 @@
 ---
-title: 从插件选择到测试结果
-description: 浏览插件目录、执行单个插件或插件组、查看执行进度、回顾已保存的测试结果。
+title: 使用插件与测试结果
+description: 在 IoTSploit v0.0.16 中选择并运行插件、组织插件组，以及查看保存在本机的历史结果。
 ---
 
-**插件**页面列出后端可以运行的模块。**插件组**页面将多个插件编排为有序序列。**测试结果**页面保存每次执行后的输出。本文记录这三个页面的完整使用流程。
+**Plugins** 区域用于浏览单个测试、把插件组织成执行组，以及查看历史结果。需要比 Control Panel 中的简洁执行器更多信息或组织能力时，可以从这里开始。
 
-:::caution[授权提示]
-插件对当前选中的目标执行操作。如果目标为真实硬件或线上服务，插件的行为取决于其自身逻辑——可能读取数据、发送帧或修改状态。请仅对已获授权的目标运行插件。
+本文以公开发布的 **v0.0.16** 为准。
+
+:::caution[执行前先检查]
+插件可以通过已配置的服务器与网络、设备、固件和文件交互。只运行可信插件，并且只对已获授权的活动目标执行。启动前检查参数；修改插件源码后，还应先完成代码审查。
 :::
 
-## 前提条件
+## 开始前的检查
 
-- **构建类型**：生产或开发构建。离线构建不包含插件页面。
-- **服务器**：需要可连接的 API 服务器。请先参照[服务器与构建配置](/blog/zh/manual/server-and-build-setup/)完成设置。
-- **目标**：执行插件前必须选中一个目标。可以在[目标与驱动页面](/blog/zh/manual/targets-and-drivers/)选择，也可以在插件页面的目标下拉框中选择。
-- **插件页面**：依赖 `GET /api/list_plugin_info/` 正常返回。
-- **插件组页面**：依赖 `GET /api/list_groups/` 和 `GET /api/list_plugins/` 正常返回。
-- **测试结果页面**：从本地存储读取数据，查看已保存结果不需要服务器连接。
+确认：
 
-## 打开插件页面
+- IoTSploit API 和 WebSocket 服务可用；
+- 选择了正确目标；
+- 插件说明符合本次测试目的；
+- 所需驱动和硬件已经准备好；
+- 已经确定如何保留和解释结果。
 
-1. 在侧边菜单选择 **Plugins**。
+## 查找插件
 
-页面打开时调用 `GET /api/list_plugin_info/`。响应中的 `status` 字段为 `success` 或 `partial` 均可接受。每个插件是一个映射，包含 `name`、`status`、`path`，以及一个 `info` 对象（含 `Description`、`Version`、`Author`，可选 `Parameters`）。
+1. 打开 **Plugins** → **Plugin List**。
+2. 按插件名称、说明、作者或版本搜索。
+3. 查看插件详情。
+4. 确认插件成功加载。
+5. 阅读参数和预期行为。
 
-### 表格列
+执行操作不可用时，通常表示服务器没有成功加载插件。此时应查看服务器日志，不能把它当作目标测试失败。
 
-| 列 | 内容 |
-|---|---|
-| Plugin Name | 插件标识符 |
-| Version | `info.Version`（缺省时显示 `1.0.0`） |
-| Author | `info.Author`（列表类型以逗号连接；缺省时显示 `Unknown`） |
-| Description | `info.Description`（缺省时显示 `No description available`） |
-| Actions | 执行/停止/详情按钮，编辑按钮 |
+## 运行单个插件
 
-搜索框可按名称、描述、作者或版本过滤。移动端自动切换为卡片视图，桌面端可通过控制栏的视图切换图标在表格与卡片之间切换。
+1. 确认页面显示的活动目标。
+2. 选择插件的 **Execute**。
+3. 如果出现 **Enter Parameters**，检查每个值。
+4. 默认值不属于当前实验环境时，应先替换。
+5. 开始执行。
+6. 等待 **Completed** 或 **Failed**。
 
-### 执行按钮的启用条件
+部分插件会立即返回；另一些插件在后台运行，并通过 WebSocket 报告进度。
 
-只有当 `plugin['status']` 等于 `'success'` 时执行按钮才可用。该字段来自后端对 `list_plugin_info` 的响应，反映后端是否成功加载了该插件。状态为其他值时按钮置灰，不可点击。
+异步运行期间选择 **Stop**，v0.0.16 只会停止界面对该任务的跟踪，不会取消服务器任务。需要真正终止操作时，应使用实验室的服务器端停止流程。
 
-## 执行插件
+## 解释结果
 
-在插件行或卡片上按 **Execute**。如果插件的 `info` 中声明了 `Parameters`，会先弹出参数对话框。
+插件结果可能包含：
 
-### 参数对话框
+- 成功或失败状态；
+- 便于阅读的消息；
+- 插件生成的其他数据；
+- 所选目标和执行时间。
 
-对话框标题为 **Enter Parameters**。每个参数渲染为一个文本输入框：
+成功的含义由具体插件决定。它可能只表示请求完成、设备有响应，或检查满足某个条件。IoTSploit 不会自动把每个成功结果判定为漏洞。
 
-- 字段标签为参数键名。
-- 提示文本为参数的 `description` 值。
-- 初始值为参数的 `default` 值（转为字符串）。
-- 如果参数 `type` 为 `int`，键盘切换为数字输入。提交时用 `int.tryParse` 解析，失败则回退到默认值。
-- 其他类型的值以字符串提交。
+重要发现应结合目标文档、可重复证据和专业判断进行验证。
 
-按 **Execute** 确认，或按 **Cancel** 取消不执行。
+## 查看 Test Results
 
-### 同步执行
+从 Plugins 菜单或历史操作打开 **Test Results**。
 
-应用发送 `POST /api/execute_plugin/`，请求体为：
+你可以：
 
-```json
-{
-  "plugin_name": "<name>",
-  "parameters": { "<key>": "<value>" }
-}
-```
+- 按插件、消息或目标搜索；
+- 按日期、插件或状态排序；
+- 打开完整消息和返回数据；
+- 删除单条结果；
+- 清空保存在本机的所有结果。
 
-当插件没有参数时，`parameters` 键省略。
+v0.0.16 的历史结果保存在当前应用配置中，不是服务器审计日志。结果不会自动同步到其他设备。清除应用数据或卸载应用可能删除历史。
 
-如果响应的 `execution_type` 不是 `"async"`，则插件以同步方式运行。响应中的 `result` 映射被直接读取：
+删除前，应先保存测试任务要求保留的证据。向其他人分享结果前，应移除秘密、凭据、客户数据和可识别设备的信息。
 
-| 字段 | 来源 | 缺省值 |
-|---|---|---|
-| 是否成功 | `result.success`（布尔） | `false` |
-| 消息 | `result.message`（字符串） | `No message provided` |
-| 数据 | `result.data`（映射） | `{}` |
+## 创建插件组
 
-成功时弹出 **Plugin Executed Successfully** 对话框，失败时弹出 **Plugin Execution Failed**。两者都包含消息内容，如果 `data` 非空则附带 `Details:` 区块列出每个键值对。
+插件组按你定义的顺序运行多个插件：
 
-### 异步执行
+1. 打开 **Plugin Groups**。
+2. 选择添加操作。
+3. 输入组名和有意义的说明。
+4. 只添加属于同一授权工作流的插件。
+5. 设置执行顺序。
+6. 决定某个插件失败后是否继续。
+7. 保存插件组。
 
-如果响应的 `execution_type` 为 `"async"`，说明后端启动了一个后台任务，响应中包含 `task_id`。应用通过 WebSocket 连接 `<wsBaseUrl>/ws/exploit/<task_id>/`（协议自动转换为 `ws` 或 `wss`）。
+插件组可以嵌套。结构应保持清晰，让其他测试人员在执行前能够理解顺序和失败处理方式。
 
-每个 WebSocket 帧是一个 JSON 对象。应用读取：
+### 安全地运行插件组
 
-- `message` — 更新插件行上显示的执行状态文本。
-- `status` — 当值为 `"complete"` 时，帧中的 `result` 对象包含最终结果。
+执行前：
 
-`result` 对象的结构与同步结果一致：`status`（是否为 `"success"`）、`message`、`data`。
+- 确认活动目标；
+- 检查每个已启用插件；
+- 检查参数和硬件前提；
+- 确认失败后是否继续；
+- 评估整个序列对目标的综合影响。
 
-完成后：
-
-1. 应用将结果保存到本地存储。
-2. 弹出带有 **View Details** 按钮的提示条。
-3. 执行状态在 10 秒后从界面移除。
-
-如果 WebSocket 连接本身失败（非插件失败），执行状态标记为失败，消息为 `Failed to connect: <error>`。
-
-### 停止按钮
-
-插件运行期间，执行按钮变为 **Stop**。按下后界面状态更新为失败并显示 `Stopped by user`。停止操作只改变界面显示，不向后端发送取消请求，后端任务会继续运行。
-
-## 执行状态指示
-
-执行中的插件行或卡片会显示彩色边框和状态圆点：
-
-| 状态 | 颜色 | 图标 | 文本 |
-|---|---|---|---|
-| 运行中 | 橙色 | `play_circle` 或加载圈 | `Running...` / `Running asynchronously...` |
-| 已完成 | 绿色 | `check_circle` | `Completed` |
-| 已失败 | 红色 | `error` | `Failed` |
-
-卡片视图在执行期间会显示已运行时长（`startTime` 到 `endTime` 的秒数）。
+v0.0.16 的插件组没有异步单插件那样的实时进度流。页面长时间没有变化，不代表服务器没有继续工作。
 
 ## 编辑插件源码
 
-按插件行的编辑图标（铅笔），应用打开全屏代码编辑器。
+编辑操作会打开服务器提供的插件源码。保存后，服务器后续执行的测试行为可能发生变化。
 
-编辑器使用 `flutter_code_editor` 包，提供 Python 语法高亮。加载源码时发送 `POST /api/get_plugin_code/`，请求体为 `{"plugin_path": "<relative_path>"}`。路径处理逻辑：先去掉 `file://` 前缀，再从 `plugins/` 开始截取相对路径。
+只有满足以下条件时才应修改：
 
-按保存图标（或浮动按钮）发送 `POST /api/save_plugin_code/`，请求体为 `{"plugin_path": "<relative_path>", "code": "<source>"}`。成功时提示 `Plugin saved successfully`，并刷新父页面的插件列表。
+- 已获授权修改服务器端测试代码；
+- 原始源码已纳入版本控制或完成备份；
+- 其他人员可以审查改动；
+- 可以先在隔离目标上验证。
 
-应用栏显示 `Editing: <plugin_name>`，副标题为文件名。刷新图标会丢弃本地修改并重新从后端加载。
-
-## 插件组
-
-在侧边菜单选择 **Plugin Groups**。
-
-页面打开时加载两项内容：
-
-- `GET /api/list_groups/` — 已有插件组（以树形结构返回，含 `child_groups`）。
-- `GET /api/list_plugins/` — 可选入组的插件名称列表。
-
-### 组结构
-
-一个组包含：
-
-| 字段 | 类型 | 说明 |
-|---|---|---|
-| name | 字符串 | 组标识符 |
-| description | 字符串 | 自由描述 |
-| enabled | 布尔 | 是否可执行 |
-| plugins | 列表 | 组内插件 |
-| childGroups | 列表 | 嵌套子组 |
-
-组内每个插件包含：
-
-| 字段 | 默认值 | 说明 |
-|---|---|---|
-| name | — | 插件标识符 |
-| description | — | 来自后端 |
-| enabled | `true` | 是否参与组执行 |
-| sequence | `100` | 执行顺序（1–200，值小先执行） |
-| ignore_fail | `false` | 为 true 时该插件失败后组继续执行下一个 |
-
-### 创建组
-
-按 **+** 图标打开 **Create Plugin Group** 对话框：
-
-1. 填入 **Group Name**（必填）。
-2. 填入 **Description**（可选）。
-3. 点击插件名称将其选入组。选中的插件显示勾选标记和设置（齿轮）图标。
-4. 按选中插件的齿轮图标可设置 **Execution Sequence**（滑块，1–200）和 **Ignore Failures** 开关。
-5. 如需嵌套到其他组下，勾选 **Nest under another group**，选择 **Parent Group**，可选配置父级关系：
-   - **Sequence** — 本组在父组中的执行顺序（滑块，1–200）。
-   - **Ignore Failures** — 本组失败时父组是否继续执行。
-   - **Force Execution** — 即使父组被禁用也执行本组。
-
-按 **Create** 发送 `POST /api/create_group/`。成功时提示 `Group created successfully` 并刷新列表。
-
-### 执行组
-
-按组卡片上的播放箭头，应用发送 `POST /api/execute_group/`，请求体为 `{"group_name": "<name>"}`。后端按 sequence 顺序运行组内插件。结果同步返回——组执行没有 WebSocket 进度流。
-
-### 删除组
-
-按删除图标（垃圾桶），确认对话框显示 `Are you sure you want to delete "<name>"?`。按 **Delete** 发送 `POST /api/delete_group/`，请求体为 `{"group_name": "<name>"}`。成功后刷新列表。
-
-## 测试结果
-
-在插件页面按历史记录图标，或在侧边菜单选择 **Test Results**。
-
-### 结果存储位置
-
-测试结果使用 `SharedPreferences` 存储在本地设备上，键名为 `plugin_test_results`。结果不会发送到后端，也不会从后端获取。这意味着：
-
-- 结果按设备隔离。在一台机器上执行插件产生的结果不会出现在另一台机器上。
-- 清除应用数据或卸载应用会删除全部结果。
-- 这一层没有服务端的插件执行审计记录。
-
-每条结果记录包含：
-
-| 字段 | 类型 | 说明 |
-|---|---|---|
-| id | 字符串 | UUID v4 |
-| plugin_name | 字符串 | 产生结果的插件 |
-| timestamp | ISO 8601 | 结果保存时间 |
-| success | 布尔 | 插件是否报告成功 |
-| message | 字符串 | 插件返回的消息 |
-| data | 映射 | 插件返回的数据条目 |
-| target_id | 字符串? | 执行时选中的目标 ID |
-| target_name | 字符串? | 目标显示名称 |
-
-### 表格列
-
-| 列 | 内容 | 可排序 |
-|---|---|---|
-| Date/Time | `yyyy-MM-dd HH:mm:ss` | 是（默认降序） |
-| Plugin | 插件名称 | 是 |
-| Status | `Success` 或 `Failure` 标签 | 是 |
-| Message | 首行截断显示 | 否 |
-| Actions | 查看详情、删除 | 否 |
-
-搜索框可按插件名称、消息或目标名称过滤。刷新图标从本地存储重新加载。
-
-### 查看结果详情
-
-按行上的眼睛图标，或点击消息单元格。弹出对话框显示：
-
-- 插件名称
-- 日期（`yyyy-MM-dd HH:mm:ss`）
-- 目标（如有）
-- 消息
-- 详情（`data` 中的每个键值对，非空时显示）
-
-对话框标题根据 `success` 字段显示为 **Test Success** 或 **Test Failure**。
-
-### 删除结果
-
-按行上的删除图标可删除单条结果，提示 `Test result deleted successfully`。
-
-按 **Clear All Results** 图标（红色垃圾桶）删除全部结果。确认对话框显示：
-
-> Clear All Results
->
-> Are you sure you want to delete all test results? This action cannot be undone.
-
-按 **Clear All** 确认。
-
-## 已知限制
-
-- **停止不会取消后端任务。** 停止按钮只改变界面状态，不发送取消请求。后端任务会继续运行至完成。
-- **组执行是同步的。** `POST /api/execute_group/` 会阻塞到组内全部插件执行完毕，没有进度流。
-- **测试结果仅存本地。** 没有服务端持久化。重装应用或清除数据会删除历史记录。
-- **插件上传未实现。** 上传浮动按钮提示 `Plugin upload coming soon!`。
-- **无自动漏洞检测。** 插件返回 `success` 标志、`message` 和 `data` 映射。什么算作发现取决于具体插件的逻辑。界面不做分类或评分。
+v0.0.16 的上传操作不是完整的插件安装流程。
 
 ## 故障排查
 
-### 插件页面一直显示加载动画
+### 插件列表无法加载
 
-`GET /api/list_plugin_info/` 未返回。检查 API 服务器是否可达、服务器地址是否正确。参见[服务器与构建配置](/blog/zh/manual/server-and-build-setup/)。
+检查 API 地址和服务器状态。如果其他依赖服务的页面也失败，请返回 Settings。
 
-### 执行按钮置灰
+### Execute 不可用
 
-插件的 `status` 字段不是 `'success'`。后端在列表中返回了该插件但报告了加载错误。查看后端日志中该插件的具体信息。
+插件未成功加载，或尚未选择目标。阅读插件状态、选择目标并检查服务器日志。
 
-### `Plugin "<name>" is already executing`
+### 无法连接实时进度
 
-该插件已在执行中。等待执行结束后再运行（同步结果 3 秒后移除状态，异步结果 10 秒后移除）。
+检查 WebSocket 地址和防火墙规则。服务器任务可能已经开始，重试前先确认服务器状态。
 
-### `Error executing plugin: <error>`
+### Test Results 中没有结果
 
-`POST /api/execute_plugin/` 请求失败，或响应 `status` 不为 `success`。错误消息包含后端返回内容。注意：选中的目标 ID 会写入保存的测试结果，但不会包含在执行请求体中。
+等待最终状态，刷新页面，并确认当前使用的是运行插件时的同一应用配置。
 
-### 异步执行显示 `Failed to connect: <error>`
+### 插件组提前停止
 
-WebSocket 连接 `/ws/exploit/<task_id>/` 建立失败。检查 WebSocket 基础地址是否配置且可达，后端是否接受了该任务。
+检查执行顺序和失败设置。未设置为忽略失败的插件可能会终止后续序列。
 
-### `Plugin path not available`
+## 下一步
 
-按了编辑按钮但插件的 `path` 字段为空。后端未提供该插件的文件系统路径。内置或虚拟插件可能出现此情况。
-
-### 测试结果页面显示 "No test results found"
-
-本地 `SharedPreferences` 中没有存储结果。全新安装时这是正常的。先执行一个插件，再返回此页面。
-
-### `Error loading test results: <error>`
-
-`SharedPreferences` 中存储的 JSON 无法解析。数据可能已损坏。使用 **Clear All Results** 重置存储。
-
-## 推荐流程
-
-1. 打开 **Plugins**，确认插件列表加载成功。
-2. 在页面上方的目标下拉框中选择一个目标。
-3. 找到要运行的插件，阅读描述并确认状态——执行按钮必须可用。
-4. 如果插件有参数，按执行后在参数对话框中填入参数。
-5. 同步插件会立即弹出结果对话框，异步插件请观察行上的状态指示器。
-6. 打开 **Test Results** 查看已保存的结果。结果包含插件名称、时间戳、成功标志、消息和数据条目。
-7. 批量测试时，打开 **Plugin Groups**，创建组、添加插件并设置 sequence，然后执行整个组。
-8. 如需查看或修改插件源码，按插件行的编辑图标打开代码编辑器。
-
-密钥生成与证书验证请参阅 [密钥工具](/blog/zh/manual/key-tool/)。
+如需完成以单个目标为中心的流程，请返回 [Control Panel](/blog/zh/manual/control-panel-workflow/)；如需在本机处理密钥和证书，请继续阅读 [Key Tool](/blog/zh/manual/key-tool/)。

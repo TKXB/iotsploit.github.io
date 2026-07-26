@@ -1,170 +1,111 @@
 ---
 title: Connect IoTSploit to its services
-description: Configure the API and WebSocket server addresses, use automatic discovery, and verify connectivity in the production and offline builds.
+description: Configure the API and WebSocket addresses in IoTSploit v0.0.16 and confirm that server-dependent pages can connect.
 ---
 
-IoTSploit's backend-dependent features — Control Panel, Targets, Drivers, Plugins, and the Fuzzer — require a reachable API server and WebSocket server. The Settings page is where you configure these addresses, set the log level, choose a language and theme, and check the application version. The offline build skips server configuration because its tools run locally.
+Control Panel, Targets, Drivers, Plugins, and Fuzzer need a reachable IoTSploit server. Configure that connection in **Settings** before using those areas.
 
-This guide documents the Settings page using the exact labels visible in the production build. It covers server discovery, manual configuration, connectivity verification, and the differences between the production, development, and offline builds.
+This guide covers the public **v0.0.16** release. The offline build does not show server settings because its available tools are designed to run without the IoTSploit backend.
 
-## Open Settings
+## Before you start
 
-1. Open the IoTSploit application.
-2. Select **Settings** in the side menu.
+Prepare:
 
-The Settings page is organized into sections: Server Configuration, System Configuration, Application Settings, Security, System, Legal, and About. In the offline build, the Server Configuration, System Configuration, and Security sections are hidden because they are not needed for local-only tools.
+- the API base URL supplied by the server administrator;
+- the WebSocket base URL supplied by the server administrator;
+- network access from your device to both addresses;
+- permission to use the server and the targets it manages.
 
-## Server Configuration
+Use `http://` or `https://` for the API address and `ws://` or `wss://` for the WebSocket address. Do not paste credentials, access tokens, or endpoint paths into either base URL.
 
-This section appears only in non-offline builds. It contains server discovery, the two base URLs, and an endpoint viewer.
+## Open the server settings
 
-### Discover Server
+1. Open IoTSploit.
+2. Select **Settings**.
+3. Find **Server Configuration**.
 
-On native platforms (Android, iOS, Windows, Linux, macOS), Settings shows a **Discover Server** tile with a **Discover** button. Pressing it sends a UDP broadcast on port `37020` with the message `SAT_DISCOVERY_REQUEST`. A reachable IoTSploit server on the local network replies with its HTTP port, WebSocket port, name, and version. The application fills in the API and WebSocket base URLs automatically and shows a confirmation: `Server found: <name> at <ip>`.
+If **Server Configuration** is absent, you are probably using the offline build.
 
-If no server responds within five seconds, the application shows: `No server found. Please configure manually.`
+## Discover a server on the local network
 
-On the web build, the tile is replaced by an information notice: **Auto-discovery Not Available**. Web platforms cannot send UDP broadcasts, so you must configure the addresses manually.
+Native builds provide **Discover Server**:
+
+1. Connect the IoTSploit client and server to the same local network.
+2. Select **Discover**.
+3. Wait up to five seconds.
+4. If a server is found, confirm that the displayed name and address belong to the server you intend to use.
+
+The application fills in the API and WebSocket addresses from the discovery response. Discovery is not available in the Web build because browsers cannot send the required local-network UDP broadcast.
+
+Discovery is a convenience, not an identity check. On an untrusted network, enter addresses supplied by your administrator instead of accepting an unknown response.
+
+## Enter the addresses manually
 
 ### API Base URL
 
-The **API Base URL** tile shows the current base URL for HTTP API endpoints. Press the edit icon to open a dialog, enter the full URL (for example `http://192.168.1.10:8888`), and save.
+1. Select the edit action beside **API Base URL**.
+2. Enter the full base address, such as `http://192.0.2.10:8888`.
+3. Save the change.
 
-This value is stored locally on the device using SharedPreferences. It is not sent to a third party. The default value is a placeholder (`0.0.0.0:8888`) that does not point to a real server; replace it before using any backend-dependent feature.
+The default `0.0.0.0:8888` value is not a usable remote address and must be replaced.
 
 ### WebSocket Base URL
 
-The **WebSocket Base URL** tile shows the current base URL for WebSocket connections. Edit it the same way as the API Base URL. WebSocket URLs use the `ws://` or `wss://` scheme. The default value is a placeholder (`0.0.0.0:9999`) that must be replaced.
+1. Select the edit action beside **WebSocket Base URL**.
+2. Enter the full base address, such as `ws://192.0.2.10:9999`.
+3. Save the change.
 
-The WebSocket server carries async plugin execution progress, live system usage, device streams, console logs, and the AI assistant session. It must use the same host as the API server in a typical deployment, but the ports can differ.
+The default `0.0.0.0:9999` value must also be replaced. Use secure `https://` and `wss://` addresses when the server is exposed beyond an isolated lab.
 
-### API Endpoints
+## Confirm the connection
 
-The **API Endpoints** tile fetches `GET /api/list_urls/` from the configured API Base URL and opens a searchable dialog of available endpoints. Each entry shows its name, URL pattern, HTTP method, and description, grouped by category.
+Use two checks:
 
-This dialog is a practical connectivity check: if the endpoint list loads, the API server is reachable and responding. If the request fails, the application shows an error toast.
+1. Open **API Endpoints** in Settings. A searchable endpoint list should appear.
+2. Open **Control Panel**. Targets, plugins, and devices should load without a connection-error banner.
 
-## System Configuration
+Loading the endpoint list confirms that the API server responded. It does not confirm that the WebSocket service works. An asynchronous plugin run or live log connection is needed to exercise WebSocket traffic.
 
-This section appears only in non-offline builds.
+## Other useful settings
 
-### Log Level
+- **Log Level** changes the amount of diagnostic output. Use `INFO` for normal operation and `DEBUG` only while investigating a problem.
+- **Terminal Startup Command** applies to builds that include an embedded terminal.
+- **Theme** changes between Light, Dark, and System appearance.
+- **Language** changes the interface language.
+- **About** shows the application version, build number, release date, and platform.
 
-The **Log Level** tile shows the current level. Press **Change** to choose from `DEBUG`, `INFO`, `WARNING`, `ERROR`, and `CRITICAL`. The selected level is stored locally and also sent to the server through `POST /api/set_log_level/` with a JSON body `{"level": "<level>"}`. If the server request fails, the application shows an error.
+In v0.0.16, **Notifications**, **API Keys**, **Authentication**, and **Backup & Restore** may be visible without opening a complete management workflow. Do not rely on those entries for credential management or backup.
 
-### Terminal Startup Command
+## What is saved locally
 
-The **Terminal Startup Command** tile configures the command that runs when an embedded terminal starts. Edit it to match your local environment. This value is stored locally and is only relevant for builds that include an embedded terminal.
+IoTSploit saves the configured server addresses and several interface preferences on the device so they remain after restart. Anyone who can use the same application profile may be able to see the saved server addresses.
 
-## Application Settings
-
-### Theme
-
-The **Theme** tile offers a segmented button with three options: **Light**, **Dark**, and **System**. The choice is applied immediately and persists across restarts.
-
-### Notifications
-
-In non-offline builds, a **Notifications** tile appears. In the current source it does not open a connected screen; treat it as a reserved entry until a notifications management screen is connected.
-
-## Security
-
-In non-offline builds, a **Security** section contains **API Keys** and **Authentication** tiles. In the current source these tiles do not open connected screens; they are reserved entries. Do not assume that API key or authentication management is available until a connected screen ships in a release.
-
-## System
-
-### Language
-
-The **Language** tile opens a selection dialog. Supported languages are English, Simplified Chinese, and Spanish. The current choice is shown on the tile and applied immediately.
-
-### Backup & Restore
-
-In non-offline builds, a **Backup & Restore** tile appears. In the current source it does not open a connected screen; treat it as a reserved entry.
-
-## Legal
-
-The **Privacy Policy** tile opens `https://www.iotsploit.org/privacy.html` in an external browser. If the URL cannot be opened, the application shows a fallback message directing you to the website.
-
-## About
-
-The About section shows:
-
-- **Version** — the application version from the build.
-- **Build** — the build number.
-- **Released** — the release date compiled into the build.
-- **Platform** — the detected platform label (for example, Linux, Windows, macOS, or Desktop (Web)).
-
-## Flavor differences
-
-| Setting area | Production | Development | Offline |
-|---|---|---|---|
-| Server Configuration | Yes | Yes | Hidden |
-| System Configuration | Yes | Yes | Hidden |
-| Application Settings (Theme) | Yes | Yes | Yes |
-| Notifications | Shown (reserved) | Shown (reserved) | Hidden |
-| Security | Shown (reserved) | Shown (reserved) | Hidden |
-| Language | Yes | Yes | Yes |
-| Backup & Restore | Shown (reserved) | Shown (reserved) | Hidden |
-| Legal | Yes | Yes | Yes |
-| About | Yes | Yes | Yes |
-
-The offline build is titled "Toolkit" and starts on the Toolkit page. It exposes only theme, language, legal, and about settings because its tools do not contact a backend.
-
-## Verify connectivity without a private endpoint
-
-To confirm that the configured server is reachable:
-
-1. Open **Settings** → **Server Configuration** → **API Endpoints**. If the endpoint list loads, the API server is reachable.
-2. Open **Control Panel**. The page loads targets, plugins, and devices on open. If it shows a connection error banner, the server is not reachable.
-3. Use the **Retry** button on the banner to reload, or press **API Settings** to jump back to the API Base URL tile.
-
-The endpoint-list request uses the public `/api/list_urls/` route. It does not require authentication or access to a private target.
-
-## What is stored locally
-
-These values are stored on the device using SharedPreferences and persist across restarts:
-
-- API Base URL
-- WebSocket Base URL
-- Terminal Startup Command
-- Log Level
-- Theme mode
-- Language
-
-Server discovery does not store anything until you press **Discover** and the application writes the discovered addresses into the API and WebSocket Base URL fields.
+The base-address fields are not intended for passwords or API keys. Treat any server URL containing sensitive query parameters as exposed and replace it with a clean base URL.
 
 ## Troubleshooting
 
-### Connection error banner on Control Panel
+### No server is found
 
-The banner reads `Unable to connect to backend at <host>` and offers **Retry** and **API Settings**. Check that the API Base URL is correct, that the server process is running, and that no firewall blocks the port. Press **API Settings** to correct the address.
+- Confirm the client and server are on the same subnet.
+- Check that local firewalls allow discovery traffic.
+- If you are using the Web build, enter the addresses manually.
+- Ask the administrator for the correct API and WebSocket addresses.
 
-### "No server found. Please configure manually."
+### API Endpoints does not load
 
-Server discovery sent the UDP broadcast and received no reply within five seconds. The server may be on a different subnet, the network may block UDP broadcasts, or you may be on the web build where discovery is unavailable. Configure the API Base URL and WebSocket Base URL manually.
+- Check the scheme, host, and port.
+- Confirm the server process is running.
+- Confirm the device can reach the server through the firewall or VPN.
+- If HTTPS is used, confirm the certificate is trusted on the client device.
 
-### "Auto-discovery Not Available"
+### Control Panel loads data but live progress fails
 
-This notice appears on the web build. Web platforms cannot send UDP broadcasts. Enter the API Base URL and WebSocket Base URL manually.
+The API address may be correct while the WebSocket address is wrong or blocked. Recheck the WebSocket scheme, host, port, proxy, and firewall rules.
 
-### "Failed to save API Base URL configuration"
+### Settings cannot save an address
 
-SharedPreferences could not persist the value. This can happen if device storage is full or restricted. Restart the application and retry. If it persists, check the platform's storage permissions for the application.
+Restart the application and try again. If saving still fails, check available device storage and application storage restrictions.
 
-### Endpoint list fails to load
+## Next step
 
-The `GET /api/list_urls/` request failed. Confirm the API Base URL uses the correct scheme, host, and port. If the server uses HTTPS with a self-signed certificate, the application's HTTP client may reject the connection. Use a valid certificate or a trusted `http://` address in a controlled lab.
-
-### Log level change shows an error
-
-The level was saved locally but the `POST /api/set_log_level/` request failed. The local level is still applied on the device. If you need the server to honor the new level, verify server connectivity and retry.
-
-## Recommended workflow
-
-1. Install the production build on a native platform if you want server discovery.
-2. Open **Settings** → **Server Configuration**.
-3. Press **Discover** or enter the API Base URL and WebSocket Base URL manually.
-4. Open **API Endpoints** to confirm the server responds.
-5. Open **Control Panel** to confirm that targets and plugins load.
-6. Set the log level, language, and theme to your preference.
-
-Once the server is reachable, continue to the [Control Panel workflow](/blog/en/manual/control-panel-workflow/) to run an authorized test.
+After both addresses are configured, continue with [Run an authorized test from Control Panel](/blog/en/manual/control-panel-workflow/).

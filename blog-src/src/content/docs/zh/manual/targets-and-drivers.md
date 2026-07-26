@@ -1,233 +1,127 @@
 ---
-title: 管理测试目标与硬件驱动
-description: 创建、编辑、选择和删除测试目标；发现驱动程序、启用或禁用它们，并运行设备命令。
+title: 管理目标与硬件驱动
+description: 在 IoTSploit v0.0.16 中创建并选择授权测试目标，然后准备所需驱动和外接设备。
 ---
 
-**Targets** 页面用于定义你要测试什么。**Drivers** 页面用于管理后端与真实设备通信所用的硬件接口。两个页面都向控制面板使用的同一个 API 服务器发送请求，均不在本地运行任何操作。
+**目标（Target）**描述准备评估的系统，**驱动（Driver）**把 IoTSploit 服务连接到硬件接口，检测到的**设备（Device）**则是该驱动可以使用的物理适配器或仪器。
 
-本指南记录正式版中两个页面的使用方式。涵盖目标增删改查、目标编辑对话框的四个选项卡、驱动程序发现与启用/禁用、设备命令的广播与执行，以及命令结果的呈现。
+本文以公开发布的 **v0.0.16** 为准。
 
-:::caution[Use only with authorization]
-通过 Drivers 页面发送的设备命令可能与真实硬件交互——读取芯片 ID、扫描总线或发送控制帧。对不属于你或未获授权的硬件运行这些命令可能损坏设备或违反法律。仅在授权的实验室环境中启用驱动程序并执行命令。
+:::caution[保护真实系统]
+只添加和操作已获授权的目标。设备命令可能重置硬件、发送数据、擦除状态或影响连接的物理系统。首次操作应使用隔离、可替换的实验设备，并优先选择只读命令。
 :::
 
-## 前置条件
+## 开始前的准备
 
-- **构建版本**：正式版或开发版。离线版不包含 Targets 和 Drivers。
-- **服务器**：可访问的 API 服务器。服务器不可达时两个页面均会显示加载错误。请先按照[连接 IoTSploit 服务](/blog/zh/manual/server-and-build-setup/)完成配置。
-- **Targets 页面**：需要 `GET /api/list_targets/` 成功。创建目标需要 `POST /api/create_target/`。
-- **Drivers 页面**：需要 `GET /api/list_device_drivers/` 和 `GET /api/get_driver_states/` 成功。命令执行需要后端已安装相应驱动程序且已连接兼容设备。
+你需要：
 
-## 目标、驱动程序与设备
-
-| 概念 | 含义 | 存储位置 |
-|---|---|---|
-| 目标 | 描述被测系统的记录——名称、类型、IP、组件、接口 | 后端数据库（通过 API） |
-| 驱动程序 | 后端的硬件接口模块——如 CAN 适配器、Ubertooth 或 ADB 桥接 | 后端进程 |
-| 设备 | 连接到驱动程序的物理单元——通过扫描驱动程序发现 | 物理硬件 |
-
-目标告诉后端测*什么*。驱动程序告诉后端*怎么*连接。你在控制面板中选择目标来运行插件，在 Drivers 页面或控制面板的设备面板中启用驱动程序。
-
-## 打开 Targets 页面
-
-1. 打开 IoTSploit 应用。
-2. 在侧边菜单中选择 **Targets**。
-
-页面打开时从 `GET /api/list_targets/` 加载目标。桌面端显示表格，移动端显示卡片网格。
-
-### 表格列
-
-| 列 | 内容 |
-|---|---|
-| Name | 目标名称 |
-| Type | 类型标签（Vehicle、ECU、Phone、IoT、Router、Camera、Generic） |
-| Status | Active 或 Inactive 标签 |
-| Components | 已注册组件数量 |
-| Interfaces | 已注册接口数量 |
-| IP | IP 地址（等宽字体） |
-| Location | 自由文本位置 |
-| Actions | 详情、编辑、删除 |
-
-搜索框按名称、类型或 IP 地址筛选。两个下拉菜单分别按类型和状态筛选。**Add New Target** 按钮以创建模式打开编辑对话框。
+- 可用的 IoTSploit API 服务连接；
+- 已确认的目标名称和测试范围；
+- 目标类型，以及适用时的网络地址；
+- 所需适配器、操作系统驱动和设备权限；
+- 一份实验室中允许执行的命令清单。
 
 ## 创建目标
 
-按 **Add New Target**。应用生成临时 ID（`target_<时间戳>`）并以空字段打开编辑对话框。填写必填字段后按 **Save Changes**。应用发送 `POST /api/create_target/`，包含完整目标对象。成功时提示 `Target created successfully` 并刷新列表。
+1. 打开 **Targets**。
+2. 选择 **Add New Target** 或 **Add Your First Target**。
+3. 输入清晰的 **Target Name**。
+4. 选择连接服务器提供的目标类型。
+5. 设置状态，并按需填写 IP 地址或位置。
+6. 只有在内容确实属于该目标时，才添加组件和接口。
+7. 选择 **Save Changes**。
 
-**name** 字段为必填。如果以空名称保存，应用提示 `Target name is required`，不会发送请求。
+保存后，目标应出现在列表中。Target Name 不能为空。
 
-## 编辑目标
+### 组件和接口
 
-在目标行上按编辑图标（铅笔）。编辑对话框以当前数据打开。修改字段后按 **Save Changes**。应用发送 `POST /api/edit_target/`，请求体为 `{"target_id": "<id>", "updates": {...}}`。成功时提示 `Target updated successfully` 并刷新列表。
+**Components** 用于描述目标中与测试相关的部分，例如 ECU、传感器、网络服务或服务器提供的其他组件类型。
 
-## 目标编辑对话框
+**Interfaces** 用于记录接触或观察目标的方式，例如网络、串口、CAN、JTAG 或服务器提供的其他接口。
 
-对话框有四个选项卡。
+这些字段只用于描述测试上下文。添加接口不会自动连接硬件，也不能证明该接口确实可访问。
 
-### Basic Info
+## 选择活动目标
 
-| 字段 | 输入方式 | 说明 |
-|---|---|---|
-| Target Name | 文本 | 必填 |
-| Target Type | 下拉菜单 | 值从 `GET /api/get_target_types/` 获取；默认为 `generic` 和 `vehicle` |
-| Status | 下拉菜单 | `active` 或 `inactive` |
-| IP Address | 文本 | 可选 |
-| Location | 文本 | 可选 |
+选择目标所在的行或卡片。该目标会成为 Control Panel 和插件执行使用的活动目标。
 
-### Properties
+启动插件前应再次确认活动目标。相似名称或过期记录可能导致测试错误的系统。
 
-自由格式的键值映射。可以添加、编辑和删除属性。每个属性有名称（键）和值（字符串）。名称为必填。
+## 编辑或删除目标
 
-### Components
+使用编辑操作修改目标的名称、类型、状态、属性、组件或接口。
 
-附加到目标的硬件组件列表。每个组件包含：
+删除目标会将其从服务器管理的列表中移除。删除前：
 
-- Component ID（必填）
-- Component Name（必填）
-- Component Type（下拉菜单，从 `GET /api/get_component_types/` 获取；默认：`generic`、`adb_device`、`camera`、`sensor`、`network`、`ecu`、`infotainment`）
-- Status（自由文本，默认为 `active`）
-- Properties（与 Properties 选项卡相同的键值子编辑器）
+1. 确认没有正在进行的测试依赖该目标；
+2. 保存仍需保留的结果和记录；
+3. 再次核对选中的目标；
+4. 在确认对话框中完成删除。
 
-当组件类型为 `adb_device` 或 `infotainment` 时，显示三个额外字段：
+删除目标记录不会撤销已经对物理系统执行的操作。
 
-- ADB Serial ID（可选）
-- USB Vendor ID（可选）
-- USB Product ID（可选）
+## 准备硬件驱动
 
-### Interfaces
+1. 打开 **Drivers**。
+2. 找到插件或工具需要的驱动。
+3. 阅读驱动说明和它提供的命令。
+4. 启用该驱动。
+5. 确认状态变为 enabled。
+6. 打开已连接设备列表。
 
-网络或调试接口列表。每个接口包含：
+驱动出现在列表中，不代表硬件已经连接。USB 设备已连接，也不代表权限、固件和服务器端支持均已满足。
 
-- Interface ID
-- Interface Name
-- Interface Type（自由文本——如 `diagnostic`、`usb`、`network`、`bluetooth`）
-- Status
+## 检查已连接设备
 
-## 选择目标
+选择驱动的设备数量。对话框会列出驱动发现的设备，并可能显示名称、序列号、Vendor ID 或 Product ID。
 
-点击目标行（移动端点击目标卡片）。应用发送 `POST /api/select_target/`，请求体为 `{"target_id": "<id>"}`。成功时提示 `Target selected successfully` 并高亮该行。
+如果列表为空：
 
-选中的目标是控制面板执行插件时使用的目标。在此选择目标与在控制面板中选择目标效果相同——都调用同一个端点。
+- 检查供电和线缆；
+- 确认适配器连接到运行服务的主机；
+- 检查操作系统权限；
+- 确认驱动支持该硬件和固件；
+- 重新连接设备后再次扫描。
 
-## 删除目标
+## 安全地运行设备命令
 
-在目标行上按删除图标（垃圾桶）。出现确认对话框：
+只有理解命令作用后才可执行：
 
-> Delete Target
->
-> Are you sure you want to delete this target? This action cannot be undone.
->
-> "<target name>"
+1. 阅读命令说明；
+2. 选择检测到的设备；
+3. 首次操作优先使用识别或状态命令；
+4. 确认目标已经隔离；
+5. 执行命令；
+6. 记录界面结果和设备上的实际变化。
 
-按 **Delete** 确认。应用发送 `POST /api/delete_target/`，请求体为 `{"target_id": "<id>"}`。成功时提示 `Target deleted successfully` 并刷新列表。
+原始命令输出仍需人工解释。成功响应只表示驱动返回了结果，不能证明设备正常或安全。
 
-## 打开 Drivers 页面
+## 故障排查
 
-1. 在侧边菜单中选择 **Drivers**。
+### Targets 没有任何记录
 
-页面打开时加载两组数据：
+创建第一个目标。如果保存失败，请检查 API 连接，并使用服务器接受的目标类型。
 
-- `GET /api/get_driver_states/` — 各驱动程序的启用/禁用状态。
-- `GET /api/list_device_drivers/` — 可用驱动程序名称列表。
+### 无法选择目标
 
-然后对每个驱动程序加载：
+刷新页面后重试。如果仍然失败，请检查服务器连接，并确认目标没有被其他会话删除。
 
-- `GET /api/list_device_commands/<driver_id>/` — 该驱动程序广播的命令。
-- `GET /api/scan_device/<driver_id>/` — 已连接设备数量。
+### Drivers 没有任何条目
 
-### 表格列
+确认服务器可达，并且已经配置硬件驱动。应用不会自动安装服务器端驱动。
 
-| 列 | 内容 |
-|---|---|
-| Driver ID | 驱动程序名称（标识符） |
-| Name | 与 Driver ID 相同 |
-| Driver Type | 类型标签（后端不提供时默认为 `Unknown`） |
-| Connected Devices | 可点击的数字，打开详情对话框 |
-| Status | 开关——`Enabled` 或 `Disabled` |
-| Actions | 驱动程序广播的命令按钮 |
+### 无法启用驱动
 
-## 启用和禁用驱动程序
+检查服务器消息、驱动安装、硬件连接和操作系统权限。设备操作进行时，不要反复切换驱动状态。
 
-Status 列有一个开关。切换时发送：
+### 设备命令不可用
 
-- 启用：`POST /api/enable_driver/`，请求体为 `{"driver_name": "<name>", "description": "Changed from UI"}`
-- 禁用：`POST /api/disable_driver/`，请求体相同
+启用驱动并确认检测到兼容设备。部分命令只有在驱动报告所需状态后才会启用。
 
-成功时开关更新，提示 `Driver <name> enabled successfully` 或 `Driver <name> disabled successfully`。每次切换后设备列表重新加载。
+### 命令执行失败
 
-禁用的驱动程序无法执行命令——命令按钮变灰且不可交互。
+不要立即重复可能改变状态的命令。先检查设备、服务器日志、供电、权限和命令前提。
 
-## 运行设备命令
+## 下一步
 
-每个驱动程序广播一组命令，从 `GET /api/list_device_commands/<driver_id>/` 获取。命令以按钮形式显示在 Actions 列中。如果驱动程序有超过两个命令，前两个显示为按钮，其余在 **More** 下拉菜单中。
-
-按下命令按钮会触发以下流程：
-
-1. 应用调用 `GET /api/scan_device/<driver_id>/` 列出已连接设备。
-2. 如果没有设备，提示 `No hardware devices available`。
-3. 如果找到设备，**Select Hardware Device** 对话框列出设备及其属性（如序列号、厂商 ID、产品 ID）。
-4. 选择设备并按 **Select**。
-5. 应用发送 `POST /api/execute_device_command/<driver_id>/`，请求体为 `{"command": "<command>", "device_id": "<selected_device_id>"}`。
-6. 结果显示在标题为 `Result from '<command>'` 的对话框中，展示后端返回的原始文本。
-
-:::caution[Hardware commands can be destructive]
-设备命令完全取决于后端驱动程序支持的功能。部分命令读取信息（芯片 ID、设备信息），其他命令可能发送控制帧、重置设备或修改状态。在按下按钮之前请阅读命令描述（以按钮提示形式显示）。先在可损耗的实验硬件上测试。
-:::
-
-## 查看已连接设备
-
-点击 **Connected Devices** 列中的数字。应用调用 `GET /api/scan_device/<driver_id>/` 并打开标题为 `Connected Devices - <driver_id>` 的对话框，列出每个设备及其名称和属性。
-
-如果没有设备连接，提示 `No devices connected to this driver`。
-
-## 故障排除
-
-### Targets 页面显示 "No Targets Yet"
-
-后端尚未创建任何目标。按 **Add Your First Target** 创建一个。
-
-### `Target name is required`
-
-在编辑对话框中以空名称按了 Save Changes。填写 Target Name 字段后重新保存。
-
-### `Error creating target: <error>` / `Error updating target: <error>`
-
-创建或编辑请求失败。后端可能拒绝了数据（如 IP 格式无效、ID 重复）。查看控制面板的 System 选项卡获取服务器端错误消息。
-
-### `Error deleting target: <error>`
-
-删除请求失败。目标可能已被其他会话删除，或后端返回了错误。刷新列表后重试。
-
-### Drivers 页面显示 "No drivers found"
-
-后端返回了空的驱动程序列表，或请求失败。如果页面显示错误状态，按 **Retry** 重新加载。如果加载后列表为空，说明后端未配置任何硬件驱动程序。
-
-### `Failed to update driver state: <message>`
-
-启用/禁用请求被拒绝。后端消息说明了原因。驱动程序名称可能无效，或后端不支持该驱动程序的运行时切换。
-
-### `No hardware devices available`
-
-你按了命令按钮，但设备扫描未找到已连接硬件。检查物理连接、确认驱动程序已启用、确认硬件已通电。
-
-### `Failed to execute command <command>`
-
-`POST /api/execute_device_command/` 请求返回了非 200 状态码。后端在执行硬件命令时可能出错。查看 System 选项卡获取详情。
-
-### 命令按钮变灰
-
-驱动程序已禁用。切换 Status 开关以启用。如果切换失败，查看后端错误消息。
-
-## 推荐流程
-
-1. 打开 **Targets**，按 **Add New Target**。
-2. 填写名称、类型、状态、IP 地址和位置。根据需要添加组件和接口。
-3. 保存目标，确认它出现在列表中。
-4. 点击目标行进行选择，确认提示 `Target selected successfully`。
-5. 打开 **Drivers**，确认所需硬件驱动程序已列出并启用。
-6. 如果驱动程序被禁用，将其切换为启用。
-7. 点击 Connected Devices 数字，确认硬件已检测到。
-8. 如果驱动程序广播了命令，先阅读提示并运行只读命令，确认硬件正常响应。
-9. 打开 **Control Panel**，对选定的目标运行插件。按照[控制面板工作流](/blog/zh/manual/control-panel-workflow/)操作。
-
-如需了解插件目录和测试结果页面，请继续阅读[插件与测试结果](/blog/zh/manual/plugins-and-test-results/)。
+选择目标并准备硬件后，继续阅读[从 Control Panel 运行授权测试](/blog/zh/manual/control-panel-workflow/)。

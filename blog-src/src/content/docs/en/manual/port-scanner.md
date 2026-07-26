@@ -1,144 +1,108 @@
 ---
-title: Port scanning configuration and results
-description: Configure and run TCP or UDP port scans from the device using the Rust-powered port scanner.
+title: Scan an authorized host for open ports
+description: Configure a TCP or UDP port scan, control its network load, and interpret the results in IoTSploit v0.0.16.
 ---
 
-The **Port Scanner** scans a target IP address for open TCP or UDP ports. It runs entirely on the device — no scan data is sent to or through the API server.
+**Port Scanner** checks a range of ports on one IP address and reports the ports that responded as open. The scan runs from the device running IoTSploit and does not require the IoTSploit server.
 
-:::caution[Authorization]
-Port scanning generates network traffic against the target. Scanning a host you do not own or are not authorized to test can violate network policies or law. Use this tool only on hosts you have permission to scan.
+The tool is available in native production, development, and offline builds of **v0.0.16**. It does not appear in the Web build.
+
+:::caution[Obtain permission before scanning]
+A port scan creates traffic and can trigger monitoring, rate limits, or failures in fragile services. Scan only an address included in your written test scope. Start with a small range and conservative settings.
 :::
 
 ## Before you start
 
-- **Platform**: Native only (Android, iOS, macOS, Windows, Linux). The Port Scanner is hidden on web builds because it depends on native code not available in the browser.
-- **Build**: Available in all flavors — production, development, and offline. Marked `offlineCapable: true` and `prodCapable: true` in the toolkit catalog.
-- **Server**: Not required. The scanner runs locally. No connection to the IoTSploit API server is needed.
-- **Network**: The device running the scan must be able to reach the target IP. Firewalls, NAT, or network isolation between the device and the target will affect results.
+Confirm:
 
-## Open the Port Scanner
+- the target is a single IPv4 or IPv6 address you are authorized to scan;
+- the device running IoTSploit can route to that address;
+- firewalls and test windows permit the scan;
+- the port range is appropriate for the agreed scope.
 
-1. Open the IoTSploit application.
-2. Select **Toolkit** in the side menu.
-3. Find the **Port Scanner** card (description: "Fast TCP/UDP port scanner powered by Rust async runtime") and tap it.
+The target field does not resolve hostnames. Resolve the intended host separately and verify the address before scanning.
 
-The screen has a single configuration card and, after a scan, a results card below it.
+## Configure the scan
 
-## Scan configuration
+1. Open **Toolkit**.
+2. Select **Port Scanner**.
+3. Enter **Target IP**.
+4. Set **Port Start** and **Port End** between 1 and 65535.
+5. Choose **Batch Size**.
+6. Choose **Timeout**.
+7. Leave **UDP Scan** off for TCP, or enable it for UDP.
 
-| Field | Default | Range | Notes |
-|---|---|---|---|
-| Target IP | `127.0.0.1` | Any valid IP address | Numeric keyboard input |
-| Port Start | `1` | 1–65535 | Must be ≤ Port End |
-| Port End | `1000` | 1–65535 | Must be ≥ Port Start |
-| Batch Size | `500` | 100–5000 (slider, step 100) | Concurrent connections per batch |
-| Timeout | `1500ms` | 200–5000ms (slider, step 100) | Per-port connection timeout |
-| UDP Scan | Off | On/Off | Switch between TCP and UDP |
+### Batch Size
 
-### Batch size
+Batch Size controls how many ports are checked concurrently. A larger value can finish sooner but creates more simultaneous traffic and consumes more resources on both systems.
 
-Controls how many ports are probed concurrently. Higher values scan faster but generate more simultaneous connections, which some hosts or firewalls may rate-limit or block. The default of 500 balances speed and stealth.
+Use a smaller batch for embedded devices, remote links, rate-limited networks, or an initial test.
 
 ### Timeout
 
-How long the scanner waits for a response on each port before marking it as closed or filtered. Lower timeouts speed up scans but may miss ports on slow networks. The default of 1500ms works for most local network scans.
+Timeout controls how long the scanner waits for each port. A short timeout can miss slow or filtered services. A long timeout improves tolerance for delay but increases total scan time.
 
-### UDP scan
+Choose the value based on measured network latency rather than assuming the default is suitable for every environment.
 
-When enabled, the scanner sends UDP probes instead of TCP SYN. UDP scanning is slower and less reliable than TCP — an open UDP port may not respond to an empty probe, making it appear closed. The scanner uses a single try per port.
+### TCP and UDP
 
-## Run a scan
+- **TCP** can usually distinguish a successful connection from a rejected or timed-out one.
+- **UDP** is less conclusive. Many open UDP services do not respond to an empty probe, while firewalls may silently drop packets.
 
-1. Enter the **Target IP** address.
-2. Set the **Port Start** and **Port End** values.
-3. Adjust **Batch Size** and **Timeout** if needed.
-4. Toggle **UDP Scan** if you want UDP instead of TCP.
-5. Press **Start Scan**.
+An empty UDP result does not prove that every scanned UDP port is closed.
 
-While scanning, the button shows `Scanning...` with a spinner and is disabled.
+## Run the scan
 
-### Input validation
+1. Recheck the target address and range.
+2. Select **Start Scan**.
+3. Wait for the results card.
 
-| Check | Error message |
-|---|---|
-| Target field is empty | `Please enter a target IP address.` |
-| Port Start or Port End is not a number | `Invalid port range. Use 1–65535, start ≤ end.` |
-| Port Start < 1 or Port End > 65535 | Same |
-| Port Start > Port End | Same |
+The page shows the number of ports scanned, the elapsed time, and the ports reported open. You can copy the open-port list to the clipboard.
 
-If the target IP cannot be parsed as a valid IP address, the scan fails with `Invalid IP address '<input>': <error>`.
+If you copy results, place them in the authorized test record and clear the clipboard when the addresses or ports are sensitive.
 
-## Results
+## Interpret the result
 
-After a scan completes, the results card appears with:
+An open port indicates that the scanner received the response expected by its check. It does not identify the service, version, authentication requirements, or vulnerability state.
 
-### Summary chips
+Before interacting with a discovered service:
 
-| Chip | Content | Color |
-|---|---|---|
-| Open | Count of open ports | Green |
-| Scanned | Total ports probed | Neutral |
-| Duration | Scan time (`Xms` or `X.Xs`) | Primary |
+1. confirm it belongs to the authorized target;
+2. identify it using an approved, protocol-appropriate method;
+3. record the time and scan settings;
+4. avoid sending application data until the service is understood.
 
-### Open ports
+## Limits
 
-Each open port is rendered as a green chip with a monospace font. Ports are sorted in ascending order.
-
-If no ports are open in the scanned range, the card reads `No open ports found in the specified range.`
-
-### Copy results
-
-Press the copy icon in the results card header to copy the open ports as a comma-separated string to the clipboard. A snackbar reads `Open ports copied to clipboard`.
-
-## Limitations
-
-- **No service identification.** The scanner reports port numbers only. It does not banner-grab, identify protocols, or guess services. Use the [SSH client](/blog/en/manual/ssh-client/) or other tools to interact with discovered services.
-- **No host name resolution.** The Target field accepts IP addresses only. The parser does not perform DNS lookups. Enter a resolved IP.
-- **No scan persistence.** Results exist in the UI state. Navigating away from the screen discards them. Copy open ports before leaving.
-- **UDP reliability.** UDP probes may not elicit a response from an open port, causing it to appear closed. UDP scanning with a single try is inherently less accurate than TCP scanning.
-- **Serial scan order.** Ports are scanned in ascending order, not randomized. This is the only order available.
-- **No progress stream.** The scan runs as a single blocking call. There is no intermediate progress or partial results — the UI shows the spinner until the full scan completes.
-- **Single target.** The scanner accepts one IP address per scan. Range or subnet scanning is not supported.
+- One IP address can be scanned at a time.
+- Hostnames and subnets are not accepted as targets.
+- Results are not saved when you leave the page.
+- Ports are reported without service or version detection.
+- There is no partial-result display while a scan is running.
+- UDP results can contain false negatives.
 
 ## Troubleshooting
 
-### Port Scanner card not visible on the Toolkit page
+### The tool is missing
 
-You are on a web build. The Port Scanner requires Rust native code, which is not compiled for web. Use a native build.
+Port Scanner requires a native build. Confirm you are not using the Web build.
 
-### `Please enter a target IP address.`
+### The target is rejected
 
-The Target field is empty. Enter an IP address.
+Enter only a valid IP address. Remove URL schemes, ports, paths, subnet notation, and surrounding spaces.
 
-### `Invalid port range. Use 1–65535, start ≤ end.`
+### The scan takes too long
 
-Port Start or Port End is not a valid number, is outside 1–65535, or Port Start is greater than Port End. Correct the values and try again.
+Reduce the port range first. Then consider a shorter timeout only if the network latency supports it. Avoid increasing concurrency on a fragile target.
 
-### `Invalid IP address '<input>': <error>`
+### No open ports are found
 
-The target string could not be parsed as an IP address. The parser accepts IPv4 (e.g. `192.168.1.1`) and IPv6 (e.g. `::1`) but not hostnames. If you entered a hostname, resolve it to an IP first.
+Confirm the address, routing, range, and firewall rules. Test a known lab service if you need to verify scanner setup. Do not assume an empty result proves the host has no reachable services.
 
-### Scan takes a long time
+### UDP finds nothing
 
-Large port ranges (e.g. 1–65535) with a low batch size and high timeout will take minutes. Increase batch size or decrease timeout, or narrow the port range. The duration chip shows how long the scan took.
+The service may ignore an empty UDP probe. Use protocol-specific verification when the scope permits it.
 
-### No open ports found
+## Next step
 
-All probed ports in the range were closed or filtered. Verify the target IP is correct and reachable, the target host has services listening on the scanned ports, and no firewall is dropping or rejecting the probes.
-
-### UDP scan shows no open ports
-
-UDP scanning is less reliable than TCP. A port may be open but not respond to an empty UDP probe. Try a TCP scan of the same range, or scan specific UDP ports known to respond (e.g. 53 DNS, 123 NTP).
-
-## Recommended workflow
-
-1. Open **Toolkit** and select **Port Scanner**.
-2. Enter the target IP address.
-3. Set the port range. For a quick check, use common ranges like 1–1000 or specific ports.
-4. Leave batch size and timeout at defaults for most scans. Adjust only if the scan is too slow or the network is unreliable.
-5. Press **Start Scan**.
-6. Review the results. Note the open ports and duration.
-7. Copy open ports if you need them for further work.
-8. For TCP services found on open ports, use the [SSH client](/blog/en/manual/ssh-client/) for interactive access.
-
-For SSH terminal and SFTP, continue to [SSH client](/blog/en/manual/ssh-client/).
+If an authorized target exposes SSH, continue with [SSH terminal and SFTP](/blog/en/manual/ssh-client/).

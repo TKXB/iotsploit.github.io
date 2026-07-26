@@ -1,125 +1,78 @@
 ---
 title: IoTSploit UI feature map and where to start
-description: Understand which IoTSploit features are visible in each build, how the workflow connects target selection to test results, and where to begin.
+description: Find the right IoTSploit area for configuring services, preparing a target, running a test, or using a standalone tool.
 ---
 
-IoTSploit is a Flutter application for IoT security testing. The production build combines a backend-driven control panel, plugin-based test execution, a protocol fuzzer, and a set of standalone toolkit tools. Some tools run locally, some require a configured backend, and some depend on hardware adapters or a hosted web application.
+IoTSploit brings several IoT security workflows into one application. This map helps you choose a starting point without requiring you to understand how the application is implemented.
 
-This guide maps the user-visible areas of the application, the differences between the production, development, and offline builds, and the workflow that connects them. Use it to find the right starting point for a task before reading a feature-specific manual.
+This guide covers the public **v0.0.16** release. A page being visible does not guarantee that its hardware, server, or platform requirements are met.
 
 :::caution[Use only with authorization]
-Testing features that interact with devices, networks, firmware, or debug interfaces require ownership of the target or explicit authorization. Scan, fuzz, and command-execution tools can affect systems you do not own. Define a lab scope and permission boundary before using any testing feature.
+Only test devices, networks, firmware, and services that you own or have explicit permission to assess. Isolate hardware tests from vehicles, production networks, and safety-critical equipment.
 :::
 
-## Evidence and scope
+## Choose an area by task
 
-The feature inventory in this guide is verified against the production flavor configuration. Where source behavior and a released build could differ, the relevant manual states the evidence scope explicitly. Do not treat a development-only route, an unconnected screen, or a bundled asset as proof of a released capability.
+| Your task | Start here | What you should expect |
+|---|---|---|
+| Connect the application to IoTSploit services | **Settings** | Saved API and WebSocket addresses and a successful connectivity check |
+| Define the system you are assessing | **Targets** | A target that can be selected for plugin execution |
+| Prepare connected hardware | **Drivers** | Enabled drivers and detected devices |
+| Run one plugin against a target | **Control Panel** | Live execution messages and a saved result |
+| Browse or organize plugins | **Plugins** | Individual plugins, plugin groups, and stored results |
+| Use a focused utility | **Toolkit** | A tool-specific result produced locally or through the configured server |
+| Configure a fuzzing campaign | **Fuzzer** | Test definitions, execution status, and result artifacts |
+| Work with firmware or USBTMC devices | **Utils** | Device- or service-dependent utility panels |
+| Model an attack path | **Threat Modeler** | The hosted Attack Path Analysis application |
 
-## The three application flavors
+**JTAG Boundary Scan** also appears in the v0.0.16 production menu. Use it only with compatible probes, a verified BSDL file, and expendable lab hardware. This documentation series does not yet include a tested JTAG procedure.
 
-IoTSploit ships in three flavors. Each flavor enables a different set of pages and tools. The flavor is selected at build time and cannot be changed at runtime.
+## Understand the application builds
 
-| Flavor | App title | Initial page | Purpose |
-|---|---|---|---|
-| Production | IoTSploit | Control Panel | Full feature set for released testing workflows |
-| Development | IoTSploit Dev | Control Panel | All pages, including experimental and dev-only screens |
-| Offline | Toolkit | Toolkit | Standalone local tools that do not need a backend |
+IoTSploit is distributed in different build flavors:
 
-## Production navigation
+- **Production** is the public application and starts on **Control Panel**.
+- **Development** includes experimental screens intended for development and testing.
+- **Offline** is titled **Toolkit** and starts on the Toolkit page. It omits server-dependent pages.
 
-The side menu in the production build shows these top-level areas, in this order:
+In v0.0.16, the offline Toolkit includes **File Obfuscation**, **Key Tool**, **Port Scanner**, and **SSH Client**. Key Tool, Port Scanner, and SSH Client require a native build and do not appear in the Web build.
 
-1. **Control Panel** — target and device inventory, plugin runner, and streaming execution log.
-2. **Utils** — utility screens, including USBTMC instrument control.
-3. **Plugins** (expandable group):
-   - **Plugin List** — browse and run individual plugins.
-   - **Plugin Groups** — organize plugins into ordered groups.
-   - **Test Results** — review saved results from plugin runs.
-4. **Toolkit** — standalone tools that run independently of the plugin system.
-5. **Drivers** — enable, disable, and inspect hardware drivers and attached devices.
-6. **Targets** — create, edit, select, and delete test targets.
-7. **Fuzzer** — configure, manage, and run protocol fuzzing campaigns.
-8. **Threat Modeler** — an embedded Attack Path Analysis application (available on macOS, Web, and Windows only).
-9. **Settings** — server configuration, language, theme, logging, and version information.
+## Follow the main plugin workflow
 
-The following areas exist in the source but are **not** part of the production build: **AI Assistant**, **JTAG Boundary Scan**, **Component Showcase**, and **Flavor Comparison**. These are development-only and are hidden in release builds.
+For a typical authorized plugin test:
 
-## Offline navigation
+1. Open **Settings** and configure the API and WebSocket addresses.
+2. Open **Targets**, create or select the target you are permitted to test.
+3. Open **Drivers** if the plugin needs attached hardware.
+4. Open **Control Panel** or **Plugins** and choose a plugin.
+5. Review its description and parameters before starting it.
+6. Watch the execution messages.
+7. Open **Test Results** and interpret the saved result in the context of the target.
 
-The offline build is a reduced application titled "Toolkit". Its side menu shows only:
+A successful plugin run means the plugin completed and reported success. It does not, by itself, prove that a device is secure or vulnerable.
 
-1. **Toolkit** — the same toolkit grid as the production build, filtered to tools that run without a backend.
-2. **Settings** — application settings.
+## Know where work happens
 
-Only tools marked as offline-capable appear in the offline Toolkit grid: **File Obfuscation**, **Key Tool**, **Port Scanner**, and **SSH Client**. Backend-dependent tools such as CAN Analysis, GreatFET Scan, ESP32 Testing, Ubertooth BLE/Bt, and Public IP are hidden.
+- **Local tools:** File Obfuscation, Key Tool, Port Scanner, and SSH Client perform their main operation on the device running IoTSploit.
+- **Server-dependent areas:** Control Panel, Targets, Drivers, plugin execution, plugin groups, CAN Analysis, Ubertooth, and Fuzzer workflows depend on configured IoTSploit services. Previously saved plugin results can be viewed locally.
+- **Hardware-dependent areas:** Drivers, CAN Analysis, Ubertooth, JTAG, FTDI UART, GreatFET, and USBTMC utilities require compatible hardware and operating-system access.
+- **Hosted area:** Threat Modeler opens a separate hosted application. Its model settings and data handling are not controlled by the local IoTSploit application.
 
-## Toolkit availability matrix
+## Platform notes
 
-The Toolkit grid shows different tools depending on the flavor and platform. A tool appears only when the flavor enables the Toolkit page and the tool's availability flags allow it.
-
-| Tool | Offline build | Production build | Requires native (no web) |
-|---|---|---|---|
-| File Obfuscation | Yes | Yes | No |
-| Key Tool | Yes | Yes | Yes |
-| Port Scanner | Yes | Yes | Yes |
-| SSH Client | Yes | Yes | Yes |
-| GreatFET Scan | No | Yes | No |
-| CAN Analysis | No | Yes | No |
-| ESP32 Testing | No | Yes | No |
-| Ubertooth BLE/Bt | No | Yes | No |
-| Public IP | No | Yes | No |
-| Logic Analyzer | No | No (dev only) | No |
-| FTDI UART | No | No (dev only) | Yes |
-
-Tools marked "Requires native" use a Rust bridge that is not available in the web build. On the web build, these tools are hidden automatically.
-
-## Platform restrictions
-
-Two platform checks affect which features a user can open:
-
-- **Threat Modeler** uses an embedded WebView. It is available on macOS, Web, and Windows. On other platforms the menu entry is hidden.
-- **Rust-dependent tools** (Key Tool, Port Scanner, SSH Client, FTDI UART) require a native build. The web build hides them because the Rust bridge is unavailable.
-
-## How the workflow connects
-
-The major production areas form one workflow from scope definition to result review:
-
-1. **Define the target** in **Targets** — create a target that records the system under test.
-2. **Inspect drivers and devices** in **Drivers** — enable the hardware drivers and verify attached devices.
-3. **Select the target** in **Control Panel** — the selected target receives plugin execution.
-4. **Choose a plugin** in **Control Panel** or **Plugins** — review its parameters and description.
-5. **Execute** — the plugin runs on the backend; async runs stream progress over a WebSocket.
-6. **Review results** in **Test Results** — completed and failed runs are saved to a shared results store.
-
-The **Toolkit** and **Fuzzer** are independent of this plugin workflow. Toolkit tools run locally or against a directly specified target. The Fuzzer has its own configuration, test management, campaign, and results areas.
-
-## Local, backend-dependent, and hardware-dependent features
-
-Understanding where each feature runs helps you choose the right build and prepare prerequisites.
-
-**Local tools** run on the device and do not require a backend server. In the offline build: File Obfuscation, Key Tool, Port Scanner, and SSH Client. File Obfuscation and Public IP use HTTP only for optional upload or lookup, not for the core operation.
-
-**Backend-dependent features** require a reachable API and WebSocket server. This includes Control Panel, Targets, Drivers, Plugins, Plugin Groups, Test Results, and the Fuzzer. These pages load data from the backend on open and show a connection error banner when the server is unreachable.
-
-**Hardware-dependent features** require a physical adapter, driver, or device. CAN Analysis needs a SocketCAN interface. Ubertooth BLE/Bt needs Ubertooth One hardware. GreatFET Scan needs a GreatFET board. ESP32 Testing connects to a configured ESP32 device. USBTMC instrument control needs a USB-connected instrument. FTDI UART needs a compatible FTDI chip.
-
-**Hosted features** run in an external web application embedded through a WebView. Threat Modeler embeds the Attack Path Analysis application. Its data storage, model configuration, and export behavior are defined by that hosted application, not by the local IoTSploit build.
+- The Web build hides native tools such as Key Tool, Port Scanner, SSH Client, and FTDI UART.
+- Threat Modeler is shown on Web, macOS, and Windows in v0.0.16.
+- Hardware access varies by operating system, driver, permissions, adapter, and firmware.
+- A tool that appears in the menu may still require an IoTSploit server or hardware that is not included with the application.
 
 ## Where to start
 
-- To run authorized plugin tests against a target, start with the [Control Panel workflow](/blog/en/manual/control-panel-workflow/).
-- To configure the API and WebSocket server, start with [server and build setup](/blog/en/manual/server-and-build-setup/).
-- To use a standalone local tool, open the [Toolkit](/blog/en/manual/key-tool/) and choose a tool.
-- To run protocol fuzzing, start with [IoT Fuzzer configuration](/blog/en/manual/iot-fuzzer-configuration/).
-- To model attack paths, open **Threat Modeler** on a supported platform.
+- First installation: [connect IoTSploit to its services](/blog/en/manual/server-and-build-setup/).
+- First plugin test: [run an authorized test from Control Panel](/blog/en/manual/control-panel-workflow/).
+- Target or driver setup: [manage targets and hardware drivers](/blog/en/manual/targets-and-drivers/).
+- Plugin history and groups: [work with plugins and test results](/blog/en/manual/plugins-and-test-results/).
+- Local cryptographic checks: [use Key Tool](/blog/en/manual/key-tool/).
+- Authorized network discovery: [run a port scan](/blog/en/manual/port-scanner/).
+- Remote terminal or file transfer: [use the SSH client](/blog/en/manual/ssh-client/).
 
-## Availability and limitations
-
-- The production build is the released feature set. Development and offline builds expose different pages and tools; do not assume a development-only feature is available in a released build.
-- The web build does not support Rust-dependent tools. Use a native desktop build for Key Tool, Port Scanner, and SSH Client.
-- Threat Modeler is unavailable on platforms without WebView support.
-- Hardware-dependent tools require the named hardware and platform drivers; a tool appearing in the grid does not prove the hardware is connected.
-
-## Recommended next step
-
-Install the production build, open **Settings**, and verify that the API and WebSocket server addresses are reachable. Then open **Control Panel** and confirm that targets and plugins load. If the connection fails, follow [server and build setup](/blog/en/manual/server-and-build-setup/) before running any test.
+Start with **Settings** if any server-dependent page fails to load. Confirm the release shown under **About** is v0.0.16 before relying on the navigation and labels in this series.

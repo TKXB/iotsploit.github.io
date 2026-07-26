@@ -73,25 +73,30 @@ lib/config_prod.dart
 lib/config_offline.dart
 lib/flavors/page_keys.dart
 lib/platform/platform_capabilities.dart
-lib/screens/tasks/toolkit_catalog.dart
+lib/screens/tasks/toolkit_screen.dart            v0.0.16 release inventory
+lib/screens/tasks/toolkit_catalog.dart           later development inventory
 lib/l10n/app_en.arb
 lib/l10n/app_zh.arb
 pubspec.yaml
 test/
 ```
 
-Evidence baseline used for this plan:
+Public-manual evidence baseline:
 
 ```text
-Application commit: c3f20ff8d8e26aae495316a702c17fb9015d57d9
-Evidence date: 2026-07-25
-Source version: 0.0.17+17
-Public download page observed version: 0.0.16
+Release tag: v0.0.16
+Application commit: 952b0c7a033c4148fc22714fa74908b3984f44cb
+Evidence date: 2026-07-26
+Source version: 0.0.16+16
+Public download version: 0.0.16
 ```
 
-Before writing, confirm the intended release. Do not describe development
-source as released behavior until it is reproduced in the corresponding
-release build.
+Later development source, including commit
+`c3f20ff8d8e26aae495316a702c17fb9015d57d9`, is discovery context only. Do not
+use its flavor configuration, toolkit catalog, labels, or behavior as evidence
+for v0.0.16 without tracing the release tag. The release uses
+`lib/screens/tasks/toolkit_screen.dart`; `toolkit_catalog.dart` was introduced
+later.
 
 ## Existing manuals
 
@@ -166,11 +171,11 @@ lib/screens/main/components/side_menu.dart
 lib/config_dev.dart
 lib/config_prod.dart
 lib/config_offline.dart
-lib/screens/tasks/toolkit_catalog.dart
+lib/screens/tasks/toolkit_screen.dart
 lib/platform/platform_capabilities.dart
 ```
 
-DONE.
+PUBLISHED FOR v0.0.16 (source-verified; runtime capture pending).
 
 - [x] Confirm the release, flavor, and platforms covered by the article.
 - [x] Inventory production-visible top-level navigation.
@@ -208,7 +213,7 @@ lib/config_prod.dart
 lib/config_offline.dart
 ```
 
-DONE.
+PUBLISHED FOR v0.0.16 (source-verified; runtime capture pending).
 
 - [x] Document API and WebSocket configuration using exact UI labels.
 - [x] Explain automatic server discovery and its platform restrictions.
@@ -243,14 +248,14 @@ lib/services/targets_service.dart
 lib/services/test_result_service.dart
 ```
 
-DONE.
+PUBLISHED FOR v0.0.16 (source-verified; runtime capture pending).
 
 - [x] Verify the initial data loaded by Control Panel.
 - [x] Document target and connected-device selection.
 - [x] Document driver enable/disable behavior.
 - [x] Document plugin parameter prompts.
-- [x] Reproduce plugin execution and WebSocket progress.
-- [x] Capture completed and failed execution states.
+- [ ] Reproduce plugin execution and WebSocket progress in the v0.0.16 build.
+- [ ] Capture completed and failed execution states without sensitive data.
 - [x] Explain the difference between execution and system logs.
 - [x] State where the workflow ends and expert interpretation begins.
 
@@ -279,14 +284,14 @@ lib/screens/devices/devices_page.dart
 lib/screens/devices/command_result_widget.dart
 ```
 
-DONE.
+PUBLISHED FOR v0.0.16 (source-verified; runtime capture pending).
 
 - [x] Define the difference between a target, driver, and attached device.
 - [x] Document create, edit, select, and delete target operations.
-- [x] Record target-type requirements from the running backend.
+- [ ] Record target-type requirements from a named v0.0.16 backend.
 - [x] Document driver discovery and enable/disable operations.
 - [x] Document attached-device scans and advertised commands.
-- [x] Capture the command-result presentation.
+- [ ] Capture the command-result presentation on expendable lab hardware.
 - [x] Put hardware safety warnings before command execution.
 
 #### 04. Plugins and test results
@@ -315,12 +320,12 @@ lib/services/plugin_service.dart
 lib/services/test_result_service.dart
 ```
 
-DONE.
+PUBLISHED FOR v0.0.16 (source-verified; runtime capture pending).
 
 - [x] Verify how plugins are listed and categorized.
-- [x] Document parameter types using real plugin metadata.
+- [ ] Confirm parameter presentation using named v0.0.16 plugin metadata.
 - [x] Document plugin groups and their intended workflow.
-- [x] Run a harmless authorized example in a lab.
+- [ ] Run a harmless authorized example in a v0.0.16 lab.
 - [x] Record progress, completion, failure, and cancellation behavior.
 - [x] Document result retrieval and displayed fields.
 - [x] Do not claim automatic vulnerability detection without reproduced proof.
@@ -342,10 +347,10 @@ Primary evidence:
 lib/screens/tasks/components/ecc_key_gen_screen.dart
 lib/rust/api/crypto.dart
 rust/src/api/crypto.rs
-lib/screens/tasks/toolkit_catalog.dart
+lib/screens/tasks/toolkit_screen.dart
 ```
 
-DONE.
+PUBLISHED FOR v0.0.16 (source-verified; runtime capture pending).
 
 - [x] Document P-256 key generation and output formats.
 - [x] Document local PEM certificate and CA-chain verification.
@@ -369,14 +374,14 @@ Primary evidence:
 lib/screens/tasks/components/rust_scan_screen.dart
 lib/rust/api/port_scanner.dart
 rust/src/api/port_scanner.rs
-lib/screens/tasks/toolkit_catalog.dart
+lib/screens/tasks/toolkit_screen.dart
 ```
 
-DONE.
+PUBLISHED FOR v0.0.16 (source-verified; runtime capture pending).
 
 - [x] Verify target validation and accepted address formats.
 - [x] Document port range, batch size, timeout, and UDP option.
-- [x] Reproduce a scan against an explicitly authorized lab service.
+- [ ] Reproduce a scan against an explicitly authorized v0.0.16 lab service.
 - [x] Explain TCP and UDP result limitations.
 - [x] Document duration and open-port output.
 - [x] Add network load and authorization cautions before scanning.
@@ -396,15 +401,15 @@ Primary evidence:
 lib/screens/tasks/components/ssh_client_screen.dart
 lib/rust/api/ssh_client.dart
 rust/src/api/ssh_client.rs
-lib/screens/tasks/toolkit_catalog.dart
+lib/screens/tasks/toolkit_screen.dart
 ```
 
-DONE.
+PUBLISHED FOR v0.0.16 (source-verified; runtime capture pending).
 
 - [x] Document host, port, username, and authentication inputs.
 - [x] Cover password, public-key, and no-auth modes accurately.
 - [x] Document recent targets and whether credentials are retained.
-- [x] Reproduce terminal connection, input, resize, and disconnect.
+- [ ] Reproduce terminal connection, input, resize, and disconnect in v0.0.16.
 - [x] Document remote working-directory following.
 - [x] Document SFTP upload, download, progress, and cancellation.
 - [x] Explain host-key verification behavior.
@@ -427,13 +432,13 @@ lib/config.dart
 lib/services/log.dart
 ```
 
-DONE.
+HOLD — public manual removed until a named SocketCAN lab run is documented.
 
 - [x] Verify required SocketCAN driver and backend endpoints.
 - [x] Document interface/device selection and connection state.
 - [x] Document incoming frame fields and clear-data behavior.
 - [x] Document CAN ID, DLC, and data validation.
-- [x] Reproduce sending a harmless frame on an isolated lab bus.
+- [ ] Reproduce receiving and sending a harmless frame on an isolated lab bus.
 - [x] Put vehicle and physical-system safety warnings before transmission.
 - [x] Explain that receiving frames does not identify their meaning.
 - [x] Record service and platform requirements.
@@ -453,12 +458,12 @@ lib/screens/tasks/components/ubertooth_screen.dart
 lib/config.dart
 ```
 
-DONE.
+HOLD — public manual removed until a named Ubertooth lab run is documented.
 
-- [x] Confirm supported Ubertooth hardware and required drivers.
+- [ ] Confirm supported Ubertooth hardware, firmware, permissions, and drivers.
 - [x] Document device detection.
 - [x] Document scan timeout and advertising-channel selection.
-- [x] Reproduce BLE advertisement discovery in an authorized lab.
+- [ ] Reproduce BLE advertisement discovery in an authorized lab.
 - [x] Document displayed device and advertisement fields.
 - [x] Document the Device Info operation.
 - [x] Explain that advertisement discovery is not a connection or vulnerability.
@@ -484,7 +489,7 @@ rust/src/api/usbtmc.rs
 test/unit/usbtmc_descriptor_test.dart
 ```
 
-DONE.
+HOLD — public manual removed until the named-device round trip is complete.
 
 - [x] Confirm desktop operating-system and USB permission requirements.
 - [x] Document scan, selection, connection, and disconnect states.
@@ -689,12 +694,12 @@ Evidence:
 
 ```text
 lib/screens/tasks/components/logic_analyzer_screen.dart
-lib/screens/tasks/toolkit_catalog.dart
+lib/screens/tasks/toolkit_screen.dart
 ```
 
 Blocker:
 
-- [ ] Promote the tool to the intended release flavor.
+- [x] Confirm the tool is visible in the v0.0.16 production Toolkit.
 - [ ] Verify capture, streaming, waveform, and device requirements.
 
 ### FTDI UART
@@ -706,12 +711,12 @@ lib/screens/tasks/components/ft2232_uart_screen.dart
 lib/services/ft2232_uart_service.dart
 lib/rust/api/ft2232_uart.dart
 rust/src/api/ft2232_uart.rs
-lib/screens/tasks/toolkit_catalog.dart
+lib/screens/tasks/toolkit_screen.dart
 ```
 
 Blocker:
 
-- [ ] Promote the tool to the intended release flavor.
+- [x] Confirm the tool is visible in the v0.0.16 production Toolkit.
 - [ ] Verify the supported FTDI chips on each native platform.
 - [ ] Reproduce RX, TX, line ending, framing, and flow-control behavior.
 
@@ -730,7 +735,7 @@ test/widget/jtag_scan_screen_test.dart
 
 Blocker:
 
-- [ ] Promote the route from the development flavor to the intended release.
+- [x] Confirm the route is visible in the v0.0.16 production build.
 - [ ] Test probe discovery and chain scanning with physical hardware.
 - [ ] Validate BSDL assignment against supported packages.
 - [ ] Test SAMPLE safely.
