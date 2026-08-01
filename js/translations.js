@@ -10,6 +10,7 @@ const translations = {
     protocolAnalyzer: "Protocol Analyzer",
     guide: "The Guide",
     wiki: "Wiki",
+    licenseNav: "License",
     download: "Download",
     
     // Hero section
@@ -193,7 +194,32 @@ const translations = {
     linuxDownloadDesc: "Select the Linux package format that works best for your system:",
     appImageDesc: "Universal binary for most Linux distributions",
     tarGzDesc: "Traditional archive for manual installation",
-    cancel: "Cancel"
+    cancel: "Cancel",
+
+    // Trial license page
+    licenseTitle: "Get a 7-Day JTAG Trial",
+    licenseSubtitle: "Generate a trial license for this workstation. No account or payment method is required.",
+    licenseEmailLabel: "Email address",
+    licenseEmailHelp: "Used to issue or re-download this trial license.",
+    licensePrivacyIntro: "See how this information is handled in our",
+    licensePrivacyLink: "Privacy Policy",
+    licenseFingerprintLabel: "Installation fingerprint",
+    licenseFingerprintHelp: "In the IoTSploit app, open the JTAG activation screen and copy the 64-character fingerprint shown there.",
+    licenseSubmit: "Get trial license",
+    licenseSubmitting: "Creating license…",
+    licenseSuccessTitle: "Your license is ready",
+    licenseSuccessNew: "A new trial license was created for this workstation.",
+    licenseSuccessReissue: "Your existing trial license was downloaded again. Its expiry date has not changed.",
+    licenseExpiryLabel: "Expires",
+    licenseDaysLabel: "Days remaining",
+    licenseDownloadStarted: "The license file download has started. Import it from the JTAG activation screen.",
+    licenseErrorFingerprint: "Enter the 64-character lowercase hexadecimal fingerprint from the IoTSploit JTAG activation screen.",
+    licenseErrorEmail: "Enter a valid email address.",
+    licenseErrorExpired: "This workstation's trial has expired and cannot be renewed automatically.",
+    licenseErrorRateLimited: "Too many requests. Wait a moment, then try again.",
+    licenseErrorServer: "The license service could not complete this request. Try again. Reference: {reference}",
+    licenseErrorNetwork: "The license service could not be reached. Check your connection and try again.",
+    licenseContactSupport: "Contact sales"
   },
   zh: {
     // 导航栏
@@ -205,6 +231,7 @@ const translations = {
     protocolAnalyzer: "协议分析器",
     guide: "指南",
     wiki: "百科",
+    licenseNav: "许可证",
     download: "下载",
     
     // 英雄部分
@@ -388,7 +415,32 @@ const translations = {
     linuxDownloadDesc: "选择最适合您系统的 Linux 包格式：",
     appImageDesc: "适用于大多数 Linux 发行版的通用格式",
     tarGzDesc: "传统压缩包格式适用于手动安装",
-    cancel: "取消"
+    cancel: "取消",
+
+    // 试用许可证页面
+    licenseTitle: "获取 7 天 JTAG 试用许可证",
+    licenseSubtitle: "为此工作站生成试用许可证，无需账户或付款方式。",
+    licenseEmailLabel: "电子邮箱",
+    licenseEmailHelp: "用于签发或重新下载此试用许可证。",
+    licensePrivacyIntro: "有关信息处理方式，请参阅我们的",
+    licensePrivacyLink: "隐私政策",
+    licenseFingerprintLabel: "安装指纹",
+    licenseFingerprintHelp: "在 IoTSploit 应用中打开 JTAG 激活页面，并复制其中显示的 64 位指纹。",
+    licenseSubmit: "获取试用许可证",
+    licenseSubmitting: "正在创建许可证…",
+    licenseSuccessTitle: "许可证已就绪",
+    licenseSuccessNew: "已为此工作站创建新的试用许可证。",
+    licenseSuccessReissue: "已重新下载现有试用许可证，其到期日期没有改变。",
+    licenseExpiryLabel: "到期时间",
+    licenseDaysLabel: "剩余天数",
+    licenseDownloadStarted: "许可证文件已开始下载。请从 JTAG 激活页面导入该文件。",
+    licenseErrorFingerprint: "请输入 IoTSploit JTAG 激活页面中的 64 位小写十六进制指纹。",
+    licenseErrorEmail: "请输入有效的电子邮箱地址。",
+    licenseErrorExpired: "此工作站的试用期已结束，无法自动续期。",
+    licenseErrorRateLimited: "请求过于频繁，请稍候再试。",
+    licenseErrorServer: "许可证服务无法完成此请求，请重试。参考编号：{reference}",
+    licenseErrorNetwork: "无法连接许可证服务，请检查网络连接后重试。",
+    licenseContactSupport: "联系销售"
   }
 };
 
@@ -422,6 +474,8 @@ function changeLanguage(lang) {
   if (currentLangElement) {
     currentLangElement.textContent = lang.toUpperCase();
   }
+
+  document.dispatchEvent(new CustomEvent('i18n:changed', { detail: { lang } }));
 }
 
 // 初始化语言设置
@@ -449,4 +503,4 @@ window.page = {
 window.translations = translations;
 window.changeLanguage = changeLanguage;
 window.initializeLanguage = initializeLanguage;
-window.detectLanguage = detectLanguage; 
+window.detectLanguage = detectLanguage;

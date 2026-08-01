@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Generate a seven-day IoTSploit JTAG trial license for this workstation.">
+
+    <meta property="og:title" content="JTAG Trial License — IoTSploit">
+    <meta property="og:url" content="https://www.iotsploit.org/license.html">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="Generate a seven-day IoTSploit JTAG trial license for this workstation.">
+    <meta property="og:image" content="https://www.iotsploit.org/images/iotsploit.png">
+
+    <link rel="canonical" href="https://www.iotsploit.org/license.html">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="css/bulma.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="js/translations.js"></script>
+
+    <title>JTAG Trial License — IoTSploit</title>
+
+    <style>
+      :root {
+        --vsc-bg: #ffffff;
+        --vsc-bg-lighter: #f5f5f5;
+        --vsc-border: #e0e0e0;
+        --vsc-text: #333333;
+        --vsc-text-bright: #1e1e1e;
+        --vsc-text-muted: #6e6e6e;
+        --vsc-blue: #0078d4;
+        --vsc-blue-hover: #106ebe;
+        --vsc-green: #16825d;
+      }
+
+      body.page {
+        min-height: 100vh;
+        background: var(--vsc-bg);
+        color: var(--vsc-text);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .navbar-item img.is-logo { max-height: 3rem; }
+      .button.is-twitter-blue { background: #1da1f2; border-color: #1da1f2; color: white; }
+      .button.is-discord-purple { background: #5865f2; border-color: #5865f2; color: white; }
+
+      .license-main {
+        flex: 1;
+        padding-top: 5.5rem;
+        padding-bottom: 4rem;
+        background: linear-gradient(180deg, var(--vsc-bg-lighter) 0, var(--vsc-bg) 22rem);
+      }
+
+      .license-heading { max-width: 760px; margin: 0 auto 2rem; }
+      .license-heading .title { color: var(--vsc-text-bright); }
+      .license-heading .subtitle { color: var(--vsc-text-muted); line-height: 1.6; }
+      .license-card { max-width: 680px; margin: 0 auto; border: 1px solid var(--vsc-border); box-shadow: 0 8px 24px rgba(0, 0, 0, .06); }
+      .license-card .card-content { padding: 2rem; }
+      .license-card .label { color: var(--vsc-text-bright); }
+      .license-card .help { color: var(--vsc-text-muted); }
+      .license-card .input:focus { border-color: var(--vsc-blue); box-shadow: 0 0 0 .125em rgba(0, 120, 212, .2); }
+      .license-card .button.is-link { background: var(--vsc-blue); }
+      .license-card .button.is-link:hover { background: var(--vsc-blue-hover); }
+      .fingerprint-input { font-family: monospace; }
+      .status-panel { margin-top: 1.5rem; }
+      .status-panel[hidden] { display: none; }
+      .success-panel { border-left: 4px solid var(--vsc-green); }
+      .success-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+      .success-label { display: block; color: var(--vsc-text-muted); font-size: .8rem; margin-bottom: .2rem; }
+      .success-value { color: var(--vsc-text-bright); font-weight: 600; }
+      .privacy-note { margin-top: .5rem; font-size: .8rem; color: var(--vsc-text-muted); }
+      .privacy-note a { color: var(--vsc-blue); }
+      .footer { padding: 2.5rem 1.5rem; border-top: 1px solid var(--vsc-border); }
+
+      @media screen and (max-width: 1023px) {
+        .navbar-item img.is-logo { max-height: 2.5rem; }
+      }
+
+      @media screen and (max-width: 600px) {
+        .license-main { padding-top: 4.5rem; }
+        .license-card .card-content { padding: 1.25rem; }
+        .success-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body class="page">
+    <div id="navbar-placeholder"></div>
+
+    <main class="license-main">
+      <section class="section">
+        <div class="container">
+          <header class="license-heading has-text-centered">
+            <p class="title is-2" data-i18n="licenseTitle">Get a 7-Day JTAG Trial</p>
+            <p class="subtitle is-5" data-i18n="licenseSubtitle">Generate a trial license for this workstation. No account or payment method is required.</p>
+          </header>
+
+          <div class="card license-card">
+            <div class="card-content">
+              <form id="trial-form" novalidate>
+                <div class="field">
+                  <label class="label" for="email" data-i18n="licenseEmailLabel">Email address</label>
+                  <div class="control has-icons-left">
+                    <input class="input" id="email" name="email" type="email" autocomplete="email" maxlength="254" required>
+                    <span class="icon is-small is-left" aria-hidden="true"><i class="fas fa-envelope"></i></span>
+                  </div>
+                  <p class="help" data-i18n="licenseEmailHelp">Used to issue or re-download this trial license.</p>
+                  <p class="privacy-note">
+                    <span data-i18n="licensePrivacyIntro">See how this information is handled in our</span>
+                    <a href="privacy.html" data-i18n="licensePrivacyLink">Privacy Policy</a>.
+                  </p>
+                </div>
+
+                <div class="field mt-5">
+                  <label class="label" for="fingerprint" data-i18n="licenseFingerprintLabel">Installation fingerprint</label>
+                  <div class="control has-icons-left">
+                    <input class="input fingerprint-input" id="fingerprint" name="fingerprint" type="text" inputmode="text" minlength="64" maxlength="64" pattern="[0-9a-f]{64}" spellcheck="false" autocapitalize="none" autocomplete="off" required>
+                    <span class="icon is-small is-left" aria-hidden="true"><i class="fas fa-fingerprint"></i></span>
+                  </div>
+                  <p class="help" data-i18n="licenseFingerprintHelp">In the IoTSploit app, open the JTAG activation screen and copy the 64-character fingerprint shown there.</p>
+                </div>
+
+                <div class="field mt-5">
+                  <div class="control">
+                    <button class="button is-link is-fullwidth" id="submit-button" type="submit">
+                      <span class="icon" aria-hidden="true"><i class="fas fa-key"></i></span>
+                      <span id="submit-label" data-i18n="licenseSubmit">Get trial license</span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+              <div class="notification is-danger is-light status-panel" id="error-panel" role="alert" tabindex="-1" hidden>
+                <p id="error-message"></p>
+                <p class="mt-2" id="support-row" hidden>
+                  <a href="mailto:support@iotsploit.org" data-i18n="licenseContactSupport">Contact sales</a>
+                </p>
+              </div>
+
+              <div class="notification is-success is-light status-panel success-panel" id="success-panel" role="status" hidden>
+                <p class="has-text-weight-semibold" data-i18n="licenseSuccessTitle">Your license is ready</p>
+                <p class="mt-2" id="success-detail"></p>
+                <div class="success-grid">
+                  <div>
+                    <span class="success-label" data-i18n="licenseExpiryLabel">Expires</span>
+                    <span class="success-value" id="expiry-value"></span>
+                  </div>
+                  <div>
+                    <span class="success-label" data-i18n="licenseDaysLabel">Days remaining</span>
+                    <span class="success-value" id="days-value"></span>
+                  </div>
+                </div>
+                <p data-i18n="licenseDownloadStarted">The license file download has started. Import it from the JTAG activation screen.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p data-i18n="copyright">© 2024 The IoTSploit authors</p>
+        <p>
+          <a href="https://github.com/TKXB/iotsploit" target="_blank" rel="noopener" data-i18n="codeOfConduct">Code of Conduct</a>
+          · <a href="privacy.html" data-i18n="privacyPolicy">Privacy Policy</a>
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      (() => {
+        const apiUrl = 'https://license.iotsploit.org/api/v1/trials';
+        const fingerprintPattern = /^[0-9a-f]{64}$/;
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const form = document.getElementById('trial-form');
+        const submitButton = document.getElementById('submit-button');
+        const submitLabel = document.getElementById('submit-label');
+        const errorPanel = document.getElementById('error-panel');
+        const errorMessage = document.getElementById('error-message');
+        const supportRow = document.getElementById('support-row');
+        const successPanel = document.getElementById('success-panel');
+        let displayedError = null;
+        let displayedSuccess = null;
+
+        function language() {
+          const saved = localStorage.getItem('language');
+          return saved === 'zh' ? 'zh' : 'en';
+        }
+
+        function translate(key, values = {}) {
+          let message = (window.translations[language()] || window.translations.en)[key] || key;
+          Object.entries(values).forEach(([name, value]) => {
+            message = message.replace(`{${name}}`, value);
+          });
+          return message;
+        }
+
+        function showError(key, options = {}) {
+          displayedError = { key, options };
+          displayedSuccess = null;
+          errorMessage.textContent = translate(key, options);
+          supportRow.hidden = key !== 'licenseErrorExpired';
+          errorPanel.hidden = false;
+          successPanel.hidden = true;
+          errorPanel.focus();
+        }
+
+        function formatExpiry(expiry) {
+          const date = new Date(expiry);
+          if (Number.isNaN(date.getTime())) return expiry;
+          return new Intl.DateTimeFormat(language() === 'zh' ? 'zh-CN' : 'en', {
+            dateStyle: 'medium',
+            timeStyle: 'short'
+          }).format(date);
+        }
+
+        function showSuccess(result) {
+          displayedError = null;
+          displayedSuccess = result;
+          document.getElementById('success-detail').textContent = translate(
+            result.isReissue ? 'licenseSuccessReissue' : 'licenseSuccessNew'
+          );
+          document.getElementById('expiry-value').textContent = formatExpiry(result.expiry);
+          document.getElementById('days-value').textContent = String(result.daysRemaining);
+          errorPanel.hidden = true;
+          successPanel.hidden = false;
+        }
+
+        function downloadLicense(base64, filename) {
+          const bytes = Uint8Array.from(atob(base64), character => character.charCodeAt(0));
+          const blobUrl = URL.createObjectURL(new Blob([bytes], { type: 'application/octet-stream' }));
+          const link = document.createElement('a');
+          link.href = blobUrl;
+          link.download = String(filename || 'iotsploit-trial.lic').replace(/[\\/]/g, '_');
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+        }
+
+        function errorKey(status, code) {
+          if (code === 'fingerprint_invalid') return 'licenseErrorFingerprint';
+          if (code === 'email_invalid') return 'licenseErrorEmail';
+          if (code === 'trial_expired' || status === 403) return 'licenseErrorExpired';
+          if (code === 'rate_limited' || status === 429) return 'licenseErrorRateLimited';
+          return 'licenseErrorServer';
+        }
+
+        form.addEventListener('submit', async event => {
+          event.preventDefault();
+          const email = form.elements.email.value.trim();
+          const fingerprint = form.elements.fingerprint.value.trim();
+
+          if (!emailPattern.test(email)) {
+            showError('licenseErrorEmail');
+            form.elements.email.focus();
+            return;
+          }
+          if (!fingerprintPattern.test(fingerprint)) {
+            showError('licenseErrorFingerprint');
+            form.elements.fingerprint.focus();
+            return;
+          }
+
+          submitButton.disabled = true;
+          submitButton.classList.add('is-loading');
+          submitLabel.textContent = translate('licenseSubmitting');
+          errorPanel.hidden = true;
+          successPanel.hidden = true;
+
+          try {
+            const response = await fetch(apiUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ fingerprint, email })
+            });
+            let result = {};
+            try {
+              result = await response.json();
+            } catch (_) {
+              // The generic server error below covers non-JSON proxy responses.
+            }
+
+            if (!response.ok) {
+              showError(errorKey(response.status, result.code), {
+                reference: result.referenceId || '—'
+              });
+              return;
+            }
+            if (!result.licenseFile || !result.expiry) {
+              showError('licenseErrorServer', { reference: result.referenceId || '—' });
+              return;
+            }
+
+            downloadLicense(result.licenseFile, result.filename);
+            showSuccess(result);
+          } catch (_) {
+            showError('licenseErrorNetwork');
+          } finally {
+            submitButton.disabled = false;
+            submitButton.classList.remove('is-loading');
+            submitLabel.textContent = translate('licenseSubmit');
+          }
+        });
+
+        document.addEventListener('i18n:changed', () => {
+          document.documentElement.lang = language() === 'zh' ? 'zh-CN' : 'en';
+          if (displayedError) showError(displayedError.key, displayedError.options);
+          if (displayedSuccess) showSuccess(displayedSuccess);
+          if (submitButton.disabled) submitLabel.textContent = translate('licenseSubmitting');
+        });
+
+        fetch('navbar.html')
+          .then(response => {
+            if (!response.ok) throw new Error('Navbar request failed');
+            return response.text();
+          })
+          .then(html => {
+            document.getElementById('navbar-placeholder').innerHTML = html;
+            window.initializeLanguage();
+          })
+          .catch(() => window.initializeLanguage());
+      })();
+    </script>
+  </body>
+</html>
