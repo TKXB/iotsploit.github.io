@@ -1,0 +1,4 @@
+/* AstroWind v6 ships Inter Variable via @fontsource-variable/inter.
+   No font binaries exist in either source repo, so we load the same family
+   from Google Fonts (identical typeface, CDN-hosted). */
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");

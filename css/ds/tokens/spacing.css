@@ -1,0 +1,19 @@
+:root{
+  --space-0-5:0.125rem;--space-1:0.25rem;--space-2:0.5rem;--space-3:0.75rem;--space-4:1rem;
+  --space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;
+  --space-16:4rem;--space-20:5rem;
+
+  /* layout */
+  --container-max:80rem;      /* max-w-7xl */
+  --container-max-6xl:72rem;
+  --container-max-5xl:64rem;
+  --container-max-3xl:48rem;
+  --container-pad-x:1rem;     /* px-4 */
+  --container-pad-x-md:1.5rem;/* md:px-6 */
+  --section-pad-y:3rem;       /* py-12 */
+  --section-pad-y-md:4rem;    /* md:py-16 */
+  --section-pad-y-lg:5rem;    /* lg:py-20 */
+  --header-h:76px;            /* hero pulls up by this */
+  --scroll-mt:72px;
+  --grid-gap:2rem;            /* gap-8 */
+}

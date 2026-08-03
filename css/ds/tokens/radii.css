@@ -1,0 +1,7 @@
+:root{
+  --radius-sm:0.25rem;   /* rounded */
+  --radius-md:0.375rem;  /* rounded-md — hero image, CTA card, testimonial */
+  --radius-lg:0.5rem;    /* rounded-lg — feature cards, inputs, pricing */
+  --radius-xl:0.75rem;   /* rounded-xl — Features3 image */
+  --radius-full:9999px;  /* buttons + icon chips are pills */
+}
