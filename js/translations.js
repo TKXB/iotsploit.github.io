@@ -4,7 +4,7 @@ const translations = {
     // Navbar
     documentation: "Documentation",
     community: "Community",
-    features: "Features",
+    features: "Products",
     iotFuzzer: "IoT Protocol Fuzzer",
     jtagScan: "JTAG Boundary Scan",
     vulnerabilityScanner: "Vulnerability Scanner",
@@ -263,7 +263,6 @@ const translations = {
     // Installation
     installationTitle: "Installation Guide",
     quickStart: "Quick Start Guide",
-    documentation: "Full Documentation",
     
     // Linux Download Modal
     linuxDownloadTitle: "Choose Linux Version",
@@ -301,7 +300,7 @@ const translations = {
     // 导航栏
     documentation: "文档",
     community: "社区",
-    features: "功能特性",
+    features: "产品",
     iotFuzzer: "物联网协议模糊测试",
     jtagScan: "JTAG 边界扫描",
     vulnerabilityScanner: "漏洞扫描器",
@@ -560,7 +559,6 @@ const translations = {
     // 安装
     installationTitle: "安装指南",
     quickStart: "快速开始指南",
-    documentation: "完整文档",
     
     // Linux Download Modal
     linuxDownloadTitle: "选择 Linux 版本",
