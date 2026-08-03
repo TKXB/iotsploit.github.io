@@ -427,20 +427,7 @@
       </section>
 
       <!-- Footer -->
-      <footer class="footer has-text-centered" style="background-color: #212B33; color: rgba(255, 255, 255, 0.7);">
-        <div class="container">
-          <p class="has-text-weight-light" data-i18n="copyright" style="color: rgba(255, 255, 255, 0.7);">
-            &copy; 2024 The IoTSploit authors
-          </p>
-          <a style="font-size: 12px; color: #0096D1;" href="https://github.com/TKXB/iotsploit" target="_blank">
-            <span data-i18n="codeOfConduct">Code of Conduct</span>
-          </a>
-          |
-          <a style="font-size: 12px; color: #0096D1;" href="https://pages.github.com/" target="_blank">
-            <span data-i18n="poweredBy">This site is powered by GitHub Pages.</span>
-          </a>
-        </div>
-      </footer>
+      <div id="footer-placeholder" class="dark"></div>
     </div>
 
     <!-- Scripts -->
@@ -468,6 +455,20 @@
               }
             }
           });
+
+        // 动态加载共享页脚
+        fetch('footer.html', { credentials: 'same-origin' })
+          .then(function(r){ return r.text(); })
+          .then(function(html){
+            var placeholder = document.getElementById('footer-placeholder');
+            if (!placeholder) return;
+            placeholder.innerHTML = html;
+            var lang = localStorage.getItem('language');
+            if (typeof changeLanguage === 'function' && lang) {
+              changeLanguage(lang);
+            }
+          })
+          .catch(function(){ /* ignore footer load failure */ });
       });
     </script>
   </body>

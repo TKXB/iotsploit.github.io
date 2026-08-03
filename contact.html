@@ -22,5 +22,24 @@ author_profile: false
         <textarea id="message" name="message" required></textarea>
         <button type="submit">Submit</button>
     </form>
+
+    <div id="footer-placeholder"></div>
+
+    <script defer>
+      (function(){
+        fetch('footer.html', { credentials: 'same-origin' })
+          .then(function(r){ return r.text(); })
+          .then(function(html){
+            var placeholder = document.getElementById('footer-placeholder');
+            if (!placeholder) return;
+            placeholder.innerHTML = html;
+            var lang = localStorage.getItem('language');
+            if (typeof changeLanguage === 'function' && lang) {
+              changeLanguage(lang);
+            }
+          })
+          .catch(function(){ /* ignore footer load failure */ });
+      })();
+    </script>
 </body>
 </html>

@@ -539,23 +539,25 @@
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-bottom">
-      <div class="footer-links">
-        <span class="footer-copy">&copy; 2024 The IoTSploit authors</span>
-        <a href="index.html">Home</a>
-        <a href="https://github.com/TKXB/iotsploit" target="_blank" rel="noopener">Code of Conduct</a>
-        <a href="mailto:support@iotsploit.org">support@iotsploit.org</a>
-      </div>
-      <div class="footer-social">
-        <a href="https://github.com/TKXB/iotsploit" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
-        <a href="https://twitter.com/" target="_blank" rel="noopener" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-        <a href="https://discord.gg/Hmu7JbQb9z" target="_blank" rel="noopener" aria-label="Discord"><i class="fab fa-discord"></i></a>
-      </div>
-    </div>
-  </div>
-</footer>
+<div id="footer-placeholder"></div>
+
+<!-- Load shared footer -->
+<script defer>
+  (function(){
+    fetch('footer.html', { credentials: 'same-origin' })
+      .then(function(r){ return r.text(); })
+      .then(function(html){
+        var placeholder = document.getElementById('footer-placeholder');
+        if (!placeholder) return;
+        placeholder.innerHTML = html;
+        var lang = localStorage.getItem('language');
+        if (typeof changeLanguage === 'function' && lang) {
+          changeLanguage(lang);
+        }
+      })
+      .catch(function(){ /* ignore footer load failure */ });
+  })();
+</script>
 
 <script>
   /* Active TOC highlight on scroll */

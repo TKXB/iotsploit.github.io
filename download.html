@@ -823,21 +823,7 @@
       </section>
 
       <!-- Footer -->
-      <footer class="footer">
-        <div class="container">
-          <div class="content has-text-centered">
-            <p data-i18n="copyright">
-              © 2024 The IoTSploit authors
-            </p>
-            <p>
-              <a href="https://github.com/TKXB/iotsploit" target="_blank" data-i18n="codeOfConduct">Code of Conduct</a>
-            </p>
-            <p data-i18n="poweredBy">
-              This site is powered by github pages.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <div id="footer-placeholder"></div>
 
       <!-- Linux Download Modal -->
       <div class="modal" id="linuxDownloadModal">
@@ -952,6 +938,20 @@
             }
           });
       });
+
+      // --- 动态加载共享页脚 ---
+      fetch('footer.html', { credentials: 'same-origin' })
+        .then(function(r){ return r.text(); })
+        .then(function(html){
+          var placeholder = document.getElementById('footer-placeholder');
+          if (!placeholder) return;
+          placeholder.innerHTML = html;
+          var lang = localStorage.getItem('language');
+          if (typeof changeLanguage === 'function' && lang) {
+            changeLanguage(lang);
+          }
+        })
+        .catch(function(){ /* ignore footer load failure */ });
     </script>
   </body>
 </html> 

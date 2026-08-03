@@ -294,7 +294,20 @@ const translations = {
     licenseErrorRateLimited: "Too many requests. Wait a moment, then try again.",
     licenseErrorServer: "The license service could not complete this request. Try again. Reference: {reference}",
     licenseErrorNetwork: "The license service could not be reached. Check your connection and try again.",
-    licenseContactSupport: "Contact sales"
+    licenseContactSupport: "Contact sales",
+
+    // Footer (shared)
+    footerTagline: "Documentation and showcase for our IoT device network security testing tool.",
+    footerLearn: "Learn",
+    footerAbout: "About",
+    footerSource: "Source on GitHub",
+    footerContributing: "Contributing",
+    footerCommunity: "Community",
+    footerContactHeader: "Contact",
+    footerReportIssue: "Report an issue",
+    footerRSSFeed: "RSS feed",
+    footerSecurityNote: "Scan only hardware you own or are authorised to test.",
+    footerCopyright: "\u00a9 2026 IoTSploit. Open source under the MIT License."
   },
   zh: {
     // 导航栏
@@ -590,7 +603,20 @@ const translations = {
     licenseErrorRateLimited: "请求过于频繁，请稍候再试。",
     licenseErrorServer: "许可证服务无法完成此请求，请重试。参考编号：{reference}",
     licenseErrorNetwork: "无法连接许可证服务，请检查网络连接后重试。",
-    licenseContactSupport: "联系销售"
+    licenseContactSupport: "联系销售",
+
+    // 页脚（共享）
+    footerTagline: "物联网设备网络安全测试工具的文档与展示。",
+    footerLearn: "学习",
+    footerAbout: "关于",
+    footerSource: "GitHub 源码",
+    footerContributing: "参与贡献",
+    footerCommunity: "社区",
+    footerContactHeader: "联系",
+    footerReportIssue: "报告问题",
+    footerRSSFeed: "RSS 订阅",
+    footerSecurityNote: "仅扫描您拥有或获得授权的硬件。",
+    footerCopyright: "\u00a9 2026 IoTSploit。基于 MIT 许可证开源。"
   }
 };
 

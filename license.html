@@ -160,17 +160,25 @@
       </section>
     </main>
 
-    <footer class="footer">
-      <div class="content has-text-centered">
-        <p data-i18n="copyright">© 2024 The IoTSploit authors</p>
-        <p>
-          <a href="https://github.com/TKXB/iotsploit" target="_blank" rel="noopener" data-i18n="codeOfConduct">Code of Conduct</a>
-          · <a href="privacy.html" data-i18n="privacyPolicy">Privacy Policy</a>
-        </p>
-      </div>
-    </footer>
+    <div id="footer-placeholder"></div>
 
     <script>
+      // Load shared footer
+      (function(){
+        fetch('footer.html', { credentials: 'same-origin' })
+          .then(function(r){ return r.text(); })
+          .then(function(html){
+            var placeholder = document.getElementById('footer-placeholder');
+            if (!placeholder) return;
+            placeholder.innerHTML = html;
+            var lang = localStorage.getItem('language');
+            if (typeof changeLanguage === 'function' && lang) {
+              changeLanguage(lang);
+            }
+          })
+          .catch(function(){ /* ignore footer load failure */ });
+      })();
+
       (() => {
         const apiUrl = 'https://license.iotsploit.org/api/v1/trials';
         const fingerprintPattern = /^[0-9a-f]{64}$/;

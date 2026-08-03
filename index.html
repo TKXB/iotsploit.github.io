@@ -1883,23 +1883,26 @@
         </div>
       </section>
 
-      <footer class="footer has-text-centered">
-        <div class="container">
-          <p class="has-text-weight-light" data-i18n="copyright">
-            &copy; 2024 The IoTSploit authors
-          </p>
-          <a style="font-size: 12px" href="https://github.com/TKXB/iotsploit" target="_blank">
-            <span data-i18n="codeOfConduct">Code of Conduct</span>
-          </a>
-          |
-          <a style="font-size: 12px" href="privacy.html">
-            <span data-i18n="privacyPolicy">Privacy Policy</span>
-          </a>
-          |
-          <a style="font-size: 12px" href="mailto:support@iotsploit.org">support@iotsploit.org</a>
-        </div>
-      </footer>
+      <div id="footer-placeholder"></div>
     </div>
+
+    <!-- Load shared footer -->
+    <script defer>
+      (function(){
+        fetch('footer.html', { credentials: 'same-origin' })
+          .then(function(r){ return r.text(); })
+          .then(function(html){
+            var placeholder = document.getElementById('footer-placeholder');
+            if (!placeholder) return;
+            placeholder.innerHTML = html;
+            var lang = localStorage.getItem('language');
+            if (typeof changeLanguage === 'function' && lang) {
+              changeLanguage(lang);
+            }
+          })
+          .catch(function(){ /* ignore footer load failure */ });
+      })();
+    </script>
 
     <script src="js/jquery-3.3.1.min.aac102d50b6b0bdc80b9d66626172b4038d46d56b48c0cf54733db831345a75f.js" integrity="sha256-qsEC1QtrC9yAudZmJhcrQDjUbVa0jAz1RzPbgxNFp18="></script>
     <script src="js/app.min.e1f3bdce955d8afb8683e832a6b8de855d0c515ba52328e33c5c9b8cc431e05a.js" integrity="sha256-4fO9zpVdivuGg&#43;gyprjehV0MUVulIyjjPFybjMQx4Fo="></script>
