@@ -1,0 +1,44 @@
+/* Layout */
+.aw-section{position:relative;scroll-margin-top:var(--scroll-mt)}
+.aw-container{position:relative;margin-inline:auto;max-width:var(--container-max);padding:var(--section-pad-y) var(--container-pad-x)}
+@media(min-width:768px){.aw-container{padding:var(--section-pad-y-md) var(--container-pad-x-md)}}
+@media(min-width:1024px){.aw-container{padding-block:var(--section-pad-y-lg)}}
+.aw-container-6xl{max-width:var(--container-max-6xl)}
+.aw-container-5xl{max-width:var(--container-max-5xl)}
+.aw-bg-tint{background-color:var(--surface-tint)}
+.aw-bg-dark{background-color:var(--surface-dark)}
+/* Forcing a scheme on a subtree also repaints its surface and text, so a dark
+   section inside a light page doesn't inherit the light page's ink. */
+.light,.dark{color:var(--text-body);background-color:var(--surface-page)}
+
+/* Headline */
+.aw-tagline{font-size:var(--text-base);line-height:var(--text-base-lh);color:var(--tagline-color);font-weight:var(--font-bold);letter-spacing:var(--tracking-wide);text-transform:uppercase}
+.aw-title{font-family:var(--aw-font-heading);font-weight:var(--font-bold);line-height:var(--leading-tighter);letter-spacing:var(--tracking-tighter);color:var(--text-heading);font-size:var(--text-3xl)}
+@media(min-width:768px){.aw-title{font-size:var(--text-4xl)}}
+.aw-subtitle{margin-top:var(--space-4);color:var(--text-muted);font-size:var(--text-xl);line-height:var(--text-xl-lh)}
+
+/* Buttons — mirrors @utility btn / btn-primary / btn-tertiary */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-1);border-radius:var(--radius-full);border:1px solid var(--border-strong);background:transparent;font-family:var(--aw-font-sans);font-weight:var(--font-medium);text-align:center;font-size:var(--text-base);line-height:var(--leading-snug);color:var(--text-body);padding:0.875rem 1.5rem;transition:all var(--dur-base) var(--ease-in);cursor:pointer;text-decoration:none}
+@media(min-width:768px){.btn{padding-inline:2rem}}
+.btn:hover{background-color:var(--surface-hover);border-color:light-dark(var(--gray-600),var(--slate-800));text-decoration:none;color:var(--text-body)}
+.btn-primary{font-weight:var(--font-semibold);background-color:var(--aw-color-primary);color:var(--text-on-primary);border-color:var(--aw-color-primary)}
+.btn-primary:hover{background-color:var(--aw-color-secondary);border-color:var(--aw-color-secondary);color:var(--text-on-primary)}
+.btn-tertiary{border:none;box-shadow:none;color:var(--text-muted)}
+.btn-tertiary:hover{background:transparent;color:var(--text-strong)}
+.btn-link{border:none;background:none;padding:0;color:var(--aw-color-link);font-weight:var(--font-medium);cursor:pointer}
+.btn-link:hover{background:none;color:var(--aw-color-link-hover);text-decoration:underline}
+.btn:disabled,.btn[aria-disabled="true"]{opacity:.5;pointer-events:none}
+.btn:focus-visible{outline:2px solid light-dark(var(--blue-600),var(--blue-400));outline-offset:2px}
+
+/* Cards + form controls */
+.aw-card{border-radius:var(--radius-lg);background-color:var(--surface-card);border:1px solid var(--border-subtle);box-shadow:var(--shadow-card);padding:var(--space-6)}
+/* Floating card: shadow in light, hairline in dark (outline, so no layout shift) */
+.aw-card-plain{border-radius:var(--radius-md);box-shadow:var(--shadow-xl);outline:1px solid var(--border-floating);outline-offset:-1px;padding:var(--space-6)}
+.aw-input{display:block;width:100%;padding:var(--space-3) var(--space-4);font-size:var(--text-base);border-radius:var(--radius-lg);border:1px solid var(--border-subtle);background-color:var(--surface-card);color:var(--text-body);font-family:inherit}
+.aw-input::placeholder{color:var(--text-muted)}
+.aw-input:focus-visible{outline:2px solid var(--icon-accent);outline-offset:1px}
+.aw-label{display:block;font-size:var(--text-sm);font-weight:var(--font-medium)}
+
+/* Scroll reveal */
+.aw-fade{animation:var(--anim-fade)}
+@media(prefers-reduced-motion:reduce){.aw-fade{animation:none}}

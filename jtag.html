@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content="Hugo 0.120.3">
     <meta name="description" content="JTAG Boundary Scan - Live pin-state visibility on a running board over IEEE 1149.1" />
 
     <meta property="og:title" content="JTAG Boundary Scan - IoTSploit">
     <meta property="og:url" content="https://www.iotsploit.org/jtag.html">
     <meta property="og:locale" content="en_US">
-    <meta property="og:description" content="See every pin on a running board over the JTAG TAP — live, non-intrusively, with a package pin map.">
+    <meta property="og:description" content="Read every pin on a running board straight off the JTAG chain — live, non-intrusively, on a package pin map.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://www.iotsploit.org/images/iotsploit.png">
     <meta property="og:image:alt" content="JTAG Boundary Scan">
@@ -19,7 +19,7 @@
     <meta name="twitter:site" content="@iotsploit">
     <meta name="twitter:creator" content="@iotsploit">
     <meta name="twitter:title" content="JTAG Boundary Scan - IoTSploit">
-    <meta name="twitter:description" content="See every pin on a running board over the JTAG TAP — live, non-intrusively, with a package pin map.">
+    <meta name="twitter:description" content="Read every pin on a running board straight off the JTAG chain — live, non-intrusively, on a package pin map.">
     <meta name="twitter:image" content="https://www.iotsploit.org/images/iotsploit.png">
 
     <link rel="canonical" href="https://www.iotsploit.org/jtag.html">
@@ -33,12 +33,14 @@
 
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/mstile-144x144.png">
-    <meta name="theme-color" content="#9c3838">
+    <meta name="theme-color" content="#0161ef">
 
     <title>JTAG Boundary Scan - IoTSploit</title>
 
+    <!-- Bulma powers the shared navbar only; the page itself uses the design system. -->
     <link rel="stylesheet" href="css/bulma.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/ds/styles.css">
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -55,8 +57,7 @@
         "Package pin map for DIP, QFP, PLCC and BGA",
         "Searchable signal table",
         "Digital waveform strip",
-        "EXTEST pin driving with safe-value arming",
-        "Interconnect shorts-and-opens diagnosis"
+        "EXTEST pin driving with safe-value arming"
       ],
       "offers": {
         "@type": "Offer",
@@ -75,908 +76,515 @@
     <script src="js/translations.js"></script>
 
     <style>
-      /* Navbar logo styling */
-      .navbar-item img.is-logo {
-        max-height: 3rem;
-      }
+      /* ==================================================================
+         JTAG Boundary Scan — IoTSploit Astro Design System (AstroWind v6).
+         Tokens and utilities come from css/ds/. Everything below is either
+         a Bulma-coexistence reset or a layout the design system does not
+         ship as CSS (its widgets are React).
+         ================================================================== */
 
+      /* Bulma styles the shared navbar; keep its reach out of the page body. */
+      .aw-page p,
+      .aw-page h1,
+      .aw-page h2,
+      .aw-page h3,
+      .aw-page figure,
+      .aw-page ul { margin: 0; padding: 0; }
+      .aw-page ul { list-style: none; }
+      .aw-page table { width: 100%; border-collapse: collapse; }
+
+      /* The logo makes the fixed navbar taller than Bulma's 3.25rem reserve. */
+      .navbar-item img.is-logo { max-height: 3rem; }
+      body.has-navbar-fixed-top { padding-top: 4rem; }
       @media screen and (max-width: 1023px) {
-        .navbar-item img.is-logo {
-          max-height: 2.5rem;
-        }
+        .navbar-item img.is-logo { max-height: 2.5rem; }
+        body.has-navbar-fixed-top { padding-top: 3.5rem; }
       }
 
-      .buttons .button {
-        width: 120px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+      /* Icons: Tabler outline glyphs, inheriting currentColor. */
+      .jt-icon { width: 1.5rem; height: 1.5rem; flex: 0 0 auto; }
+
+      /* 48px pill chip, white glyph on primary blue — the Features treatment. */
+      .jt-chip-icon {
+        width: 3rem; height: 3rem;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: var(--radius-full);
+        background-color: var(--aw-color-primary);
+        color: var(--text-on-primary);
+        margin-bottom: var(--space-4);
       }
 
-      /* Discord purple button styling */
-      .button.is-discord-purple {
-        background-color: #5865F2;
-        border-color: #5865F2;
-        color: white;
+      /* ---------- Hero ---------- */
+      .jt-hero { display: grid; gap: var(--space-10); align-items: center; }
+      @media (min-width: 1024px) {
+        .jt-hero { grid-template-columns: 1fr 1fr; gap: var(--space-12); }
       }
 
-      .button.is-discord-purple:hover {
-        background-color: #4752C4;
-        border-color: #4752C4;
-        color: white;
+      .jt-hero h1 {
+        font-size: var(--text-4xl);
+        font-weight: var(--font-bold);
+        line-height: var(--leading-tighter);
+        letter-spacing: var(--tracking-tighter);
+        margin-top: var(--space-4);
       }
+      @media (min-width: 768px) { .jt-hero h1 { font-size: var(--text-6xl); } }
 
-      /* ------------------------------------------------------------------
-         Pin-state palette. These four hues are the ones the application
-         itself paints pins with, so the page and the product agree.
-         ------------------------------------------------------------------ */
-      :root {
-        --pin-high: #4CAF50;
-        --pin-low: #607D8B;
-        --pin-hiz: #FF9800;
-        --pin-unknown: #9E9E9E;
+      .jt-actions {
+        display: flex; flex-wrap: wrap; gap: var(--space-3);
+        margin-top: var(--space-8);
       }
+      .jt-actions .btn { white-space: nowrap; }
 
-      /* Hero */
-      .jtag-hero-background {
-        position: relative;
-        overflow: hidden;
-        background: linear-gradient(135deg, #414d59 0%, #262d35 100%);
+      /* ---------- Product visual: package pin map ---------- */
+      .jt-panel {
+        color-scheme: dark;
+        background-color: var(--slate-900);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
+        padding: var(--space-4);
       }
+      .jt-panel canvas { display: block; width: 100%; height: auto; }
 
-      .jtag-hero-background::before {
-        content: "";
-        position: absolute;
-        top: 0; right: 0; bottom: 0; left: 0;
-        background-image:
-          repeating-linear-gradient(to right, rgba(255,255,255,.045) 0 1px, transparent 1px 56px),
-          repeating-linear-gradient(to bottom, rgba(255,255,255,.045) 0 1px, transparent 1px 56px);
-        z-index: 1;
-      }
-
-      .jtag-hero-background .hero-body {
-        position: relative;
-        z-index: 2;
-      }
-
-      .jtag-hero-background .title,
-      .jtag-hero-background .subtitle {
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-      }
-
-      .jtag-hero-note {
-        font-family: 'Source Code Pro', monospace;
-        font-size: 0.8rem;
-        letter-spacing: 0.04em;
-        color: rgba(255, 255, 255, 0.55);
-      }
-
-      /* Live package panel */
-      .jtag-pkg-frame {
-        background: #434d57;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 12px;
-        padding: 14px;
-        box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.85);
-      }
-
-      .jtag-pkg-frame canvas {
-        display: block;
-        width: 100%;
-        height: auto;
-      }
-
-      .jtag-bsr-ribbon {
-        margin-top: 12px;
-        background: #1E1E1E;
-        border-radius: 8px;
-        padding: 9px 12px;
-        font-family: 'Source Code Pro', monospace;
-        font-size: 0.7rem;
-        letter-spacing: 0.2em;
-        color: #D4D9DD;
+      .jt-bsr {
+        margin-top: var(--space-3);
+        background-color: #020617;
+        border-radius: var(--radius-sm);
+        padding: var(--space-2) var(--space-3);
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-widest);
+        color: var(--slate-300);
         white-space: nowrap;
         overflow: hidden;
       }
+      .jt-bsr b { color: #4ade80; }
+      .jt-bsr i { color: var(--slate-500); font-style: normal; }
 
-      .jtag-bsr-ribbon b { color: #6EE7B7; }
-      .jtag-bsr-ribbon i { color: #6B8B98; font-style: normal; }
-
-      .jtag-legend {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 12px;
+      .jt-legend { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+      .jt-pin {
+        display: inline-flex; align-items: center; gap: var(--space-2);
+        border-radius: var(--radius-full);
+        padding: var(--space-1) var(--space-3);
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
       }
+      .jt-pin::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: currentColor; }
+      .jt-pin.is-high    { background: rgb(76 175 80 / .16);   color: #2f6f33; }
+      .jt-pin.is-low     { background: rgb(96 125 139 / .16);  color: #445761; }
+      .jt-pin.is-hiz     { background: rgb(255 152 0 / .16);   color: #8a5300; }
+      .jt-pin.is-unknown { background: rgb(158 158 158 / .16); color: #5c5c5c; }
 
-      .jtag-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        border-radius: 20px;
-        padding: 4px 12px;
-        font-family: 'Source Code Pro', monospace;
-        font-size: 0.7rem;
-        letter-spacing: 0.05em;
-      }
-
-      .jtag-chip::before {
-        content: "";
-        width: 8px;
-        height: 8px;
-        border-radius: 2px;
-        background: currentColor;
-      }
-
-      .jtag-chip.is-high { background: rgba(76, 175, 80, .16); color: #C8E6C9; }
-      .jtag-chip.is-low { background: rgba(96, 125, 139, .16); color: #CFD8DC; }
-      .jtag-chip.is-hiz { background: rgba(255, 152, 0, .16); color: #FFE0B2; }
-      .jtag-chip.is-unknown { background: rgba(158, 158, 158, .16); color: #E0E0E0; }
-
-      /* Stat strip */
-      .jtag-stat {
+      /* ---------- Note ---------- */
+      .jt-note {
+        display: flex; align-items: center; justify-content: center;
+        gap: var(--space-3);
+        padding: var(--space-4) var(--container-pad-x);
+        color: var(--text-muted);
+        font-size: var(--text-sm);
         text-align: center;
-        color: rgba(255, 255, 255, 0.7);
       }
+      .jt-note .jt-icon { color: var(--icon-accent); }
 
-      .jtag-stat .stat-figure {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #FFFFFF;
-        line-height: 1.2;
+      /* ---------- Stats ---------- */
+      .jt-stats {
+        display: grid; gap: var(--space-8);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        text-align: center;
       }
-
-      .jtag-stat .stat-figure small {
-        font-size: 0.9rem;
-        font-weight: 400;
-        color: rgba(255, 255, 255, 0.55);
+      @media (min-width: 768px) { .jt-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+      .jt-stat-amount {
+        font-size: var(--stat-amount);
+        font-weight: var(--font-bold);
+        line-height: var(--leading-tighter);
+        color: var(--aw-color-primary);
       }
-
-      .jtag-stat .stat-label {
-        font-family: 'Source Code Pro', monospace;
-        font-size: 0.68rem;
-        letter-spacing: 0.12em;
+      .jt-stat-label {
+        margin-top: var(--space-2);
+        font-size: var(--text-sm);
+        letter-spacing: var(--tracking-wide);
         text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.55);
+        color: var(--text-muted);
       }
 
-      /* Feature cards — same shape language as the fuzzer page */
-      .jtag-feature-card {
-        background: #27343F;
-        border-radius: 12px;
-        padding: 2rem;
-        height: 100%;
-        transition: all 0.3s ease;
-        border-top: 3px solid transparent;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        color: rgba(255, 255, 255, 0.7);
+      /* ---------- Headline block ---------- */
+      .jt-headline {
+        max-width: var(--container-max-3xl);
+        margin-inline: auto;
+        text-align: center;
+        margin-bottom: var(--space-12);
       }
 
-      .jtag-feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-        border-top-color: #0096D1;
-        background: #323b44;
+      /* ---------- Grids ---------- */
+      .jt-grid { display: grid; gap: var(--grid-gap); }
+      @media (min-width: 768px) {
+        .jt-grid.is-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .jt-grid.is-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       }
+      @media (min-width: 640px) { .jt-grid.is-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+      @media (min-width: 1024px) { .jt-grid.is-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
-      .jtag-feature-card.is-danger-card:hover {
-        border-top-color: #DC3545;
+      .jt-item-title {
+        font-size: 1.3rem;
+        font-weight: var(--font-bold);
+        line-height: var(--leading-snug);
       }
+      .jt-item-desc { margin-top: var(--space-2); color: var(--text-muted); }
 
-      .jtag-feature-icon {
-        background: linear-gradient(135deg, #414d59, #0096D1);
-        color: white;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-        font-size: 1.5rem;
-      }
-
-      .jtag-feature-icon.is-danger-icon {
-        background: linear-gradient(135deg, #414d59, #DC3545);
-      }
-
-      .jtag-tag {
+      .jt-eyebrow {
         display: inline-block;
-        font-family: 'Source Code Pro', monospace;
-        font-size: 0.65rem;
-        letter-spacing: 0.12em;
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-wide);
         text-transform: uppercase;
-        border-radius: 20px;
-        padding: 4px 10px;
-        margin-bottom: 0.75rem;
-        background: rgba(0, 150, 209, 0.2);
-        color: #4DB8E8;
+        color: var(--tagline-color);
+        margin-bottom: var(--space-2);
       }
 
-      .jtag-tag.is-danger-tag {
-        background: rgba(220, 53, 69, 0.2);
-        color: #F4A0A5;
-      }
+      /* An item whose glyph sits beside the text — the Content treatment. */
+      .jt-row { display: flex; gap: var(--space-4); }
+      .jt-row .jt-icon { color: var(--icon-accent); margin-top: 0.2rem; }
 
-      /* ------------------------------------------------------------------
-         Application window mock. Mirrors the real layout: chain panel,
-         package view, signal table, waveform strip.
-         ------------------------------------------------------------------ */
-      .jtag-mock {
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 12px;
-        background: #343b43;
-        overflow: hidden;
-        box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.9);
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 0.78rem;
-      }
-
-      .jtag-mock-bar {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        padding: 10px 16px;
-        background: #262d35;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      }
-
-      .jtag-mock-dots { display: flex; gap: 6px; }
-      .jtag-mock-dots i {
-        width: 10px; height: 10px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.2);
+      /* ---------- Product screenshot ---------- */
+      .jt-shot img {
         display: block;
-      }
-
-      .jtag-mock-title { color: #FFFFFF; font-weight: 600; }
-
-      .jtag-mock-status {
-        margin-left: auto;
-        display: flex;
-        gap: 16px;
-        align-items: center;
-        font-family: 'Source Code Pro', monospace;
-        font-size: 0.68rem;
-      }
-
-      .jtag-live-dot {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        color: #6EE7B7;
-      }
-
-      .jtag-live-dot::before {
-        content: "";
-        width: 8px; height: 8px;
-        border-radius: 50%;
-        background: #34D399;
-      }
-
-      .jtag-mock-toolbar {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        align-items: center;
-        padding: 12px 16px;
-        background: #2a323b;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      }
-
-      .jtag-field {
-        display: inline-flex;
-        align-items: center;
-        gap: 9px;
-        background: #3c464f;
-        border: 1px solid #4a545e;
-        border-radius: 8px;
-        padding: 6px 12px;
-        font-family: 'Source Code Pro', monospace;
-        font-size: 0.68rem;
-      }
-
-      .jtag-field span:first-child {
-        color: rgba(255, 255, 255, 0.5);
-        letter-spacing: 0.09em;
-      }
-
-      .jtag-mini-btn {
-        font-size: 0.72rem;
-        font-weight: 500;
-        border-radius: 999px;
-        padding: 7px 16px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        background: transparent;
-        color: rgba(255, 255, 255, 0.7);
-      }
-
-      .jtag-mini-btn.is-solid {
-        background: #0096D1;
-        border-color: #0096D1;
-        color: #FFFFFF;
-      }
-
-      .jtag-mini-btn.is-warn {
-        background: #4A2B30;
-        border-color: #DC3545;
-        color: #F4A0A5;
-      }
-
-      .jtag-mock-body {
-        display: grid;
-        grid-template-columns: 190px minmax(0, 1.2fr) minmax(0, 1fr);
-        min-height: 330px;
-      }
-
-      .jtag-pane {
-        padding: 14px 16px;
-        border-right: 1px solid rgba(255, 255, 255, 0.12);
-        display: flex;
-        flex-direction: column;
-        gap: 11px;
-        min-width: 0;
-      }
-
-      .jtag-pane:first-child { background: #2a323b; }
-      .jtag-pane:last-child { border-right: 0; }
-
-      .jtag-pane-h {
-        font-family: 'Source Code Pro', monospace;
-        font-size: 0.62rem;
-        letter-spacing: 0.13em;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.5);
-        display: flex;
-        justify-content: space-between;
-        gap: 8px;
-      }
-
-      .jtag-tap {
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 10px;
-        background: #434d57;
-        padding: 10px 12px;
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-      }
-
-      .jtag-tap.is-selected {
-        border-color: #0096D1;
-        background: #153A4D;
-      }
-
-      .jtag-tap b { color: #FFFFFF; font-weight: 600; }
-      .jtag-tap span {
-        font-family: 'Source Code Pro', monospace;
-        font-size: 0.68rem;
-        color: rgba(255, 255, 255, 0.5);
-      }
-
-      .jtag-pkg-mini {
-        display: grid;
-        place-items: center;
-        flex: 1;
-        min-height: 200px;
-      }
-
-      .jtag-pkg-mini canvas {
         width: 100%;
         height: auto;
-        max-width: 310px;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
       }
 
-      .jtag-sig-search {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        background: #3c464f;
-        border: 1px solid #4a545e;
-        border-radius: 8px;
-        padding: 7px 11px;
-        color: rgba(255, 255, 255, 0.5);
+      /* ---------- CTA ---------- */
+      .jt-cta { text-align: center; max-width: var(--container-max-3xl); }
+      .jt-cta .jt-actions { justify-content: center; }
+
+      /* ---------- Footer ---------- */
+      .jt-footer { border-top: 1px solid var(--border-subtle); }
+      .jt-footer-grid { display: grid; gap: var(--space-8); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      @media (min-width: 768px) { .jt-footer-grid { grid-template-columns: 1.5fr repeat(4, minmax(0, 1fr)); } }
+      .jt-footer-brand { font-weight: var(--font-bold); font-size: var(--text-xl); color: var(--text-heading); }
+      .jt-footer h3 { font-size: var(--text-sm); font-weight: var(--font-medium); margin-bottom: var(--space-2); }
+      .jt-footer li { margin-bottom: var(--space-2); }
+      .jt-footer li a { color: var(--text-muted); font-size: var(--text-sm); }
+      .jt-footer li a:hover { color: var(--aw-color-link); }
+      .jt-footer-bottom {
+        display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4);
+        margin-top: var(--space-8); padding-top: var(--space-6);
+        border-top: 1px solid var(--border-subtle);
+        font-size: var(--text-sm); color: var(--text-muted);
       }
-
-      .jtag-sig-search b {
-        color: #FFFFFF;
-        font-weight: 400;
-        font-family: 'Source Code Pro', monospace;
-      }
-
-      .jtag-sig-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-family: 'Source Code Pro', monospace;
-        font-size: 0.7rem;
-      }
-
-      .jtag-sig-table th {
-        text-align: left;
-        font-weight: 500;
-        color: rgba(255, 255, 255, 0.5);
-        font-size: 0.6rem;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        background: #222932;
-        padding: 7px 8px;
-      }
-
-      .jtag-sig-table td {
-        padding: 7px 8px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.24);
-        color: rgba(255, 255, 255, 0.7);
-      }
-
-      .jtag-sig-table tbody tr:nth-child(odd) { background: #3c464f; }
-      .jtag-sig-table tbody tr:nth-child(even) { background: #434d57; }
-      .jtag-sig-table td:first-child { color: #FFFFFF; }
-
-      .jtag-val {
-        display: inline-block;
-        padding: 3px 10px;
-        border-radius: 20px;
-        font-size: 0.62rem;
-        letter-spacing: 0.05em;
-      }
-
-      .jtag-val.is-high { background: rgba(76, 175, 80, .16); color: #C8E6C9; }
-      .jtag-val.is-low { background: rgba(96, 125, 139, .16); color: #CFD8DC; }
-      .jtag-val.is-hiz { background: rgba(255, 152, 0, .16); color: #FFE0B2; }
-
-      .jtag-wave-strip {
-        border-top: 1px solid rgba(255, 255, 255, 0.12);
-        padding: 13px 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 9px;
-        background: #2a323b;
-      }
-
-      .jtag-wave-strip canvas {
-        width: 100%;
-        height: auto;
-        display: block;
-      }
-
-      .jtag-callout {
-        border-top: 2px solid #0096D1;
-        padding-top: 12px;
-        color: rgba(255, 255, 255, 0.55);
-      }
-
-      .jtag-callout b {
-        display: block;
-        color: #FFFFFF;
-        margin-bottom: 4px;
-      }
-
-      /* Spec table */
-      .jtag-spec-wrapper {
-        overflow-x: auto;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 12px;
-        background: #27343F;
-      }
-
-      .jtag-spec {
-        width: 100%;
-        border-collapse: collapse;
-        min-width: 580px;
-        color: rgba(255, 255, 255, 0.7);
-      }
-
-      .jtag-spec th,
-      .jtag-spec td {
-        text-align: left;
-        padding: 15px 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-        vertical-align: top;
-      }
-
-      .jtag-spec tr:last-child th,
-      .jtag-spec tr:last-child td { border-bottom: 0; }
-
-      .jtag-spec th {
-        width: 220px;
-        font-weight: 500;
-        color: #4DB8E8;
-        font-family: 'Source Code Pro', monospace;
-        font-size: 0.7rem;
-        letter-spacing: 0.11em;
-        text-transform: uppercase;
-      }
-
-      .jtag-spec code {
-        font-family: 'Source Code Pro', monospace;
-        font-size: 0.78rem;
-        background: #1f2c36;
-        border: 1px solid #323b44;
-        padding: 2px 7px;
-        border-radius: 6px;
-        color: #FFFFFF;
-      }
-
-      /* Responsive */
-      @media screen and (max-width: 900px) {
-        .jtag-mock-body { grid-template-columns: minmax(0, 1fr); }
-        .jtag-pane {
-          border-right: 0;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-        }
-      }
-
-      @media screen and (max-width: 768px) {
-        .jtag-hero-background .title { font-size: 2rem !important; }
-        .jtag-hero-background .subtitle { font-size: 1.25rem !important; }
-      }
+      .jt-social { display: flex; gap: var(--space-4); margin-left: auto; }
+      .jt-social a { color: var(--text-muted); }
+      .jt-social a:hover { color: var(--aw-color-link); }
     </style>
   </head>
 
   <body class="page has-navbar-fixed-top">
-    <div class="main">
-      <div id="navbar-placeholder"></div>
+    <div id="navbar-placeholder"></div>
 
-      <!-- Hero Section -->
-      <section class="hero jtag-hero-background">
-        <div class="hero-body">
-          <div class="container">
-            <div class="columns is-vcentered">
-              <div class="column is-6">
-                <p class="jtag-hero-note mb-4">IEEE 1149.1 &middot; SAMPLE &middot; PRELOAD &middot; EXTEST</p>
+    <main class="aw-page">
+      <!-- ============================ Hero ============================ -->
+      <section class="aw-section">
+        <div class="aw-container jt-hero">
+          <div>
+            <p class="aw-tagline">IEEE 1149.1 &middot; SAMPLE &middot; PRELOAD &middot; EXTEST</p>
 
-                <h1 class="title is-size-1 is-size-2-mobile is-spaced has-text-white" data-i18n="jtagTitle">
-                  JTAG Boundary Scan
-                </h1>
+            <h1 data-i18n="jtagTitle">JTAG Boundary Scan</h1>
 
-                <p class="subtitle is-size-3 is-size-4-mobile has-text-weight-light has-text-white" data-i18n="jtagSubtitle">
-                  Every pin on a running board, without a single probe tip
-                </p>
+            <p class="aw-subtitle" data-i18n="jtagDescription">
+              Read every pin on a running board straight off the chain, and see it painted back onto the package &mdash; live, at 30 Hz, without a single probe tip.
+            </p>
 
-                <p class="subtitle is-size-5 is-size-6-mobile has-text-white" data-i18n="jtagDescription">
-                  The TAP already touches every pin on the package. Boundary Scan reads the boundary register straight off the chain and paints it back onto the part you are actually holding — live, non-intrusively, at thirty frames a second.
-                </p>
+            <div class="jt-actions">
+              <a class="btn btn-primary" href="download.html">
+                <svg class="jt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>
+                <span data-i18n="jtagTrialCta">Get a 7-day trial</span>
+              </a>
+              <a class="btn" href="#workspace" data-i18n="jtagWorkspaceCta">See the workspace</a>
+            </div>
+          </div>
 
-                <div class="mt-6">
-                  <a class="button is-primary is-large mr-2" href="download.html">
-                    <span class="icon"><i class="fas fa-download"></i></span>
-                    <span data-i18n="jtagTrialCta">Get a 7-day trial</span>
-                  </a>
-                  <a class="button is-light is-large" href="#workspace">
-                    <span class="icon"><i class="fas fa-desktop"></i></span>
-                    <span data-i18n="jtagWorkspaceCta">See the workspace</span>
-                  </a>
-                </div>
+          <div>
+            <figure class="jt-panel">
+              <canvas id="heroPkg" width="800" height="800" role="img"
+                      aria-label="Package pin map of an LQFP device with pins coloured by boundary-scan state."></canvas>
+              <div class="jt-bsr" id="bsrRibbon" aria-hidden="true"></div>
+            </figure>
+            <div class="jt-legend">
+              <span class="jt-pin is-high">High</span>
+              <span class="jt-pin is-low">Low</span>
+              <span class="jt-pin is-hiz">Hi-Z</span>
+              <span class="jt-pin is-unknown">Unknown</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                <p class="jtag-hero-note mt-5" data-i18n="jtagHeroNote">
-                  No target firmware. No instrumentation. No pause in execution.
-                </p>
+      <!-- ============================ Note ============================ -->
+      <section class="aw-section aw-bg-tint">
+        <div class="jt-note">
+          <svg class="jt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9h.01"/><path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14"/><path d="M11 12h1v4h1"/></svg>
+          <span data-i18n="jtagHeroNote">No target firmware. No instrumentation. No pause in execution.</span>
+        </div>
+      </section>
+
+      <!-- ============================ Stats =========================== -->
+      <section class="aw-section">
+        <div class="aw-container aw-container-6xl">
+          <div class="jt-stats">
+            <div>
+              <div class="jt-stat-amount">30 Hz</div>
+              <div class="jt-stat-label" data-i18n="jtagStatRate">Default sample rate</div>
+            </div>
+            <div>
+              <div class="jt-stat-amount">4</div>
+              <div class="jt-stat-label" data-i18n="jtagStatPackages">Package families drawn</div>
+            </div>
+            <div>
+              <div class="jt-stat-amount">3</div>
+              <div class="jt-stat-label" data-i18n="jtagStatModes">Operations</div>
+            </div>
+            <div>
+              <div class="jt-stat-amount">7 days</div>
+              <div class="jt-stat-label" data-i18n="jtagStatTrial">Free trial</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================= Operations ========================= -->
+      <section class="aw-section" id="operations">
+        <div class="aw-container">
+          <div class="jt-headline">
+            <p class="aw-tagline" data-i18n="jtagOpsTagline">Operations</p>
+            <h2 class="aw-title" data-i18n="jtagOpsTitle">Three instructions, one TAP</h2>
+            <p class="aw-subtitle" data-i18n="jtagOpsDesc">In the order of how much trouble they can cause. Only the last one drives silicon.</p>
+          </div>
+
+          <div class="jt-grid is-3">
+            <div class="aw-card">
+              <div class="jt-chip-icon">
+                <svg class="jt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3 8l4 -16l3 8h4"/></svg>
               </div>
+              <p class="jt-eyebrow" data-i18n="jtagObserveTag">Observe &middot; SAMPLE</p>
+              <h3 class="jt-item-title" data-i18n="jtagObserveTitle">Watch the board run</h3>
+              <p class="jt-item-desc" data-i18n="jtagObserveDesc">Captures the boundary register while the target keeps executing. Nothing is driven, nothing is halted.</p>
+            </div>
 
-              <div class="column is-6">
-                <div class="jtag-pkg-frame">
-                  <canvas id="heroPkg" width="800" height="800" role="img"
-                          aria-label="Package pin map of an LQFP-48 device with pins coloured by boundary-scan state."></canvas>
-                </div>
-                <div class="jtag-bsr-ribbon" id="bsrRibbon" aria-hidden="true"></div>
-                <div class="jtag-legend">
-                  <span class="jtag-chip is-high">High</span>
-                  <span class="jtag-chip is-low">Low</span>
-                  <span class="jtag-chip is-hiz">Hi-Z</span>
-                  <span class="jtag-chip is-unknown">Unknown</span>
-                </div>
+            <div class="aw-card">
+              <div class="jt-chip-icon">
+                <svg class="jt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12l3 3l3 -3l-3 -3l-3 3"/><path d="M15 12l3 3l3 -3l-3 -3l-3 3"/><path d="M9 6l3 3l3 -3l-3 -3l-3 3"/><path d="M9 18l3 3l3 -3l-3 -3l-3 3"/></svg>
+              </div>
+              <p class="jt-eyebrow" data-i18n="jtagStageTag">Stage &middot; PRELOAD</p>
+              <h3 class="jt-item-title" data-i18n="jtagStageTitle">Stage values first</h3>
+              <p class="jt-item-desc" data-i18n="jtagStageDesc">Set a drive value per pin. Every cell you did not touch takes the safe value the BSDL declares.</p>
+            </div>
+
+            <div class="aw-card">
+              <div class="jt-chip-icon">
+                <svg class="jt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4"/><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0"/><path d="M12 16h.01"/></svg>
+              </div>
+              <p class="jt-eyebrow" data-i18n="jtagDriveTag">Drive &middot; EXTEST</p>
+              <h3 class="jt-item-title" data-i18n="jtagDriveTitle">Take the pins</h3>
+              <p class="jt-item-desc" data-i18n="jtagDriveDesc">Drive a net, read it back at the far end, and prove the trace. Behind a separate arming step.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================= Workspace ========================== -->
+      <section class="aw-section aw-bg-tint" id="workspace">
+        <div class="aw-container">
+          <div class="jt-headline">
+            <p class="aw-tagline" data-i18n="jtagWorkspaceTagline">Workspace</p>
+            <h2 class="aw-title" data-i18n="jtagWorkspaceTitle">Chain, package and signals in one window</h2>
+            <p class="aw-subtitle" data-i18n="jtagWorkspaceDesc">The map tells you where on the part a problem is. The table tells you what the value is.</p>
+          </div>
+
+          <figure class="jt-shot">
+            <img src="images/jtag-workspace.png" width="1594" height="953" loading="lazy" decoding="async"
+                 alt="The JTAG Boundary Scan workspace: the discovered chain across the top, the package view on the left, the live signal table on the right, and a waveform of the traced pins below.">
+          </figure>
+
+          <div class="jt-grid is-4" style="margin-top: var(--space-12);">
+            <div class="jt-row">
+              <svg class="jt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -12"/><path d="M9 9h6v6h-6l0 -6"/><path d="M3 10h2"/><path d="M3 14h2"/><path d="M10 3v2"/><path d="M14 3v2"/><path d="M21 10h-2"/><path d="M21 14h-2"/><path d="M14 21v-2"/><path d="M10 21v-2"/></svg>
+              <div>
+                <h3 class="jt-item-title" data-i18n="jtagCalloutChainTitle">Chain first</h3>
+                <p class="jt-item-desc" data-i18n="jtagCalloutChainDesc">A TAP needs a BSDL before anything else unlocks.</p>
+              </div>
+            </div>
+            <div class="jt-row">
+              <svg class="jt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2l0 -2"/><path d="M19 6h1a2 2 0 0 1 2 2a5 5 0 0 1 -5 5l-5 0v2"/><path d="M10 16a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1l0 -4"/></svg>
+              <div>
+                <h3 class="jt-item-title" data-i18n="jtagCalloutColourTitle">Colour is the value</h3>
+                <p class="jt-item-desc" data-i18n="jtagCalloutColourDesc">One palette across the map, the table and the waveform.</p>
+              </div>
+            </div>
+            <div class="jt-row">
+              <svg class="jt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 5.5l1.5 1.5l2.5 -2.5"/><path d="M3.5 11.5l1.5 1.5l2.5 -2.5"/><path d="M3.5 17.5l1.5 1.5l2.5 -2.5"/><path d="M11 6l9 0"/><path d="M11 12l9 0"/><path d="M11 18l9 0"/></svg>
+              <div>
+                <h3 class="jt-item-title" data-i18n="jtagCalloutSearchTitle">Search, don't scroll</h3>
+                <p class="jt-item-desc" data-i18n="jtagCalloutSearchDesc">Filter by port, pin or direction; pin any signal to the waveform.</p>
+              </div>
+            </div>
+            <div class="jt-row">
+              <svg class="jt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4"/><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0"/><path d="M12 16h.01"/></svg>
+              <div>
+                <h3 class="jt-item-title" data-i18n="jtagCalloutArmTitle">Arming is loud</h3>
+                <p class="jt-item-desc" data-i18n="jtagCalloutArmDesc">EXTEST is a separate red control with a confirmation dialog.</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Stat strip -->
-      <section class="section" style="background-color: #212B33; padding-top: 2.5rem; padding-bottom: 2.5rem;">
-        <div class="container">
-          <div class="columns">
-            <div class="column jtag-stat">
-              <div class="stat-figure">30 <small>Hz</small></div>
-              <div class="stat-label" data-i18n="jtagStatRate">Default sample rate</div>
+      <!-- =========================== Safety =========================== -->
+      <section class="aw-section dark" id="safety">
+        <div class="aw-container">
+          <div class="jt-headline">
+            <p class="aw-tagline" data-i18n="jtagSafetyTagline">Safety</p>
+            <h2 class="aw-title" data-i18n="jtagSafetyTitle">EXTEST can damage hardware</h2>
+            <p class="aw-subtitle" data-i18n="jtagSafetyDesc">Driving a pin something else already drives is bus contention. Three defences, all on by default.</p>
+          </div>
+
+          <div class="jt-grid is-3">
+            <div class="aw-card">
+              <div class="jt-chip-icon">
+                <svg class="jt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.46 20.846a12 12 0 0 1 -7.96 -14.846a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 -.09 7.06"/><path d="M15 19l2 2l4 -4"/></svg>
+              </div>
+              <h3 class="jt-item-title" data-i18n="jtagSafeValuesTitle">Safe values everywhere</h3>
+              <p class="jt-item-desc" data-i18n="jtagSafeValuesDesc">Cells you did not stage take the safe value from the device's own BSDL.</p>
             </div>
-            <div class="column jtag-stat">
-              <div class="stat-figure">4</div>
-              <div class="stat-label" data-i18n="jtagStatPackages">Package families drawn</div>
+
+            <div class="aw-card">
+              <div class="jt-chip-icon">
+                <svg class="jt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 5.5l1.5 1.5l2.5 -2.5"/><path d="M3.5 11.5l1.5 1.5l2.5 -2.5"/><path d="M3.5 17.5l1.5 1.5l2.5 -2.5"/><path d="M11 6l9 0"/><path d="M11 12l9 0"/><path d="M11 18l9 0"/></svg>
+              </div>
+              <h3 class="jt-item-title" data-i18n="jtagPreloadTitle">Preload, then arm</h3>
+              <p class="jt-item-desc" data-i18n="jtagPreloadDesc">Values reach the update latch before EXTEST is ever selected.</p>
             </div>
-            <div class="column jtag-stat">
-              <div class="stat-figure">3</div>
-              <div class="stat-label" data-i18n="jtagStatModes">Operating modes</div>
-            </div>
-            <div class="column jtag-stat">
-              <div class="stat-figure">7 <small>days</small></div>
-              <div class="stat-label" data-i18n="jtagStatTrial">Free trial</div>
+
+            <div class="aw-card">
+              <div class="jt-chip-icon">
+                <svg class="jt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 7l-18 0"/><path d="M18 10l3 -3l-3 -3"/><path d="M6 20l-3 -3l3 -3"/><path d="M3 17l18 0"/></svg>
+              </div>
+              <h3 class="jt-item-title" data-i18n="jtagExitTitle">One way back</h3>
+              <p class="jt-item-desc" data-i18n="jtagExitDesc">Leaving EXTEST returns the pins to the target and drops back to SAMPLE.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- What it does -->
-      <section class="section" style="background-color: #1f2c36;">
-        <div class="container">
-          <h2 class="title has-text-centered mb-3" style="color: #0096D1;" data-i18n="jtagOpsTitle">
-            Three operations, in order of how much trouble they can cause
-          </h2>
-          <p class="has-text-centered mb-6" style="color: rgba(255,255,255,0.7); max-width: 720px; margin-left: auto; margin-right: auto;" data-i18n="jtagOpsDesc">
-            Each one is a different instruction shifted into the same TAP. The application makes the difference between them impossible to miss, because the third one drives silicon.
-          </p>
+      <!-- ======================= Specifications ======================= -->
+      <section class="aw-section" id="specs">
+        <div class="aw-container aw-container-6xl">
+          <div class="jt-headline">
+            <p class="aw-tagline" data-i18n="jtagSpecTagline">Specifications</p>
+            <h2 class="aw-title" data-i18n="jtagSpecTitle">What it runs on</h2>
+          </div>
 
-          <div class="columns is-multiline">
-            <div class="column is-4">
-              <div class="jtag-feature-card">
-                <div class="jtag-feature-icon"><i class="fas fa-eye"></i></div>
-                <span class="jtag-tag" data-i18n="jtagObserveTag">Observe &middot; SAMPLE</span>
-                <h3 class="title is-4" style="color: #0096D1;" data-i18n="jtagObserveTitle">Watch the board run</h3>
-                <p data-i18n="jtagObserveDesc">
-                  SAMPLE captures the boundary register while the target keeps executing. Nothing is driven, nothing is halted — you are reading the same latches the pins already feed. Start here; it cannot break anything.
-                </p>
-              </div>
+          <div class="jt-grid is-2">
+            <div>
+              <h3 class="jt-item-title" data-i18n="jtagSpecAdaptersLabel">Adapters</h3>
+              <p class="jt-item-desc" data-i18n="jtagSpecAdaptersValue">Any debug probe with raw JTAG access &mdash; J-Link, CMSIS-DAP, FTDI. Clock set per session, 1 MHz by default.</p>
             </div>
-
-            <div class="column is-4">
-              <div class="jtag-feature-card">
-                <div class="jtag-feature-icon"><i class="fas fa-layer-group"></i></div>
-                <span class="jtag-tag" data-i18n="jtagStageTag">Stage &middot; PRELOAD</span>
-                <h3 class="title is-4" style="color: #0096D1;" data-i18n="jtagStageTitle">Load values before they bite</h3>
-                <p data-i18n="jtagStageDesc">
-                  Stage a drive value per pin and it sits in the update latch, inert. Every cell you did not touch defaults to the safe value the BSDL declares, so arming never surprises you with a pin you forgot about.
-                </p>
-              </div>
+            <div>
+              <h3 class="jt-item-title" data-i18n="jtagSpecDevicesLabel">Devices</h3>
+              <p class="jt-item-desc" data-i18n="jtagSpecDevicesValue">Any part with a published BSDL. Chain discovery decodes IDCODE and manufacturer for every TAP.</p>
             </div>
-
-            <div class="column is-4">
-              <div class="jtag-feature-card is-danger-card">
-                <div class="jtag-feature-icon is-danger-icon"><i class="fas fa-bolt"></i></div>
-                <span class="jtag-tag is-danger-tag" data-i18n="jtagDriveTag">Drive &middot; EXTEST</span>
-                <h3 class="title is-4" style="color: #F4A0A5;" data-i18n="jtagDriveTitle">Take the pins</h3>
-                <p data-i18n="jtagDriveDesc">
-                  EXTEST hands the package's outputs to you. Drive a net, read it back at the far end, and prove the trace. It is also bus contention waiting to happen, which is why it sits behind a separate arming step.
-                </p>
-              </div>
+            <div>
+              <h3 class="jt-item-title" data-i18n="jtagSpecPackagesLabel">Packages drawn</h3>
+              <p class="jt-item-desc">DIP &middot; QFP &middot; PLCC &middot; BGA<span data-i18n="jtagSpecPackagesValue">, from the BSDL pin map. Anything else falls back to the signal table.</span></p>
+            </div>
+            <div>
+              <h3 class="jt-item-title" data-i18n="jtagSpecOperationsLabel">Operations</h3>
+              <p class="jt-item-desc" data-i18n="jtagSpecOperationsValue">SAMPLE streaming, PRELOAD staging and EXTEST driving, with a waveform for any traced pin.</p>
+            </div>
+            <div>
+              <h3 class="jt-item-title" data-i18n="jtagSpecPlatformsLabel">Platforms</h3>
+              <p class="jt-item-desc" data-i18n="jtagSpecPlatformsValue">Linux, Windows and macOS desktop, shipped as a standalone application.</p>
+            </div>
+            <div>
+              <h3 class="jt-item-title" data-i18n="jtagSpecLicensingLabel">Licensing</h3>
+              <p class="jt-item-desc" data-i18n="jtagSpecLicensingValue">A signed licence bound to the machine's device fingerprint. Take a 7-day trial, then work fully offline.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Workspace -->
-      <section class="section" id="workspace" style="background: linear-gradient(135deg, #323b44 0%, #414d59 100%);">
-        <div class="container">
-          <h2 class="title has-text-centered mb-3" style="color: #0096D1;" data-i18n="jtagWorkspaceTitle">
-            The chain on the left, the part in the middle, the numbers on the right
-          </h2>
-          <p class="has-text-centered mb-6" style="color: rgba(255,255,255,0.7); max-width: 720px; margin-left: auto; margin-right: auto;" data-i18n="jtagWorkspaceDesc">
-            The package map is the centrepiece — it is the only view that tells you where on the physical part a problem is. The table beside it tells you exactly what the value is. Neither one is enough alone.
-          </p>
-
-          <div class="jtag-mock">
-            <div class="jtag-mock-bar">
-              <span class="jtag-mock-dots"><i></i><i></i><i></i></span>
-              <span class="jtag-mock-title">JTAG Boundary Scan</span>
-              <span class="jtag-mock-status">
-                <span class="jtag-live-dot">SAMPLE &middot; 30 Hz</span>
-                <span>2 TAP(s)</span>
-              </span>
-            </div>
-
-            <div class="jtag-mock-toolbar">
-              <span class="jtag-field"><span>ADAPTER</span><span>J-Link &middot; 1366:0101</span></span>
-              <span class="jtag-field"><span>CLOCK</span><span>1 000 000 Hz</span></span>
-              <span class="jtag-field"><span>IR</span><span>SAMPLE</span></span>
-              <button class="jtag-mini-btn is-solid" type="button">Streaming</button>
-              <button class="jtag-mini-btn" type="button">Load BSDL</button>
-              <button class="jtag-mini-btn is-warn" type="button">Arm EXTEST</button>
-            </div>
-
-            <div class="jtag-mock-body">
-              <div class="jtag-pane">
-                <div class="jtag-pane-h"><span>Chain</span><span>2</span></div>
-                <div class="jtag-tap is-selected">
-                  <b>TAP 0</b>
-                  <span>0x06413041</span>
-                  <span>STM32F405 &middot; LQFP176</span>
-                </div>
-                <div class="jtag-tap">
-                  <b>TAP 1</b>
-                  <span>0x4BA00477</span>
-                  <span>No BSDL — BYPASS</span>
-                </div>
-                <div class="jtag-pane-h"><span>Staged drives</span><span>0</span></div>
-              </div>
-
-              <div class="jtag-pane">
-                <div class="jtag-pane-h"><span>Package view</span><span>zoom &middot; fit</span></div>
-                <div class="jtag-pkg-mini">
-                  <canvas id="mockPkg" width="620" height="620" role="img"
-                          aria-label="Package view pane showing a quad flat pack with pins coloured by state."></canvas>
-                </div>
-              </div>
-
-              <div class="jtag-pane">
-                <div class="jtag-pane-h"><span>Signals</span><span>168</span></div>
-                <div class="jtag-sig-search"><span>&#9906;</span><b>PA1</b></div>
-                <table class="jtag-sig-table">
-                  <thead>
-                    <tr><th>Port</th><th>Pin</th><th>Dir</th><th>Value</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>PA10</td><td>102</td><td>in</td><td><span class="jtag-val is-high">1</span></td></tr>
-                    <tr><td>PA11</td><td>103</td><td>out3</td><td><span class="jtag-val is-low">0</span></td></tr>
-                    <tr><td>PA12</td><td>104</td><td>out3</td><td><span class="jtag-val is-hiz">Z</span></td></tr>
-                    <tr><td>PA13</td><td>105</td><td>bidir</td><td><span class="jtag-val is-high">1</span></td></tr>
-                    <tr><td>PA14</td><td>109</td><td>in</td><td><span class="jtag-val is-low">0</span></td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div class="jtag-wave-strip">
-              <div class="jtag-pane-h"><span>Waveform &middot; 3 traces</span><span>clear</span></div>
-              <canvas id="mockWave" width="1200" height="150" role="img"
-                      aria-label="Digital waveform strip showing three traced pins over time."></canvas>
-            </div>
-          </div>
-
-          <div class="columns is-multiline mt-5">
-            <div class="column is-3">
-              <div class="jtag-callout">
-                <b data-i18n="jtagCalloutChainTitle">Chain first</b>
-                <span data-i18n="jtagCalloutChainDesc">Nothing else unlocks until a TAP is selected and given a BSDL. The panel says which TAPs still lack one.</span>
-              </div>
-            </div>
-            <div class="column is-3">
-              <div class="jtag-callout">
-                <b data-i18n="jtagCalloutColourTitle">Colour is the value</b>
-                <span data-i18n="jtagCalloutColourDesc">One palette across the map, the table chips and the waveform, so a green pin means the same thing everywhere.</span>
-              </div>
-            </div>
-            <div class="column is-3">
-              <div class="jtag-callout">
-                <b data-i18n="jtagCalloutSearchTitle">Search, don't scroll</b>
-                <span data-i18n="jtagCalloutSearchDesc">Five hundred pins is a search box, not a list. Filter by port, pin or direction, and pin traces to the waveform.</span>
-              </div>
-            </div>
-            <div class="column is-3">
-              <div class="jtag-callout">
-                <b data-i18n="jtagCalloutArmTitle">Arming is loud</b>
-                <span data-i18n="jtagCalloutArmDesc">EXTEST is a separate red control with a confirmation, and the whole window changes state once it is live.</span>
-              </div>
-            </div>
+      <!-- ============================ CTA ============================= -->
+      <section class="aw-section aw-bg-tint">
+        <div class="aw-container jt-cta">
+          <h2 class="aw-title" data-i18n="jtagCtaTitle">Point it at a board you have no schematics for</h2>
+          <p class="aw-subtitle" data-i18n="jtagCtaDesc">Chain, pin map and live values in about ninety seconds, provided the vendor published a BSDL.</p>
+          <div class="jt-actions">
+            <a class="btn btn-primary" href="download.html">
+              <svg class="jt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>
+              <span data-i18n="jtagTrialCta">Get a 7-day trial</span>
+            </a>
           </div>
         </div>
       </section>
 
-      <!-- Safety -->
-      <section class="section" style="background-color: #212C34;">
-        <div class="container">
-          <h2 class="title has-text-centered mb-3" style="color: #F4A0A5;" data-i18n="jtagSafetyTitle">
-            EXTEST can damage hardware. The design assumes you will forget that
-          </h2>
-          <p class="has-text-centered mb-6" style="color: rgba(255,255,255,0.7); max-width: 720px; margin-left: auto; margin-right: auto;" data-i18n="jtagSafetyDesc">
-            Driving a pin that something else is already driving is bus contention, and contention is how boards die on the bench. Three defences, all on by default.
-          </p>
-
-          <div class="columns is-multiline">
-            <div class="column is-4">
-              <div class="jtag-feature-card">
-                <div class="jtag-feature-icon"><i class="fas fa-shield-alt"></i></div>
-                <h3 class="title is-4" style="color: #0096D1;" data-i18n="jtagSafeValuesTitle">Safe values everywhere</h3>
-                <p data-i18n="jtagSafeValuesDesc">
-                  Every cell you did not explicitly stage is encoded to the safe value from the device's own BSDL. The blast radius of arming is exactly the pins you chose.
-                </p>
-              </div>
+      <!-- =========================== Footer =========================== -->
+      <footer class="jt-footer">
+        <div class="aw-container">
+          <div class="jt-footer-grid">
+            <div>
+              <p class="jt-footer-brand">IoTSploit</p>
             </div>
-
-            <div class="column is-4">
-              <div class="jtag-feature-card">
-                <div class="jtag-feature-icon"><i class="fas fa-list-ol"></i></div>
-                <h3 class="title is-4" style="color: #0096D1;" data-i18n="jtagPreloadTitle">Preload, then arm</h3>
-                <p data-i18n="jtagPreloadDesc">
-                  Values land in the update latch under PRELOAD before EXTEST is ever selected, so the instant the pins become yours they are already at the values you picked.
-                </p>
-              </div>
+            <div>
+              <h3 data-i18n="jtagFooterProduct">Product</h3>
+              <ul>
+                <li><a href="fuzzer.html" data-i18n="iotFuzzer">IoT Protocol Fuzzer</a></li>
+                <li><a href="jtag.html" data-i18n="jtagScan">JTAG Boundary Scan</a></li>
+                <li><a href="download.html" data-i18n="jtagFooterDownloads">Downloads</a></li>
+              </ul>
             </div>
-
-            <div class="column is-4">
-              <div class="jtag-feature-card">
-                <div class="jtag-feature-icon"><i class="fas fa-undo"></i></div>
-                <h3 class="title is-4" style="color: #0096D1;" data-i18n="jtagExitTitle">One way back</h3>
-                <p data-i18n="jtagExitDesc">
-                  Leaving EXTEST returns the pins to the target and drops back to SAMPLE. It is a single control, always visible, and it is not the button that armed it.
-                </p>
-              </div>
+            <div>
+              <h3 data-i18n="jtagFooterDocs">Docs</h3>
+              <ul>
+                <li><a href="https://iotsploit-tutorial.readthedocs.io/en/latest/" data-i18n="jtagFooterQuickStart">Quick start</a></li>
+                <li><a href="https://iotsploit-tutorial.readthedocs.io/en/latest/" data-i18n="jtagFooterGuides">Guides</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 data-i18n="jtagFooterCommunity">Community</h3>
+              <ul>
+                <li><a href="https://github.com/TKXB/iotsploit" target="_blank" rel="noopener">GitHub</a></li>
+                <li><a href="https://discord.gg/Hmu7JbQb9z" target="_blank" rel="noopener">Discord</a></li>
+                <li><a href="blog/" data-i18n="jtagFooterBlog">Blog</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 data-i18n="jtagFooterProject">Project</h3>
+              <ul>
+                <li><a href="contact.html" data-i18n="jtagFooterContact">Contact</a></li>
+                <li><a href="privacy.html" data-i18n="privacyPolicy">Privacy Policy</a></li>
+              </ul>
             </div>
           </div>
-        </div>
-      </section>
 
-      <!-- Specifications -->
-      <section class="section" style="background-color: #1f2c36;">
-        <div class="container">
-          <h2 class="title has-text-centered mb-6" style="color: #0096D1;" data-i18n="jtagSpecTitle">
-            What it runs on
-          </h2>
-
-          <div class="jtag-spec-wrapper">
-            <table class="jtag-spec">
-              <tbody>
-                <tr>
-                  <th scope="row" data-i18n="jtagSpecAdaptersLabel">Adapters</th>
-                  <td data-i18n="jtagSpecAdaptersValue">Any debug probe exposing raw JTAG — J-Link, CMSIS-DAP, FTDI MPSSE cables. Chosen by index, with the clock set per session.</td>
-                </tr>
-                <tr>
-                  <th scope="row" data-i18n="jtagSpecDevicesLabel">Devices</th>
-                  <td data-i18n="jtagSpecDevicesValue">Any part with a published BSDL. Chain discovery decodes IDCODE and manufacturer for every TAP, including ones you have no BSDL for.</td>
-                </tr>
-                <tr>
-                  <th scope="row" data-i18n="jtagSpecPackagesLabel">Packages drawn</th>
-                  <td>
-                    <code>DIP</code> &middot; <code>QFP</code> &middot; <code>PLCC</code> &middot; <code>BGA</code>
-                    <span data-i18n="jtagSpecPackagesValue">, generated from the BSDL pin map. Unrecognised packages fall back to the signal table.</span>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row" data-i18n="jtagSpecOperationsLabel">Operations</th>
-                  <td data-i18n="jtagSpecOperationsValue">SAMPLE streaming, PRELOAD staging, EXTEST driving, and interconnect vectors for shorts-and-opens diagnosis across a multi-TAP chain.</td>
-                </tr>
-                <tr>
-                  <th scope="row" data-i18n="jtagSpecPlatformsLabel">Platforms</th>
-                  <td data-i18n="jtagSpecPlatformsValue">Linux, Windows and macOS desktop, shipped as a standalone application.</td>
-                </tr>
-                <tr>
-                  <th scope="row" data-i18n="jtagSpecLicensingLabel">Licensing</th>
-                  <td data-i18n="jtagSpecLicensingValue">A signed licence bound to the machine's device fingerprint. Copy the fingerprint out of the application, take a 7-day trial, import the file. Fully offline after that.</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="jt-footer-bottom">
+            <span data-i18n="copyright">&copy; 2024 The IoTSploit authors</span>
+            <a href="https://github.com/TKXB/iotsploit" target="_blank" rel="noopener" data-i18n="codeOfConduct">Code of Conduct</a>
+            <span class="jt-social">
+              <a href="https://github.com/TKXB/iotsploit" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+              <a href="https://twitter.com/iotsploit" target="_blank" rel="noopener" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+              <a href="blog/" aria-label="Blog"><i class="fas fa-rss"></i></a>
+            </span>
           </div>
-        </div>
-      </section>
-
-      <!-- Closing CTA -->
-      <section class="section has-text-centered" style="background: linear-gradient(135deg, #414d59 0%, #262d35 100%);">
-        <div class="container">
-          <h2 class="title is-size-2 is-size-3-mobile has-text-white" data-i18n="jtagCtaTitle">
-            Point it at a board you do not have schematics for
-          </h2>
-          <p class="subtitle is-size-5 has-text-white" style="max-width: 620px; margin: 1.5rem auto 2.5rem;" data-i18n="jtagCtaDesc">
-            Chain, pin map, live values — in about ninety seconds, provided the vendor published a BSDL. That is the whole pitch.
-          </p>
-          <a class="button is-primary is-large" href="download.html">
-            <span class="icon"><i class="fas fa-download"></i></span>
-            <span data-i18n="jtagTrialCta">Get a 7-day trial</span>
-          </a>
-        </div>
-      </section>
-
-      <footer class="footer has-text-centered" style="background-color: #212B33; color: rgba(255, 255, 255, 0.7);">
-        <div class="container">
-          <p class="has-text-weight-light" data-i18n="copyright" style="color: rgba(255, 255, 255, 0.7);">
-            &copy; 2024 The IoTSploit authors
-          </p>
-          <a style="font-size: 12px; color: #0096D1;" href="https://github.com/TKXB/iotsploit" target="_blank">
-            <span data-i18n="codeOfConduct">Code of Conduct</span>
-          </a>
-          |
-          <a style="font-size: 12px; color: #0096D1;" href="https://pages.github.com/" target="_blank">
-            <span data-i18n="poweredBy">This site is powered by GitHub Pages.</span>
-          </a>
         </div>
       </footer>
-    </div>
+    </main>
 
     <!-- Scripts -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        // 初始化语言设置
         if (window.initializeLanguage) {
           window.initializeLanguage();
         }
 
-        // 动态加载导航栏
         fetch('navbar.html')
           .then(r => r.text())
           .then(html => {
@@ -999,16 +607,18 @@
 
         var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+        // The four pin hues are the ones the application itself paints with, so
+        // the page and the product agree.
         var COLOURS = {
           high: "#4CAF50",
           low: "#607D8B",
           hiz: "#FF9800",
           unknown: "#9E9E9E",
-          body: "#434d57",
-          line: "rgba(255,255,255,0.12)",
+          body: "#1e293b",
+          line: "rgba(255,255,255,0.10)",
           text: "rgba(255,255,255,0.70)",
           muted: "rgba(255,255,255,0.50)",
-          accent: "#0096D1"
+          accent: "#0161ef"
         };
 
         // Quad flat pack numbered the way BSDL pin maps number one: pin 1 at the
@@ -1155,84 +765,15 @@
           ctx.fillText(pkg.name, S / 2, S / 2 + gap + pkgPx * 0.75);
         }
 
-        function drawWave(canvas, frame) {
-          if (!canvas) return;
-          var dpr = Math.min(window.devicePixelRatio || 1, 2);
-          var w = canvas.clientWidth || 600;
-          var h = 132;
-          canvas.width = Math.round(w * dpr);
-          canvas.height = Math.round(h * dpr);
-          canvas.style.height = h + "px";
-          var ctx = canvas.getContext("2d");
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          ctx.clearRect(0, 0, w, h);
-
-          var traces = [
-            { name: "PA10", period: 11, colour: COLOURS.high },
-            { name: "PA11", period: 19, colour: COLOURS.low },
-            { name: "PA12", period: 7, colour: COLOURS.hiz }
-          ];
-          var labelW = 48;
-          var rowH = h / traces.length;
-          var samples = 120;
-          var step = (w - labelW - 8) / samples;
-
-          ctx.strokeStyle = COLOURS.line;
-          ctx.lineWidth = 1;
-          for (var g = 0; g <= samples; g += 20) {
-            var gx = labelW + g * step;
-            ctx.beginPath();
-            ctx.moveTo(gx, 4);
-            ctx.lineTo(gx, h - 4);
-            ctx.stroke();
-          }
-
-          for (var r = 0; r < traces.length; r++) {
-            var tr = traces[r];
-            var top = r * rowH + rowH * 0.22;
-            var bot = r * rowH + rowH * 0.78;
-
-            ctx.fillStyle = COLOURS.muted;
-            ctx.font = "500 10px monospace";
-            ctx.textBaseline = "middle";
-            ctx.textAlign = "left";
-            ctx.fillText(tr.name, 2, (top + bot) / 2);
-
-            ctx.strokeStyle = tr.colour;
-            ctx.lineWidth = 1.6;
-            ctx.beginPath();
-            var prevY = null;
-            for (var s = 0; s <= samples; s++) {
-              var v = Math.floor((frame + s) / tr.period) % 2 === 0 ? 1 : 0;
-              var y = v ? top : bot;
-              var x = labelW + s * step;
-              if (prevY === null) {
-                ctx.moveTo(x, y);
-              } else {
-                ctx.lineTo(x, prevY);
-                ctx.lineTo(x, y);
-              }
-              prevY = y;
-            }
-            ctx.stroke();
-          }
-        }
-
         var heroCanvas = document.getElementById("heroPkg");
-        var mockCanvas = document.getElementById("mockPkg");
-        var waveCanvas = document.getElementById("mockWave");
         var ribbon = document.getElementById("bsrRibbon");
 
         var heroPkg = new Package(12, "STM32F405", "LQFP48");
-        var mockPkg = new Package(10, "STM32F405", "LQFP40");
         var frame = 0;
 
         function paint() {
           heroPkg.step(frame);
-          mockPkg.step(frame + 5);
           drawPackage(heroCanvas, heroPkg, frame % heroPkg.count);
-          drawPackage(mockCanvas, mockPkg, -1);
-          drawWave(waveCanvas, frame);
           if (ribbon) {
             var stream = heroPkg.bits(32);
             ribbon.innerHTML = "<i>TDO &larr;</i> <b>" + stream.slice(0, 1) + "</b>" + stream.slice(1);
@@ -1241,9 +782,8 @@
 
         paint();
 
-        var timer = null;
         if (!reduced.matches) {
-          timer = setInterval(function () { frame++; paint(); }, 190);
+          setInterval(function () { frame++; paint(); }, 190);
         }
 
         window.addEventListener("resize", paint);

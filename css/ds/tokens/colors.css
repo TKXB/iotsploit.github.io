@@ -1,0 +1,74 @@
+/* Colour. Every semantic token is a light-dark() pair, so the value follows the
+   nearest `color-scheme`. Three ways to set it:
+     :root            → follows the OS (light dark)
+     .light / .dark   → forces a scheme, on <html> or on any subtree
+   Scoped dark sections (WidgetWrapper isDark, Footer theme="dark") therefore
+   need no extra rules — the class flips color-scheme and the tokens follow. */
+:root{
+  color-scheme:light dark;
+
+  /* brand — from AstroWind CustomStyles.astro. Constant across schemes. */
+  --aw-color-primary:rgb(1 97 239);
+  --aw-color-secondary:rgb(1 84 207);
+  --aw-color-accent:rgb(109 40 217);
+
+  /* neutral ramp (Tailwind gray) */
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;
+  --gray-500:#6b7280;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;--gray-900:#111827;
+
+  /* cool ramp (Tailwind slate) — dark mode surfaces */
+  --slate-100:#f1f5f9;--slate-200:#e2e8f0;--slate-300:#cbd5e1;--slate-400:#94a3b8;--slate-500:#64748b;
+  --slate-600:#475569;--slate-700:#334155;--slate-800:#1e293b;--slate-900:#0f172a;
+
+  /* tints + semantics */
+  --blue-50:#eff6ff;--blue-100:#dbeafe;--blue-200:#bfdbfe;--blue-300:#93c5fd;--blue-400:#60a5fa;
+  --blue-600:#2563eb;--blue-700:#1d4ed8;
+  --green-400:#4ade80;--green-600:#16a34a;--green-700:#15803d;--green-800:#166534;
+
+  /* page colours */
+  --aw-color-bg-page:light-dark(rgb(255 255 255),rgb(3 6 32));
+  --aw-color-bg-page-dark:rgb(3 6 32);
+  --aw-color-text-heading:light-dark(rgb(0 0 0),rgb(247 248 248));
+  --aw-color-text-default:light-dark(rgb(16 16 16),rgb(229 236 246));
+  --aw-color-text-muted:light-dark(rgb(16 16 16 / 66%),rgb(229 236 246 / 66%));
+
+  /* surfaces */
+  --surface-page:var(--aw-color-bg-page);
+  --surface-card:light-dark(#fff,var(--slate-900));
+  --surface-tint:light-dark(var(--blue-50),transparent);
+  --surface-dark:var(--aw-color-bg-page-dark);
+  /* hover fill for bare/ghost controls */
+  --surface-hover:light-dark(var(--gray-100),rgb(255 255 255 / 8%));
+  /* translucent glass: scrolled header + nav dropdowns. The only blurred surfaces. */
+  --surface-overlay:light-dark(rgb(255 255 255 / 0.95),rgb(3 6 32 / 0.95));
+  /* flat chip fill: blog tags, badges */
+  --surface-chip:light-dark(var(--gray-100),var(--slate-800));
+
+  /* borders */
+  --border-subtle:light-dark(var(--gray-200),var(--slate-800));
+  --border-strong:light-dark(var(--gray-400),var(--slate-500));
+  /* border that replaces a shadow on floating cards in dark */
+  --border-floating:light-dark(transparent,var(--slate-600));
+
+  /* text */
+  --text-heading:var(--aw-color-text-heading);
+  --text-body:var(--aw-color-text-default);
+  --text-muted:var(--aw-color-text-muted);
+  --text-on-primary:#fff;
+  /* muted text that must survive a hover to full contrast */
+  --text-strong:light-dark(var(--gray-900),#fff);
+
+  /* links — brand blue is only 3.5:1 on the near-navy page, so dark lightens it */
+  --aw-color-link:light-dark(var(--aw-color-primary),var(--blue-400));
+  --aw-color-link-hover:light-dark(var(--aw-color-secondary),var(--blue-300));
+
+  /* accents on surfaces */
+  --icon-accent:light-dark(var(--aw-color-primary),var(--blue-400));
+  --icon-muted:light-dark(var(--gray-500),var(--slate-400));
+  --tagline-color:light-dark(var(--aw-color-secondary),var(--blue-200));
+  --check-success:light-dark(var(--green-600),var(--green-700));
+  --selection-bg:light-dark(lavender,var(--aw-color-primary));
+  --selection-fg:light-dark(rgb(16 16 16),snow);
+}
+.light{color-scheme:light}
+.dark{color-scheme:dark}

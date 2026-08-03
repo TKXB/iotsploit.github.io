@@ -1,0 +1,9 @@
+:root{
+  --ease-in:cubic-bezier(0.4,0,1,1); /* @kind other */
+  --ease-in-out:cubic-bezier(0.4,0,0.2,1); /* @kind other */
+  --dur-fast:150ms; /* @kind other */   /* links */
+  --dur-base:200ms; /* @kind other */   /* buttons */
+  --dur-fade:1s; /* @kind other */      /* scroll reveal */
+  --anim-fade:fadeInUp 1s both; /* @kind other */
+}
+@keyframes fadeInUp{0%{opacity:0;transform:translateY(2rem)}100%{opacity:1;transform:translateY(0)}}
