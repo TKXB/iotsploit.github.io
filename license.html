@@ -16,7 +16,12 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <!-- Colour scheme. Must run before any stylesheet so the stored choice is on
+         <html> for the first paint, otherwise a dark page flashes white. -->
+    <script src="js/theme.js"></script>
+
     <link rel="stylesheet" href="css/bulma.css">
+    <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="js/translations.js"></script>
     <script defer src="js/navbar.js"></script>
@@ -24,16 +29,22 @@
     <title>JTAG Trial License — IoTSploit</title>
 
     <style>
+      /* Same VS Code-ish palette as download.html. Light values are the
+         originals; the dark half comes from the design system's dark tokens,
+         which css/theme.css puts on :root. light-dark() resolves against
+         `color-scheme`, which js/theme.js sets on <html>. */
       :root {
-        --vsc-bg: #ffffff;
-        --vsc-bg-lighter: #f5f5f5;
-        --vsc-border: #e0e0e0;
-        --vsc-text: #333333;
-        --vsc-text-bright: #1e1e1e;
-        --vsc-text-muted: #6e6e6e;
+        --vsc-bg: light-dark(#ffffff, var(--surface-page));
+        --vsc-bg-lighter: light-dark(#f5f5f5, var(--surface-chip));
+        --vsc-border: light-dark(#e0e0e0, var(--border-subtle));
+        --vsc-text: light-dark(#333333, var(--text-body));
+        --vsc-text-bright: light-dark(#1e1e1e, var(--text-heading));
+        --vsc-text-muted: light-dark(#6e6e6e, var(--text-muted));
+        /* Blue as a button fill keeps its brand value; blue as text lightens. */
         --vsc-blue: #0078d4;
         --vsc-blue-hover: #106ebe;
-        --vsc-green: #16825d;
+        --vsc-blue-text: light-dark(#0078d4, var(--blue-400));
+        --vsc-green: light-dark(#16825d, var(--green-400));
       }
 
       body.page {
@@ -58,7 +69,7 @@
       .license-heading { max-width: 760px; margin: 0 auto 2rem; }
       .license-heading .title { color: var(--vsc-text-bright); }
       .license-heading .subtitle { color: var(--vsc-text-muted); line-height: 1.6; }
-      .license-card { max-width: 680px; margin: 0 auto; border: 1px solid var(--vsc-border); box-shadow: 0 8px 24px rgba(0, 0, 0, .06); }
+      .license-card { max-width: 680px; margin: 0 auto; border: 1px solid var(--vsc-border); box-shadow: 0 8px 24px light-dark(rgb(0 0 0 / .06), rgb(0 0 0 / .5)); }
       .license-card .card-content { padding: 2rem; }
       .license-card .label { color: var(--vsc-text-bright); }
       .license-card .help { color: var(--vsc-text-muted); }
@@ -73,7 +84,7 @@
       .success-label { display: block; color: var(--vsc-text-muted); font-size: .8rem; margin-bottom: .2rem; }
       .success-value { color: var(--vsc-text-bright); font-weight: 600; }
       .privacy-note { margin-top: .5rem; font-size: .8rem; color: var(--vsc-text-muted); }
-      .privacy-note a { color: var(--vsc-blue); }
+      .privacy-note a { color: var(--vsc-blue-text); }
       .footer { padding: 2.5rem 1.5rem; border-top: 1px solid var(--vsc-border); }
 
       @media screen and (max-width: 1023px) {

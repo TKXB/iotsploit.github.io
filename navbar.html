@@ -237,6 +237,13 @@
   }
   .iots-iconbtn:hover { background-color: var(--surface-hover); color: var(--text-strong); }
 
+  /* Theme toggle: both glyphs ship in the markup and CSS picks one, so the right
+     icon is there on the first paint — js/theme.js has already stamped the
+     resolved scheme on <html> by then. js/navbar.js only handles the click. */
+  .iots-theme-toggle .iots-icon-moon { display: none; }
+  html.dark .iots-theme-toggle .iots-icon-sun { display: none; }
+  html.dark .iots-theme-toggle .iots-icon-moon { display: block; }
+
   /* --- mobile ----------------------------------------------------------- */
   .iots-burger {
     position: absolute;
@@ -370,9 +377,11 @@
     </nav>
 
     <div class="iots-header__actions">
-      <!-- Placeholder: dark mode is not wired up yet, the site is still light-only. -->
-      <button type="button" class="iots-iconbtn" aria-label="Toggle between Dark and Light mode" aria-disabled="true">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"></path></svg>
+      <!-- Shows the scheme currently in effect, per the design system's ToggleTheme.
+           js/navbar.js wires the click to window.AwTheme (js/theme.js). -->
+      <button type="button" class="iots-iconbtn iots-theme-toggle" aria-label="Toggle between Dark and Light mode">
+        <svg class="iots-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"></path></svg>
+        <svg class="iots-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454l0 .008"></path></svg>
       </button>
       <a class="iots-iconbtn" href="https://github.com/TKXB/iotsploit" target="_blank" rel="noopener" aria-label="GitHub">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"></path></svg>

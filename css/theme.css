@@ -1,0 +1,108 @@
+/* Site-wide colour scheme — IoTSploit Astro Design System.
+ *
+ * Load AFTER css/bulma.css and BEFORE the page's own <style> block:
+ *
+ *   <script src="js/theme.js"></script>          in <head>, before any CSS
+ *   <link rel="stylesheet" href="css/bulma.css">
+ *   <link rel="stylesheet" href="css/theme.css">
+ *
+ * Two things happen here.
+ *
+ * 1. The design system's colour tokens are pulled in for the whole document, so
+ *    --surface-page / --text-body / --border-subtle … are available to any page,
+ *    not just the ones already on css/ds/styles.css. They are light-dark() pairs
+ *    that resolve against `color-scheme`, which js/theme.js sets via .light/.dark
+ *    on <html>.
+ *
+ * 2. Bulma 1.0 ships its own dark scheme under [data-theme=dark] (js/theme.js
+ *    sets that too), but its ramp is a neutral grey. Everything below retunes
+ *    that ramp to the design system's palette — the near-navy page, slate
+ *    surfaces and borders, the lightened link blue — and patches the handful of
+ *    helpers Bulma hardcodes outside the ramp.
+ *
+ * Light mode is deliberately untouched: the ramp overrides are all scoped to
+ * html.dark, so an unthemed page renders exactly as it did before.
+ */
+@import url("ds/tokens/colors.css");
+
+/* --- Bulma dark ramp -------------------------------------------------------
+   Bulma composes almost everything from a hue/saturation pair plus a lightness
+   per role, and those compositions are re-resolved at use time — so redefining
+   the inputs here is enough to move the whole dark scheme onto the slate family
+   the design system uses for raised surfaces. */
+html.dark {
+  /* slate: hsl(222, 47%, 11%) is exactly slate-900, so the ramp lands on the
+     design system's surface colours rather than near them. */
+  --bulma-scheme-h: 222;
+  --bulma-scheme-s: 47%;
+  --bulma-scheme-main-bis-l: 11%;   /* slate-900 — raised surface */
+  --bulma-scheme-main-ter-l: 15%;
+  --bulma-background-l: 17%;        /* slate-800 — chips, inputs */
+  --bulma-border-weak-l: 17%;       /* --border-subtle */
+  --bulma-border-l: 27%;
+
+  /* The page itself is the one surface off the slate ramp: the design system
+     uses a deeper, bluer navy for it so raised surfaces read as raised. */
+  --bulma-scheme-main: var(--surface-page);
+
+  /* Type. The design system's dark ink is a cool near-white, not Bulma's grey. */
+  --bulma-text-h: 215deg;
+  --bulma-text-s: 45%;
+  --bulma-text-weak-l: 62%;
+  --bulma-text-l: 88%;
+  --bulma-text-strong-l: 93%;
+
+  /* Brand blue is only ~3.5:1 on the navy page, so link *text* lightens to
+     blue-400 while the blue used as a fill (buttons, chips) stays put. */
+  --bulma-link-text: var(--aw-color-link);
+
+  /* Bulma's dark shadow is a white glow. The design system keeps shadows black
+     and leans on a hairline instead — see the outline on .box/.card below. */
+  --bulma-shadow-h: 0deg;
+  --bulma-shadow-s: 0%;
+  --bulma-shadow-l: 0%;
+}
+
+/* Cards and boxes sit on the page, so they need the raised slate surface rather
+   than Bulma's default of "same colour as the page". */
+html.dark {
+  --bulma-card-background-color: var(--surface-card);
+  --bulma-box-background-color: var(--surface-card);
+}
+html.dark .box,
+html.dark .card {
+  outline: 1px solid var(--border-subtle);
+  outline-offset: -1px;
+}
+
+/* Helpers Bulma writes as literal hsl()/!important, outside the ramp. */
+html.dark .has-text-grey { color: var(--text-muted) !important; }
+html.dark .has-text-grey-light { color: var(--slate-400) !important; }
+html.dark .has-text-grey-dark { color: var(--slate-300) !important; }
+html.dark [class*=has-text-dark] { color: var(--text-body) !important; }
+html.dark [class*=has-text-black] { color: var(--text-heading) !important; }
+
+/* Background helpers. `has-background-white` marks a raised band, so it takes
+   the card surface; `has-background-light` marks a tinted alternating section,
+   and the design system drops that second background entirely in dark. */
+html.dark [class*=has-background-white] { background-color: var(--surface-card) !important; }
+html.dark [class*=has-background-light] { background-color: var(--surface-page) !important; }
+html.dark .hero.is-light { background-color: var(--surface-page); color: var(--text-body); }
+html.dark .hero.is-white { background-color: var(--surface-card); color: var(--text-body); }
+
+/* Bulma's is-light button variants are near-white fills. */
+html.dark .button.is-light:not(.is-outlined) {
+  background-color: var(--surface-chip);
+  border-color: var(--border-subtle);
+  color: var(--text-body);
+}
+
+/* The scheme swap itself. Matching css/ds/base.css so a toggle on a design
+   system page and a toggle on a Bulma page settle at the same rate. */
+body {
+  transition: background-color var(--dur-base, 200ms) var(--ease-in-out, cubic-bezier(0.4, 0, 0.2, 1)),
+              color var(--dur-base, 200ms) var(--ease-in-out, cubic-bezier(0.4, 0, 0.2, 1));
+}
+@media (prefers-reduced-motion: reduce) {
+  body { transition: none; }
+}

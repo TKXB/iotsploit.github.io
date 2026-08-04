@@ -32,8 +32,8 @@
 
 /* Cards + form controls */
 .aw-card{border-radius:var(--radius-lg);background-color:var(--surface-card);border:1px solid var(--border-subtle);box-shadow:var(--shadow-card);padding:var(--space-6)}
-/* Floating card: shadow in light, hairline in dark (outline, so no layout shift) */
-.aw-card-plain{border-radius:var(--radius-md);box-shadow:var(--shadow-xl);outline:1px solid var(--border-floating);outline-offset:-1px;padding:var(--space-6)}
+/* Floating card: same surface as the page, hairline edge only — no shadow, no tint */
+.aw-card-plain{border-radius:var(--radius-md);outline:1px solid var(--border-subtle);outline-offset:-1px;padding:var(--space-6)}
 .aw-input{display:block;width:100%;padding:var(--space-3) var(--space-4);font-size:var(--text-base);border-radius:var(--radius-lg);border:1px solid var(--border-subtle);background-color:var(--surface-card);color:var(--text-body);font-family:inherit}
 .aw-input::placeholder{color:var(--text-muted)}
 .aw-input:focus-visible{outline:2px solid var(--icon-accent);outline-offset:1px}

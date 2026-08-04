@@ -38,7 +38,12 @@
     <title>JTAG Boundary Scan - IoTSploit</title>
 
     <!-- Bulma powers the shared navbar only; the page itself uses the design system. -->
+    <!-- Colour scheme. Must run before any stylesheet so the stored choice is on
+         <html> for the first paint, otherwise a dark page flashes white. -->
+    <script src="js/theme.js"></script>
+
     <link rel="stylesheet" href="css/bulma.css">
+    <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="css/ds/styles.css">
 
@@ -170,10 +175,12 @@
         font-size: var(--text-xs);
       }
       .jt-pin::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: currentColor; }
-      .jt-pin.is-high    { background: rgb(76 175 80 / .16);   color: #2f6f33; }
-      .jt-pin.is-low     { background: rgb(96 125 139 / .16);  color: #445761; }
-      .jt-pin.is-hiz     { background: rgb(255 152 0 / .16);   color: #8a5300; }
-      .jt-pin.is-unknown { background: rgb(158 158 158 / .16); color: #5c5c5c; }
+      /* The tint holds in both schemes; the ink has to flip, because a dark ink
+         chosen to read on white disappears against the same tint on navy. */
+      .jt-pin.is-high    { background: rgb(76 175 80 / .16);   color: light-dark(#2f6f33, #86efac); }
+      .jt-pin.is-low     { background: rgb(96 125 139 / .16);  color: light-dark(#445761, #b0c4cf); }
+      .jt-pin.is-hiz     { background: rgb(255 152 0 / .16);   color: light-dark(#8a5300, #fdba74); }
+      .jt-pin.is-unknown { background: rgb(158 158 158 / .16); color: light-dark(#5c5c5c, #cbd5e1); }
 
       /* ---------- Note ---------- */
       .jt-note {

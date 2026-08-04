@@ -8,7 +8,17 @@ author_profile: false
 <head>
     <meta name="robots" content="noindex, nofollow">
     <title>Contact Information</title>
+    <!-- Colour scheme. Must run before any stylesheet so the stored choice is on
+         <html> for the first paint, otherwise a dark page flashes white. -->
+    <script src="js/theme.js"></script>
+    <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="https://static.configcdn.com/assets/application-ddac0561840033feb98c86d461b8c83db6a233c14ccf4e2bb7c2709253a52e05.css" media="all" data-turbo-track="reload" />
+    <style>
+      /* This page has no stylesheet of its own beyond the vendor reset, so the
+         design system's tokens carry it. */
+      body { background: var(--surface-page); color: var(--text-body); }
+      h1 { color: var(--text-heading); }
+    </style>
 </head>
 <body>
     <h1>Contact Us</h1>

@@ -39,7 +39,12 @@
 
     <title>Download - IoTSploit</title>
 
+    <!-- Colour scheme. Must run before any stylesheet so the stored choice is on
+         <html> for the first paint, otherwise a dark page flashes white. -->
+    <script src="js/theme.js"></script>
+
     <link rel="stylesheet" href="css/bulma.css">
+    <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <!-- Language Translations -->
@@ -101,18 +106,27 @@
     </script>
 
     <style>
+      /* The page's own VS Code-ish palette. Light values are the originals; the
+         dark half comes from the design system's dark tokens (css/theme.css puts
+         them on :root), so every rule below follows the scheme without change.
+         light-dark() resolves against `color-scheme`, which js/theme.js sets. */
       :root {
-        --vsc-bg: #ffffff;
-        --vsc-bg-light: #ffffff;
-        --vsc-bg-lighter: #f5f5f5;
-        --vsc-border: #e0e0e0;
-        --vsc-text: #333333;
-        --vsc-text-bright: #1e1e1e;
-        --vsc-text-muted: #6e6e6e;
+        --vsc-bg: light-dark(#ffffff, var(--surface-page));
+        --vsc-bg-light: light-dark(#ffffff, var(--surface-card));
+        --vsc-bg-lighter: light-dark(#f5f5f5, var(--surface-chip));
+        --vsc-border: light-dark(#e0e0e0, var(--border-subtle));
+        --vsc-text: light-dark(#333333, var(--text-body));
+        --vsc-text-bright: light-dark(#1e1e1e, var(--text-heading));
+        --vsc-text-muted: light-dark(#6e6e6e, var(--text-muted));
+        /* Blue as a fill keeps its brand value in both schemes; blue as *text*
+           only clears 3.2:1 on the dark page, so it lightens to blue-400. */
         --vsc-blue: #0078d4;
         --vsc-blue-hover: #106ebe;
-        --vsc-green: #16825d;
-        --vsc-section-alt: #f9f9f9;
+        --vsc-blue-text: light-dark(#0078d4, var(--blue-400));
+        --vsc-green: light-dark(#16825d, var(--green-400));
+        /* The alternating tint flattens into the page in dark — the design
+           system deliberately has no second background there. */
+        --vsc-section-alt: light-dark(#f9f9f9, var(--surface-page));
       }
 
       body.page {
@@ -485,7 +499,7 @@
       .stats-number {
         font-size: 2.5rem;
         font-weight: bold;
-        color: var(--vsc-blue);
+        color: var(--vsc-blue-text);
         display: block;
       }
 
@@ -515,7 +529,7 @@
       }
 
       .footer .content a:hover {
-        color: var(--vsc-blue);
+        color: var(--vsc-blue-text);
       }
 
       /* Animations */

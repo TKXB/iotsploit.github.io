@@ -10,6 +10,12 @@
  *     transparent bar for the blurred surface + shadow.
  *   - .is-active on the nav link matching the current page.
  *   - closes the mobile menu when a link inside it is followed.
+ *   - the sun/moon button, wired to window.AwTheme (js/theme.js).
+ *
+ * The theme button is the one piece that is not merely polish: without this file
+ * the icon still shows the right scheme (CSS keys off html.dark) but clicking it
+ * does nothing, and without js/theme.js the button hides itself rather than
+ * offering a switch that cannot persist.
  */
 (function () {
   'use strict';
@@ -80,12 +86,37 @@
     });
   }
 
+  function wireThemeToggle(header) {
+    var button = header.querySelector('.iots-theme-toggle');
+    if (!button) return;
+
+    // js/theme.js owns the scheme; a button that cannot change or remember
+    // anything is worse than no button, so drop it if the script is missing.
+    if (!window.AwTheme) {
+      button.hidden = true;
+      return;
+    }
+
+    function sync() {
+      var dark = window.AwTheme.resolved === 'dark';
+      button.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    }
+
+    button.addEventListener('click', function () {
+      window.AwTheme.toggle();
+    });
+    // Also covers the OS flipping while the preference is still 'system'.
+    window.AwTheme.onChange(sync);
+    sync();
+  }
+
   function init(header) {
     if (header.dataset.navbarReady) return;
     header.dataset.navbarReady = 'true';
     markActive(header);
     trackScroll(header);
     closeMenuOnNavigate(header);
+    wireThemeToggle(header);
   }
 
   function watch() {

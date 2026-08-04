@@ -27,7 +27,11 @@
     --aw-color-link: light-dark(var(--aw-color-primary), var(--blue-400));
     --aw-color-link-hover: light-dark(var(--aw-color-secondary), var(--blue-300));
     --icon-accent: light-dark(var(--aw-color-primary), var(--blue-400));
-    color-scheme: light dark;
+    /* No color-scheme here on purpose. The property inherits, so the footer
+       follows whatever js/theme.js put on <html>; declaring `light dark` would
+       have pinned it to the OS and left a dark footer under a light page. The
+       class overrides below stay, for pages that want a dark footer regardless
+       (fuzzer.html). */
   }
   #footer-placeholder.light { color-scheme: light; }
   #footer-placeholder.dark { color-scheme: dark; }

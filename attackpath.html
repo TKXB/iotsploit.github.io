@@ -56,7 +56,12 @@
     }
     </script>
 
+    <!-- Colour scheme. Must run before any stylesheet so the stored choice is on
+         <html> for the first paint, otherwise a dark page flashes white. -->
+    <script src="js/theme.js"></script>
+
     <link rel="stylesheet" href="css/bulma.css">
+    <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <script defer src="js/navbar.js"></script>
@@ -82,45 +87,49 @@
     </script>
 
     <style>
+      /* Surfaces follow the scheme through the design system's tokens, which
+         css/theme.css puts on :root; light-dark() resolves them against
+         `color-scheme`, set on <html> by js/theme.js. The literals kept below are
+         the original light values, so light mode is unchanged. */
       .hero-wrap {
-        background: linear-gradient(180deg,#f8fafc, #ffffff);
-        border-bottom: 1px solid #e5e7eb;
+        background: linear-gradient(180deg, light-dark(#f8fafc, var(--slate-900)), var(--surface-page));
+        border-bottom: 1px solid light-dark(#e5e7eb, var(--border-subtle));
       }
       .badge-new {
         display: inline-block;
         padding: 4px 10px;
         border-radius: 999px;
-        background: #eef2ff;
-        color: #3730a3;
+        background: light-dark(#eef2ff, rgb(99 102 241 / 18%));
+        color: light-dark(#3730a3, #c7d2fe);
         font-size: 12px;
         font-weight: 700;
-        border: 1px solid #e5e7eb;
+        border: 1px solid light-dark(#e5e7eb, var(--border-subtle));
       }
       .hero-illustration {
-        border: 1px solid #e5e7eb;
+        border: 1px solid light-dark(#e5e7eb, var(--border-subtle));
         border-radius: 12px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        box-shadow: 0 8px 24px light-dark(rgb(0 0 0 / 0.06), rgb(0 0 0 / 0.5));
         overflow: hidden;
-        background: #fff;
+        background: var(--surface-card);
       }
       .hero-illustration .bar {
         height: 12px;
-        background: #f3f4f6;
+        background: light-dark(#f3f4f6, var(--surface-chip));
         display: flex;
         gap: 6px;
         align-items: center;
         padding: 8px;
       }
       .feature-card {
-        border: 1px solid #e5e7eb;
+        border: 1px solid light-dark(#e5e7eb, var(--border-subtle));
         border-radius: 10px;
         padding: 14px;
-        background: #ffffff;
+        background: var(--surface-card);
         height: 100%;
       }
       .cta-wrap {
-        border-top: 1px solid #e5e7eb;
-        background: #ffffff;
+        border-top: 1px solid light-dark(#e5e7eb, var(--border-subtle));
+        background: var(--surface-card);
       }
     </style>
   </head>
@@ -149,9 +158,9 @@
               <div class="hero-illustration">
                 <div class="bar"><span style="width:8px;height:8px;background:#ef4444;border-radius:999px;"></span><span style="width:8px;height:8px;background:#f59e0b;border-radius:999px;"></span><span style="width:8px;height:8px;background:#10b981;border-radius:999px;"></span></div>
                 <div style="padding:16px;">
-                  <img src="assets/images/screenshot.png" alt="CyberDive Screenshot" style="width:100%;height:auto;border:1px solid #e5e7eb;border-radius:8px;display:block;" />
-                  <div style="margin-top:10px;height:8px;width:80%;background:#e5e7eb;border-radius:6px;"></div>
-                  <div style="margin-top:6px;height:8px;width:60%;background:#e5e7eb;border-radius:6px;"></div>
+                  <img src="assets/images/screenshot.png" alt="CyberDive Screenshot" style="width:100%;height:auto;border:1px solid var(--border-subtle);border-radius:8px;display:block;" />
+                  <div style="margin-top:10px;height:8px;width:80%;background:var(--border-subtle);border-radius:6px;"></div>
+                  <div style="margin-top:6px;height:8px;width:60%;background:var(--border-subtle);border-radius:6px;"></div>
                 </div>
               </div>
             </div>
