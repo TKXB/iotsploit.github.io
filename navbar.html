@@ -1,115 +1,389 @@
-<nav class="navbar has-shadow is-fixed-top">
-  <style>
-    /* Mega dropdown for CyberDive */
-    .navbar .mega-dropdown {
-      width: 560px;
-      padding: 16px 18px;
-      background: linear-gradient(180deg,#f8fafc,#ffffff);
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
-    }
-    .navbar .mega-title { font-weight: 700; color: #111827; }
-    .navbar .mega-sub { font-size: 0.9rem; color: #6b7280; margin-top: 6px; }
-    .navbar .mega-badges .tag { margin-right: 6px; margin-bottom: 6px; }
-    @media (max-width: 1024px) {
-      .navbar .mega-dropdown { width: 100%; }
-    }
-    /* Center navbar menu items */
-    .navbar .navbar-end {
-      justify-content: center;
-      margin-inline-end: auto;
-    }
-  </style>
-  <div class="container">
-    <div class="navbar-brand">
-      <a id="logo" class="navbar-item" href="index.html">
-        <img src="images/iotsploit.svg" alt="Project navbar logo" class="is-logo">
-      </a>
+<!-- Shared site navbar — loaded via fetch() into #navbar-placeholder.
+     Built on the IoTSploit Astro design system (Header widget): sticky bar that is
+     transparent at the top of the page and picks up a blurred surface + shadow once
+     scrolled, wordmark left, centred nav with hover dropdowns, actions right.
 
-      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
-        data-target="navMenu" onclick="page.toggleNavbarMenu()">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
+     Self-contained on purpose: tokens are scoped below so the fragment renders the
+     same on the Bulma pages and on the design-system pages.
+
+     The mobile menu is pure CSS (hidden checkbox). js/navbar.js only adds the
+     scrolled state and the active-link highlight — without it the navbar still works.
+
+     Colour scheme is deliberately NOT declared here: light-dark() then resolves to
+     the light value on the Bulma pages and follows <html class="light|dark"> on the
+     design-system pages. -->
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+  .iots-header {
+    /* brand */
+    --aw-color-primary: rgb(1 97 239);
+    --aw-color-secondary: rgb(1 84 207);
+    /* neutral ramps */
+    --gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-400:#9ca3af;--gray-500:#6b7280;--gray-600:#4b5563;--gray-900:#111827;
+    --slate-400:#94a3b8;--slate-500:#64748b;--slate-800:#1e293b;
+    --blue-300:#93c5fd;--blue-400:#60a5fa;--blue-600:#2563eb;
+    /* text */
+    --text-heading: light-dark(rgb(0 0 0), rgb(247 248 248));
+    --text-body: light-dark(rgb(16 16 16), rgb(229 236 246));
+    --text-muted: light-dark(rgb(16 16 16 / 66%), rgb(229 236 246 / 66%));
+    --text-strong: light-dark(var(--gray-900), #fff);
+    --text-on-primary: #fff;
+    /* surfaces + borders */
+    --surface-hover: light-dark(var(--gray-100), rgb(255 255 255 / 8%));
+    --surface-overlay: light-dark(rgb(255 255 255 / 0.95), rgb(3 6 32 / 0.95));
+    --border-subtle: light-dark(var(--gray-200), var(--slate-800));
+    --border-strong: light-dark(var(--gray-400), var(--slate-500));
+    /* elevation — the scrolled bar and the dropdowns are the only blurred surfaces */
+    --header-bg-scrolled: light-dark(rgb(255 255 255 / 0.9), rgb(3 6 32 / 0.9));
+    --shadow-color-header: light-dark(rgb(140 152 164 / 13%), rgb(0 0 0 / 45%));
+    --shadow-color-xl: light-dark(rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.6));
+    --shadow-header: 0 0.375rem 1.5rem 0 var(--shadow-color-header);
+    --shadow-xl: 0 20px 25px -5px var(--shadow-color-xl), 0 8px 10px -6px var(--shadow-color-xl);
+    --blur-header: blur(12px);
+    /* shape + motion */
+    --radius-sm: 0.25rem;
+    --radius-lg: 0.5rem;
+    --radius-full: 9999px;
+    --tracking-nav: 0.01rem;
+    --dur-fast: 150ms;
+    --dur-base: 200ms;
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --container-max: 80rem;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    width: 100%;
+    background-color: transparent;
+    box-shadow: none;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    color: var(--text-body);
+    transition: background-color var(--dur-base) var(--ease-in-out),
+                box-shadow var(--dur-base) var(--ease-in-out);
+  }
+  .iots-header.is-scrolled {
+    background-color: var(--header-bg-scrolled);
+    -webkit-backdrop-filter: var(--blur-header);
+    backdrop-filter: var(--blur-header);
+    box-shadow: var(--shadow-header);
+  }
+
+  /* Pages reserve room for the fixed bar with .has-navbar-fixed-top; this fragment is
+     injected after the page styles, so it wins over Bulma's 3.25rem default. */
+  html.has-navbar-fixed-top,
+  body.has-navbar-fixed-top { padding-top: 4.5rem; }
+
+  .iots-header__inner {
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    max-width: var(--container-max);
+    padding: 0.75rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+  }
+
+  /* Reset the host page's link/list/button defaults inside the bar. */
+  .iots-header a { text-decoration: none; }
+  .iots-header a:hover { text-decoration: none; }
+  .iots-header ul { list-style: none; margin: 0; padding: 0; }
+  .iots-header button { font: inherit; }
+
+  /* --- brand ------------------------------------------------------------ */
+  .iots-header__brand {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .iots-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-heading);
+  }
+  .iots-logo:hover { color: var(--text-heading); }
+  .iots-logo__mark {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    flex: none;
+    background-color: currentColor;
+    -webkit-mask: url(images/logo-footer.svg) center / contain no-repeat;
+    mask: url(images/logo-footer.svg) center / contain no-repeat;
+  }
+  .iots-logo__word {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    white-space: nowrap;
+  }
+
+  /* --- nav -------------------------------------------------------------- */
+  .iots-header__nav > ul {
+    display: flex;
+    justify-content: center;
+  }
+  .iots-header__nav li { position: relative; }
+  .iots-navlink {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0.75rem 1rem;
+    white-space: nowrap;
+    font-size: 0.9375rem;
+    letter-spacing: var(--tracking-nav);
+    font-weight: 500;
+    color: var(--text-body);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    transition: color var(--dur-fast) var(--ease-in-out);
+  }
+  .iots-navlink:hover { color: var(--text-strong); }
+  .iots-navlink.is-active,
+  .iots-navlink.is-active:hover { color: var(--aw-color-primary); }
+
+  .iots-menu {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    min-width: 200px;
+    background: var(--surface-overlay);
+    -webkit-backdrop-filter: var(--blur-header);
+    backdrop-filter: var(--blur-header);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+    display: none;
+  }
+  .iots-menu--end { left: auto; right: 0; }
+  .iots-header__nav li:hover > .iots-menu,
+  .iots-header__nav li:focus-within > .iots-menu { display: block; }
+  .iots-menu a {
+    display: block;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    white-space: nowrap;
+    color: var(--text-body);
+    cursor: pointer;
+    transition: background-color var(--dur-fast) var(--ease-in-out);
+  }
+  .iots-menu a:hover { background-color: var(--surface-hover); color: var(--text-strong); }
+
+  /* --- actions ---------------------------------------------------------- */
+  .iots-header__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+  .iots-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-strong);
+    background: transparent;
+    font-weight: 600;
+    font-size: 0.875rem;
+    line-height: 1.375;
+    text-align: center;
+    color: var(--text-body);
+    padding: 0.625rem 1.5rem;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all var(--dur-base) var(--ease-in);
+  }
+  .iots-btn:hover { background-color: var(--surface-hover); color: var(--text-body); }
+  .iots-btn--primary {
+    background-color: var(--aw-color-primary);
+    border-color: var(--aw-color-primary);
+    color: var(--text-on-primary);
+  }
+  .iots-btn--primary:hover {
+    background-color: var(--aw-color-secondary);
+    border-color: var(--aw-color-secondary);
+    color: var(--text-on-primary);
+  }
+  .iots-btn svg { margin-left: 4px; margin-right: -6px; }
+  .iots-btn:focus-visible,
+  .iots-navlink:focus-visible,
+  .iots-iconbtn:focus-visible,
+  .iots-menu a:focus-visible {
+    outline: 2px solid light-dark(var(--blue-600), var(--blue-400));
+    outline-offset: 2px;
+  }
+  /* Icon-only tertiary action (GitHub, theme). */
+  .iots-iconbtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.625rem;
+    border: 0;
+    background: transparent;
+    border-radius: var(--radius-lg);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background-color var(--dur-base) var(--ease-in),
+                color var(--dur-base) var(--ease-in);
+  }
+  .iots-iconbtn:hover { background-color: var(--surface-hover); color: var(--text-strong); }
+
+  /* --- mobile ----------------------------------------------------------- */
+  .iots-burger {
+    position: absolute;
+    top: 0.75rem;
+    right: 1.25rem;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+    display: none;
+  }
+  .iots-burger-icon {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: var(--text-body);
+  }
+  .iots-burger-icon .iots-icon-close { display: none; }
+  .iots-burger:checked ~ .iots-header__inner .iots-burger-icon .iots-icon-open { display: none; }
+  .iots-burger:checked ~ .iots-header__inner .iots-burger-icon .iots-icon-close { display: block; }
+
+  @media (max-width: 1023px) {
+    html.has-navbar-fixed-top,
+    body.has-navbar-fixed-top { padding-top: 4rem; }
+    .iots-burger { display: block; }
+    .iots-burger-icon { display: inline-flex; }
+    .iots-header__inner {
+      grid-template-columns: 1fr;
+      padding: 0.75rem 1.25rem;
+      row-gap: 0.5rem;
+    }
+    .iots-header__brand { min-height: 2.5rem; }
+    .iots-header__nav,
+    .iots-header__actions { display: none; }
+
+    .iots-burger:checked ~ .iots-header__inner {
+      background: var(--surface-overlay);
+      -webkit-backdrop-filter: var(--blur-header);
+      backdrop-filter: var(--blur-header);
+      box-shadow: var(--shadow-header);
+      max-height: 100dvh;
+      overflow-y: auto;
+      padding-bottom: 1.25rem;
+    }
+    .iots-burger:checked ~ .iots-header__inner .iots-header__nav { display: block; }
+    .iots-burger:checked ~ .iots-header__inner .iots-header__actions {
+      display: flex;
+      justify-content: flex-start;
+      padding: 0.5rem 0 0;
+      border-top: 1px solid var(--border-subtle);
+      margin-top: 0.5rem;
+    }
+    /* Sub-menus stop floating and become an indented block. */
+    .iots-header__nav > ul { flex-direction: column; justify-content: flex-start; }
+    .iots-navlink { padding-inline: 0; }
+    .iots-menu {
+      position: static;
+      display: block;
+      min-width: 0;
+      background: transparent;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      padding-bottom: 0.25rem;
+    }
+    .iots-menu a { padding: 0.5rem 0 0.5rem 1rem; color: var(--text-muted); }
+  }
+</style>
+
+<header class="iots-header" id="iots-header">
+  <!-- Drives the mobile menu with CSS alone: the fragment is injected with
+       innerHTML, so a <script> inside it would never run. -->
+  <input type="checkbox" id="iots-nav-toggle" class="iots-burger" aria-label="Toggle menu">
+  <div class="iots-header__inner">
+
+    <div class="iots-header__brand">
+      <a class="iots-logo" href="index.html">
+        <span class="iots-logo__mark" aria-hidden="true"></span>
+        <span class="iots-logo__word">IoTSploit</span>
       </a>
+      <label class="iots-burger-icon" for="iots-nav-toggle" aria-hidden="true">
+        <svg class="iots-icon-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l16 0"></path><path d="M4 12l16 0"></path><path d="M4 18l16 0"></path></svg>
+        <svg class="iots-icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg>
+      </label>
     </div>
 
-    <div class="navbar-menu" id="navMenu">
-      <div class="navbar-end">
-        <a class="navbar-item" href="blog/">
-          <span data-i18n="blog">Documents</span>
-        </a>
+    <nav class="iots-header__nav" aria-label="Main navigation">
+      <ul>
+        <li>
+          <a class="iots-navlink" href="blog/" data-nav-path="blog/"><span data-i18n="documents">Documents</span></a>
+        </li>
 
-        <!-- Products Dropdown -->
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">
+        <li>
+          <button type="button" class="iots-navlink" aria-haspopup="true">
             <span data-i18n="features">Products</span>
-          </a>
-          <div class="navbar-dropdown">
-            <a class="navbar-item" href="attackpath.html" target="_blank">
-              <span class="icon">
-                <i class="fas fa-project-diagram"></i>
-              </span>
-              <span>CyberDive</span>
-            </a>
-            <a class="navbar-item" href="fuzzer.html">
-              <span class="icon">
-                <i class="fas fa-bug"></i>
-              </span>
-              <span data-i18n="iotFuzzer">IoT Protocol Fuzzer</span>
-            </a>
-            <a class="navbar-item" href="jtag.html">
-              <span class="icon">
-                <i class="fas fa-microchip"></i>
-              </span>
-              <span data-i18n="jtagScan">JTAG Boundary Scan</span>
-            </a>
-            <hr class="navbar-divider">
-            <a class="navbar-item" href="https://iotsploit-tutorial.readthedocs.io/en/latest/" target="_blank">
-              <span class="icon">
-                <i class="fas fa-shield-alt"></i>
-              </span>
-              <span data-i18n="vulnerabilityScanner">Vulnerability Scanner</span>
-            </a>
-            <a class="navbar-item" href="https://iotsploit-tutorial.readthedocs.io/en/latest/" target="_blank">
-              <span class="icon">
-                <i class="fas fa-network-wired"></i>
-              </span>
-              <span data-i18n="protocolAnalyzer">Protocol Analyzer</span>
-            </a>
-          </div>
-        </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:2px"><path d="M6 9l6 6l6 -6"></path></svg>
+          </button>
+          <ul class="iots-menu">
+            <li><a href="attackpath.html">CyberDive</a></li>
+            <li><a href="fuzzer.html"><span data-i18n="iotFuzzer">IoT Protocol Fuzzer</span></a></li>
+            <li><a href="jtag.html"><span data-i18n="jtagScan">JTAG Boundary Scan</span></a></li>
+            <li><a href="https://iotsploit-tutorial.readthedocs.io/en/latest/" target="_blank" rel="noopener"><span data-i18n="vulnerabilityScanner">Vulnerability Scanner</span></a></li>
+            <li><a href="https://iotsploit-tutorial.readthedocs.io/en/latest/" target="_blank" rel="noopener"><span data-i18n="protocolAnalyzer">Protocol Analyzer</span></a></li>
+          </ul>
+        </li>
 
-        
+        <li>
+          <a class="iots-navlink" href="license.html" data-nav-path="license.html"><span data-i18n="licenseNav">License</span></a>
+        </li>
 
-        <a class="navbar-item" href="license.html">
-          <span data-i18n="licenseNav">License</span>
-        </a>
+        <li>
+          <a class="iots-navlink" href="download.html" data-nav-path="download.html"><span data-i18n="download">Download</span></a>
+        </li>
 
-        <a class="navbar-item" href="download.html">
-          <span data-i18n="download">Download</span>
-        </a>
-
-        <!-- Language Selector -->
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">
-            <span class="icon">
-              <i class="fas fa-globe"></i>
-            </span>
+        <li>
+          <button type="button" class="iots-navlink" aria-haspopup="true">
             <span id="current-lang">EN</span>
-          </a>
-          <div class="navbar-dropdown">
-            <a class="navbar-item" onclick="changeLanguage('en')">
-              English
-            </a>
-            <a class="navbar-item" onclick="changeLanguage('zh')">
-              中文
-            </a>
-          </div>
-        </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:2px"><path d="M6 9l6 6l6 -6"></path></svg>
+          </button>
+          <ul class="iots-menu iots-menu--end">
+            <li><a href="#" onclick="event.preventDefault();changeLanguage('en')">English</a></li>
+            <li><a href="#" onclick="event.preventDefault();changeLanguage('zh')">中文</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
 
-      </div>
+    <div class="iots-header__actions">
+      <!-- Placeholder: dark mode is not wired up yet, the site is still light-only. -->
+      <button type="button" class="iots-iconbtn" aria-label="Toggle between Dark and Light mode" aria-disabled="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"></path></svg>
+      </button>
+      <a class="iots-iconbtn" href="https://github.com/TKXB/iotsploit" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"></path></svg>
+      </a>
+      <a class="iots-btn iots-btn--primary" href="download.html">
+        <span data-i18n="download">Download</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"></path><path d="M7 11l5 5l5 -5"></path><path d="M12 4l0 12"></path></svg>
+      </a>
     </div>
+
   </div>
-</nav>
+</header>

@@ -3,6 +3,7 @@ const translations = {
   en: {
     // Navbar
     documentation: "Documentation",
+    documents: "Documents",
     community: "Community",
     features: "Products",
     iotFuzzer: "IoT Protocol Fuzzer",
@@ -312,6 +313,7 @@ const translations = {
   zh: {
     // 导航栏
     documentation: "文档",
+    documents: "文档",
     community: "社区",
     features: "产品",
     iotFuzzer: "物联网协议模糊测试",
