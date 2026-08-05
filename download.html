@@ -2,14 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content="Hugo 0.120.3">
-    <meta name="description" content="Download IoTSploit - The Swiss Army Knife for IoT Security Testing" />
+    <meta name="description" content="Download IoTSploit or JTAG Boundary Scan. Two independent desktop applications for Windows, macOS and Linux — install either without the other." />
 
-    <meta property="og:title" content="Download IoTSploit">
-    <meta property="og:url" content="https://www.iotsploit.org/download.html">
+    <meta property="og:title" content="Download - IoTSploit">
+    <meta property="og:url" content="https://www.iotsploit.org/download-new.html">
     <meta property="og:locale" content="en_US">
-    <meta property="og:description" content="Download IoTSploit - The Swiss Army Knife for IoT Security Testing">
+    <meta property="og:description" content="Two independent desktop applications for Windows, macOS and Linux — install either without the other.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://www.iotsploit.org/images/iotsploit.png">
     <meta property="og:image:alt" content="IoTSploit project logo">
@@ -18,27 +18,26 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@iotsploit">
     <meta name="twitter:creator" content="@iotsploit">
-    <meta name="twitter:title" content="Download IoTSploit">
-    <meta name="twitter:description" content="Download IoTSploit - The Swiss Army Knife for IoT Security Testing">
+    <meta name="twitter:title" content="Download - IoTSploit">
+    <meta name="twitter:description" content="Two independent desktop applications for Windows, macOS and Linux — install either without the other.">
     <meta name="twitter:image" content="https://www.iotsploit.org/images/iotsploit.png">
 
-    <link rel="canonical" href="https://www.iotsploit.org/download.html">
+    <link rel="canonical" href="https://www.iotsploit.org/download-new.html">
 
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 
     <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
-
     <link rel="manifest" href="site.webmanifest">
-
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/mstile-144x144.png">
-    <meta name="theme-color" content="#9c3838">
+    <meta name="theme-color" content="#0161ef">
 
     <title>Download - IoTSploit</title>
 
+    <!-- Bulma powers the shared navbar only; the page itself uses the design system. -->
     <!-- Colour scheme. Must run before any stylesheet so the stored choice is on
          <html> for the first paint, otherwise a dark page flashes white. -->
     <script src="js/theme.js"></script>
@@ -46,41 +45,39 @@
     <link rel="stylesheet" href="css/bulma.css">
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/ds/styles.css">
 
     <!-- Language Translations -->
     <script src="js/translations.js"></script>
     <script defer src="js/navbar.js"></script>
-    <script>
-              // 下载页面的翻译已经包含在全局翻译文件中
-        document.addEventListener('DOMContentLoaded', () => {
-          // 初始化语言设置
-          if (window.initializeLanguage) {
-            window.initializeLanguage();
-          }
-        });
-    </script>
 
-    <!-- Structured Data -->
+    <!-- Structured Data — two independent applications, not two editions of one. -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "IoTSploit",
-      "operatingSystem": "Windows, macOS, Linux",
-      "applicationCategory": "SecurityApplication",
-      "url": "https://www.iotsploit.org/download.html",
-      "description": "Download IoTSploit - The Swiss Army Knife for IoT Security Testing",
-      "softwareVersion": "0.0.9",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "author": {
-        "@type": "Organization",
-        "name": "IoTSploit",
-        "url": "https://www.iotsploit.org"
-      }
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "IoTSploit",
+          "operatingSystem": "Windows, macOS, Linux",
+          "applicationCategory": "SecurityApplication",
+          "url": "https://www.iotsploit.org/download-new.html",
+          "description": "Security toolkit for testing a fleet of IoT devices: device discovery, target inventory, plugins, fuzzing campaigns and reporting.",
+          "softwareVersion": "0.0.16",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "author": { "@type": "Organization", "name": "IoTSploit", "url": "https://www.iotsploit.org" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "JTAG Boundary Scan",
+          "operatingSystem": "Windows, macOS, Linux",
+          "applicationCategory": "DeveloperApplication",
+          "url": "https://www.iotsploit.org/jtag.html",
+          "description": "Boundary-scan probe for IEEE 1149.1. Discover the JTAG chain, load BSDL, and watch live pin states on a package pin map while the target keeps running.",
+          "softwareVersion": "0.0.16",
+          "author": { "@type": "Organization", "name": "IoTSploit", "url": "https://www.iotsploit.org" }
+        }
+      ]
     }
     </script>
 
@@ -100,873 +97,526 @@
     (function() {
       var hm = document.createElement("script");
       hm.src = "https://hm.baidu.com/hm.js?f83147f2a832dcaaf10aa9ebd65e178c";
-      var s = document.getElementsByTagName("script")[0]; 
+      var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(hm, s);
     })();
     </script>
 
     <style>
-      /* The page's own VS Code-ish palette. Light values are the originals; the
-         dark half comes from the design system's dark tokens (css/theme.css puts
-         them on :root), so every rule below follows the scheme without change.
-         light-dark() resolves against `color-scheme`, which js/theme.js sets. */
-      :root {
-        --vsc-bg: light-dark(#ffffff, var(--surface-page));
-        --vsc-bg-light: light-dark(#ffffff, var(--surface-card));
-        --vsc-bg-lighter: light-dark(#f5f5f5, var(--surface-chip));
-        --vsc-border: light-dark(#e0e0e0, var(--border-subtle));
-        --vsc-text: light-dark(#333333, var(--text-body));
-        --vsc-text-bright: light-dark(#1e1e1e, var(--text-heading));
-        --vsc-text-muted: light-dark(#6e6e6e, var(--text-muted));
-        /* Blue as a fill keeps its brand value in both schemes; blue as *text*
-           only clears 3.2:1 on the dark page, so it lightens to blue-400. */
-        --vsc-blue: #0078d4;
-        --vsc-blue-hover: #106ebe;
-        --vsc-blue-text: light-dark(#0078d4, var(--blue-400));
-        --vsc-green: light-dark(#16825d, var(--green-400));
-        /* The alternating tint flattens into the page in dark — the design
-           system deliberately has no second background there. */
-        --vsc-section-alt: light-dark(#f9f9f9, var(--surface-page));
-      }
+      /* ======================================================================
+         Page layer for download-new.html.
 
-      body.page {
-        background-color: var(--vsc-bg);
-        color: var(--vsc-text);
-      }
+         Composes the design-system tokens in css/ds/ only — no raw hex, no new
+         hue, no glyph that isn't Tabler outline. Everything is prefixed .dl-
+         so it cannot collide with the .aw-/.btn- utilities or with Bulma,
+         which is present only for the shared navbar.
+         ================================================================== */
 
-      .navbar-item img.is-logo {
-        max-height: 3rem;
-      }
+      /* No element reset here on purpose. Bulma ships minireset, which already
+         zeroes margin/padding on p, ul, dl, dd and h1-h6 and drops list-style
+         on ul — with element-only selectors, so every .dl- rule below still
+         wins. Re-declaring that reset as `.aw-page p` would out-specify the
+         page's own margins and collapse the spacing. */
 
-      @media screen and (max-width: 1023px) {
-        .navbar-item img.is-logo {
-          max-height: 2.5rem;
-        }
+      /* --- Hero ------------------------------------------------------- */
+      .dl-hero .aw-container { padding-bottom: var(--space-8); }
+      .dl-hero-title {
+        font-size: var(--text-4xl); font-weight: var(--font-bold);
+        line-height: var(--leading-tighter); letter-spacing: var(--tracking-tighter);
+        color: var(--text-heading); margin-top: var(--space-3);
+        max-width: 22ch; text-wrap: balance;
       }
-
-      .buttons .button {
-        width: 120px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+      @media (min-width: 768px)  { .dl-hero-title { font-size: var(--text-5xl); } }
+      @media (min-width: 1024px) { .dl-hero-title { font-size: var(--text-6xl); } }
+      /* The accent violet appears in exactly one place on the page: this span. */
+      .dl-hero-title em { font-style: normal; color: var(--aw-color-accent); }
+      html.dark .dl-hero-title em { color: var(--blue-300); }
+      .dl-hero-sub {
+        margin-top: var(--space-5); max-width: 64ch; color: var(--text-muted);
+        font-size: var(--text-xl); line-height: var(--text-xl-lh);
       }
-
-      .button.is-discord-purple {
-        background-color: #5865F2;
-        border-color: #5865F2;
-        color: white;
+      .dl-meta {
+        margin-top: var(--space-8); display: flex; flex-wrap: wrap;
+        gap: var(--space-2) var(--space-3); align-items: center;
       }
-
-      .button.is-discord-purple:hover {
-        background-color: #4752C4;
-        border-color: #4752C4;
-        color: white;
+      .dl-chip {
+        display: inline-flex; align-items: center; gap: var(--space-2);
+        border-radius: var(--radius-full); background-color: var(--surface-chip);
+        color: var(--text-body); padding: 0.3rem 0.75rem;
+        font-size: var(--text-sm); line-height: var(--text-sm-lh);
+        font-weight: var(--font-medium);
       }
+      .dl-chip-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 
-      /* Hero */
-      .download-hero {
-        background: var(--vsc-bg);
-        color: var(--vsc-text-bright);
-        border-bottom: 1px solid var(--vsc-border);
+      /* --- Two product panels ------------------------------------------ */
+      .dl-split { display: grid; gap: var(--grid-gap); align-items: stretch; }
+      @media (min-width: 1000px) { .dl-split { grid-template-columns: 1fr 1fr; } }
+
+      .dl-panel {
+        display: flex; flex-direction: column; border-radius: var(--radius-lg);
+        padding: var(--space-8); background-color: var(--surface-card);
+        border: 1px solid var(--border-subtle); box-shadow: var(--shadow-card);
       }
-
-      .download-hero .title,
-      .download-hero .subtitle {
-        color: var(--vsc-text-bright) !important;
-      }
-
-      /* Version badge */
-      .version-badge {
-        background-color: var(--vsc-blue);
-        color: #fff;
-        padding: 0.3rem 0.9rem;
-        border-radius: 4px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        display: inline-block;
-        margin-bottom: 1rem;
-        letter-spacing: 0.02em;
-      }
-
-      /* Sections */
-      .section {
-        background-color: var(--vsc-bg);
-      }
-
-      .section.has-background-light {
-        background-color: var(--vsc-section-alt) !important;
-      }
-
-      .section .title,
-      .section .subtitle {
-        color: var(--vsc-text-bright) !important;
-      }
-
-      /* Download cards */
-      .download-card {
-        border-radius: 8px;
-        background: var(--vsc-bg-light);
-        border: 1px solid var(--vsc-border);
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
+      /* The JTAG panel forces the dark scheme on its own subtree — the design
+         system's WidgetWrapper isDark idiom — so two unrelated products read
+         apart at a glance without inventing a second brand colour. */
+      .dl-panel.dark {
+        background-color: var(--surface-dark);
+        border-color: var(--slate-600);
         box-shadow: none;
       }
 
-      .download-card .card-content {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        padding: 2rem 1.5rem;
+      .dl-panel-head {
+        display: flex; align-items: flex-start; justify-content: space-between;
+        gap: var(--space-4);
+      }
+      .dl-panel-name {
+        font-size: var(--text-2xl); font-weight: var(--font-bold);
+        letter-spacing: var(--tracking-tight); line-height: var(--leading-tight);
+        color: var(--text-heading);
+      }
+      @media (min-width: 768px) { .dl-panel-name { font-size: var(--text-3xl); } }
+      .dl-panel-job { margin-top: var(--space-4); color: var(--text-muted); max-width: 46ch; }
+
+      .dl-badge {
+        flex: none; border-radius: var(--radius-full); padding: 0.3rem 0.75rem;
+        font-size: var(--text-xs); line-height: var(--text-xs-lh);
+        font-weight: var(--font-bold); letter-spacing: var(--tracking-wide);
+        text-transform: uppercase; white-space: nowrap;
+      }
+      .dl-badge-free     { background-color: var(--surface-chip); color: var(--text-strong); }
+      .dl-badge-licensed { background-color: var(--aw-color-primary); color: var(--text-on-primary); }
+
+      .dl-rule { margin-block: var(--space-6); border: 0; border-top: 1px solid var(--border-subtle); }
+
+      /* Feature list — the system's only bullet idiom: white check on a primary chip */
+      .dl-features { margin-top: var(--space-6); display: grid; gap: var(--space-3); }
+      .dl-features li {
+        display: flex; align-items: flex-start; gap: var(--space-3);
+        font-size: var(--text-sm); line-height: var(--text-sm-lh);
+      }
+      .dl-check {
+        flex: none; width: 20px; height: 20px; border-radius: var(--radius-full);
+        background-color: var(--aw-color-primary); color: var(--text-on-primary);
+        display: grid; place-items: center; margin-top: 1px;
+      }
+      .dl-check svg { width: 13px; height: 13px; }
+
+      /* Primary, OS-aware download */
+      .dl-primary { display: flex; flex-direction: column; gap: var(--space-3); }
+      .dl-primary .btn { width: 100%; }
+      .dl-primary-note {
+        font-size: var(--text-sm); line-height: var(--text-sm-lh);
+        color: var(--text-muted); text-align: center;
+      }
+      .dl-primary-note b {
+        font-weight: var(--font-semibold); color: var(--text-body); word-break: break-all;
       }
 
-      .download-card .card-main-content {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
+      /* Other platforms */
+      .dl-alts { margin-top: var(--space-6); display: flex; flex-direction: column; gap: var(--space-1); }
+      .dl-alts-label {
+        font-size: var(--text-xs); line-height: var(--text-xs-lh);
+        font-weight: var(--font-bold); letter-spacing: var(--tracking-wide);
+        text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--space-2);
+      }
+      .dl-alt {
+        display: flex; align-items: center; gap: var(--space-3);
+        padding: var(--space-3) var(--space-2); border-radius: var(--radius-md);
+        color: var(--text-body); text-decoration: none;
+        transition: background-color var(--dur-base) var(--ease-in);
+      }
+      .dl-alt:hover { background-color: var(--surface-hover); color: var(--text-body); text-decoration: none; }
+      .dl-alt svg { width: 20px; height: 20px; flex: none; color: var(--icon-muted); }
+      .dl-alt:hover svg { color: var(--icon-accent); }
+      .dl-alt-name { font-weight: var(--font-medium); }
+      .dl-alt-file {
+        margin-left: auto; font-family: var(--font-mono);
+        font-size: var(--text-xs); line-height: var(--text-xs-lh);
+        color: var(--text-muted); font-variant-numeric: tabular-nums; text-align: right;
       }
 
-      .download-card .card-footer-content {
-        margin-top: auto;
-        padding-top: 1rem;
+      .dl-panel-foot { margin-top: auto; padding-top: var(--space-6); }
+      .dl-req { font-size: var(--text-sm); line-height: var(--text-sm-lh); color: var(--text-muted); }
+      .dl-req dt { font-weight: var(--font-semibold); color: var(--text-body); float: left; margin-right: var(--space-2); }
+      .dl-req dd { margin-bottom: var(--space-2); }
+      .dl-req dd::after { content: ""; display: block; clear: both; }
+      .dl-licence-note {
+        font-size: var(--text-sm); line-height: var(--text-sm-lh);
+        color: var(--text-muted); margin-bottom: var(--space-4);
       }
 
-      .download-card .card-content > div:last-child {
-        margin-top: auto;
+      /* --- Mobile toolkit --------------------------------------------- */
+      .dl-headline { max-width: var(--container-max-3xl); margin-bottom: var(--space-8); }
+      .dl-headline .aw-tagline { margin-bottom: var(--space-2); }
+      .dl-duo { display: grid; gap: var(--space-6); }
+      @media (min-width: 720px) { .dl-duo { grid-template-columns: 1fr 1fr; } }
+      .dl-mobile {
+        display: flex; align-items: center; gap: var(--space-5);
+        border-radius: var(--radius-lg); background-color: var(--surface-card);
+        border: 1px solid var(--border-subtle); box-shadow: var(--shadow-card);
+        padding: var(--space-6);
+      }
+      .dl-mobile-icon {
+        width: 48px; height: 48px; flex: none; border-radius: var(--radius-full);
+        display: grid; place-items: center; background-color: var(--aw-color-primary);
+        color: var(--text-on-primary);
+      }
+      .dl-mobile-icon svg { width: 24px; height: 24px; }
+      .dl-mobile-icon.is-quiet { background-color: var(--surface-chip); color: var(--icon-muted); }
+      .dl-mobile h3 { font-size: 1.3rem; font-weight: var(--font-bold); line-height: var(--leading-tight); }
+      .dl-mobile p {
+        margin-top: var(--space-1); color: var(--text-muted);
+        font-size: var(--text-sm); line-height: var(--text-sm-lh);
+      }
+      .dl-mobile-act { margin-left: auto; flex: none; }
+      .dl-soon {
+        font-size: var(--text-xs); line-height: var(--text-xs-lh);
+        font-weight: var(--font-bold); letter-spacing: var(--tracking-wide);
+        text-transform: uppercase; color: var(--text-muted);
+        border: 1px solid var(--border-subtle); border-radius: var(--radius-full);
+        padding: 0.3rem 0.75rem; white-space: nowrap;
       }
 
-      .download-card .buttons {
-        margin-top: auto;
-        padding-top: 1rem;
+      /* --- CTA ---------------------------------------------------------- */
+      .dl-cta { text-align: center; max-width: var(--container-max-3xl); margin-inline: auto; }
+      .dl-cta .aw-subtitle { margin-inline: auto; max-width: 52ch; }
+      .dl-cta-actions {
+        margin-top: var(--space-8); display: flex; flex-wrap: wrap;
+        gap: var(--space-3); justify-content: center;
       }
-
-      .download-card:hover {
-        border-color: var(--vsc-blue);
-        box-shadow: 0 0 0 1px var(--vsc-blue);
-        transform: none;
-      }
-
-      .download-card .title,
-      .download-card .subtitle {
-        color: var(--vsc-text-bright) !important;
-      }
-
-      .download-card .subtitle {
-        color: var(--vsc-text-muted) !important;
-      }
-
-      /* Platform icon */
-      .platform-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        color: var(--vsc-text-bright);
-      }
-
-      /* Download button — VS Code style */
-      .download-button {
-        width: auto !important;
-        min-width: 160px;
-        padding: 0.6rem 1.4rem;
-        background-color: var(--vsc-blue);
-        border: none;
-        border-radius: 4px;
-        color: #fff;
-        font-weight: 600;
-        font-size: 0.95rem;
-        transition: background-color 0.15s ease;
-        box-shadow: none;
-      }
-
-      .download-button:hover {
-        background-color: var(--vsc-blue-hover);
-        color: #fff;
-        transform: none;
-        box-shadow: none;
-      }
-
-      /* Coming Soon */
-      .coming-soon-button {
-        width: auto !important;
-        min-width: 160px;
-        padding: 0.6rem 1.4rem;
-        background-color: var(--vsc-bg-lighter) !important;
-        border: 1px solid var(--vsc-border) !important;
-        color: var(--vsc-text-muted) !important;
-        font-weight: 600;
-        cursor: not-allowed;
-        opacity: 0.7;
-        border-radius: 4px;
-      }
-
-      .coming-soon-button:hover {
-        background-color: var(--vsc-bg-lighter) !important;
-        border-color: var(--vsc-border) !important;
-        transform: none !important;
-        box-shadow: none !important;
-      }
-
-      /* Mobile app cards (horizontal) */
-      .mobile-cards {
-        max-width: 880px;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        gap: 1.125rem;
-      }
-
-      .mobile-card {
-        background: var(--vsc-bg-light);
-        border: 1px solid var(--vsc-border);
-        border-radius: 8px;
-        padding: 1.5rem 2rem;
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        transition: border-color 0.2s ease;
-      }
-
-      .mobile-card:hover {
-        border-color: var(--vsc-blue);
-      }
-
-      .mobile-app-icon {
-        width: 52px;
-        height: 52px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        flex-shrink: 0;
-      }
-
-      .mobile-app-icon.is-android {
-        background: rgba(61, 220, 132, 0.12);
-        color: #3ddc84;
-      }
-
-      .mobile-app-icon.is-apple {
-        background: var(--vsc-bg-lighter);
-        border: 1px solid var(--vsc-border);
-        color: var(--vsc-text-muted);
-      }
-
-      .mobile-card-info {
-        flex: 1;
-        min-width: 0;
-      }
-
-      .mobile-card-title {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: var(--vsc-text-bright);
-        margin-bottom: 0.25rem;
-      }
-
-      .mobile-card-desc {
-        font-size: 0.875rem;
-        color: var(--vsc-text-muted);
-        margin: 0;
-      }
-
-      /* Google Play badge button */
-      .gplay-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.7rem;
-        background: #000;
-        border: 1px solid var(--vsc-border);
-        border-radius: 7px;
-        padding: 0.55rem 1.25rem 0.55rem 1rem;
-        text-decoration: none;
-        transition: border-color 0.2s ease;
-        flex-shrink: 0;
-      }
-
-      .gplay-badge:hover {
-        border-color: #3ddc84;
-      }
-
-      .gplay-badge i {
-        color: #fff;
-        font-size: 1.25rem;
-      }
-
-      .gplay-badge-text {
-        display: flex;
-        flex-direction: column;
-        line-height: 1.1;
-        text-align: left;
-      }
-
-      .gplay-badge-top {
-        font-size: 0.5625rem;
-        color: #cfd6e0;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-      }
-
-      .gplay-badge-name {
-        font-size: 0.9375rem;
-        font-weight: 700;
-        color: #fff;
-      }
-
-      /* QR code */
-      .app-qr {
-        display: block;
-        background: #fff;
-        border: 1px solid var(--vsc-border);
-        padding: 8px;
-        border-radius: 8px;
-        line-height: 0;
-        flex-shrink: 0;
-      }
-
-      .app-qr img {
-        display: block;
-        width: 76px;
-        height: 76px;
-      }
-
-      /* Coming Soon pill badge */
-      .coming-soon-badge {
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #b97e00;
-        background: rgba(240, 165, 0, 0.1);
-        border: 1px solid rgba(240, 165, 0, 0.25);
-        padding: 0.35rem 0.75rem;
-        border-radius: 4px;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        white-space: nowrap;
-        flex-shrink: 0;
-      }
-
-      @media screen and (max-width: 640px) {
-        .mobile-card {
-          flex-wrap: wrap;
-          justify-content: center;
-          text-align: center;
-          padding: 1.5rem;
-        }
-
-        .mobile-card-info {
-          flex-basis: 100%;
-          text-align: center;
-        }
-      }
-
-      /* Feature list */
-      .feature-list {
-        list-style: none;
-        padding: 0;
-        text-align: left;
-      }
-
-      .feature-list li {
-        padding: 0.45rem 0;
-        border-bottom: 1px solid var(--vsc-border);
-        display: flex;
-        align-items: center;
-        color: var(--vsc-text);
-        font-size: 0.9rem;
-      }
-
-      .feature-list li:last-child {
-        border-bottom: none;
-      }
-
-      .feature-list li i {
-        color: var(--vsc-green);
-        margin-right: 0.75rem;
-        width: 20px;
-        font-size: 0.8rem;
-      }
-
-      /* Stats card */
-      .stats-card {
-        text-align: center;
-        padding: 2rem;
-        border-radius: 8px;
-        background: var(--vsc-bg-light);
-        border: 1px solid var(--vsc-border);
-        box-shadow: none;
-      }
-
-      .stats-number {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: var(--vsc-blue-text);
-        display: block;
-      }
-
-      .stats-label {
-        color: var(--vsc-text-muted);
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-
-      /* Misc text */
-      .is-size-7.has-text-grey,
-      p.has-text-grey {
-        color: var(--vsc-text-muted) !important;
-      }
-
-      /* Footer */
-      .footer {
-        background-color: var(--vsc-section-alt);
-        border-top: 1px solid var(--vsc-border);
-        padding: 2rem 1.5rem;
-      }
-
-      .footer .content p,
-      .footer .content a {
-        color: var(--vsc-text-muted);
-      }
-
-      .footer .content a:hover {
-        color: var(--vsc-blue-text);
-      }
-
-      /* Animations */
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .animate-fade-in {
-        animation: fadeInUp 0.5s ease-out;
-      }
-
-      .animate-delay-1 { animation-delay: 0.1s; animation-fill-mode: both; }
-      .animate-delay-2 { animation-delay: 0.2s; animation-fill-mode: both; }
-      .animate-delay-3 { animation-delay: 0.3s; animation-fill-mode: both; }
-      .animate-delay-4 { animation-delay: 0.4s; animation-fill-mode: both; }
-
-      /* Linux Download Modal — dark theme */
-      .modal-card {
-        background-color: var(--vsc-bg-light);
-      }
-
-      .modal-card-head {
-        background-color: var(--vsc-bg-lighter);
-        border-bottom: 1px solid var(--vsc-border);
-      }
-
-      .modal-card-title {
-        color: var(--vsc-text-bright);
-      }
-
-      .modal-card-body {
-        background-color: var(--vsc-bg-light);
-        color: var(--vsc-text);
-      }
-
-      .modal-card-foot {
-        background-color: var(--vsc-bg-lighter);
-        border-top: 1px solid var(--vsc-border);
-      }
-
-      .modal-card-foot .button {
-        background-color: var(--vsc-bg-lighter);
-        border-color: var(--vsc-border);
-        color: var(--vsc-text);
-      }
-
-      .modal-card-foot .button:hover {
-        border-color: var(--vsc-text-muted);
-      }
-
-      #linuxDownloadModal .card {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        background: var(--vsc-bg-lighter);
-        border: 1px solid var(--vsc-border);
-        border-radius: 8px;
-      }
-
-      #linuxDownloadModal .card-content {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        min-height: 280px;
-      }
-
-      #linuxDownloadModal .card .title {
-        color: var(--vsc-text-bright);
-      }
-
-      #linuxDownloadModal .card .subtitle {
-        color: var(--vsc-text-muted) !important;
-      }
-
-      #linuxDownloadModal .card-content .subtitle {
-        flex-grow: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 60px;
-      }
-
-      #linuxDownloadModal .column {
-        display: flex;
-      }
-
-      /* Requirements table (dark) */
-      .requirements-table {
-        background: var(--vsc-bg-lighter);
-        border-radius: 8px;
-        padding: 1.5rem;
-        color: var(--vsc-text);
-      }
-
-      /* Scrollbar styling (VS Code feel) */
-      ::-webkit-scrollbar {
-        width: 10px;
-      }
-
-      ::-webkit-scrollbar-track {
-        background: var(--vsc-bg);
-      }
-
-      ::-webkit-scrollbar-thumb {
-        background: var(--vsc-bg-lighter);
-        border-radius: 5px;
-      }
-
-      ::-webkit-scrollbar-thumb:hover {
-        background: var(--vsc-text-muted);
-      }
+      .dl-icon { width: 20px; height: 20px; flex: none; }
     </style>
   </head>
+
   <body class="page has-navbar-fixed-top">
-    <div class="main">
-      <div id="navbar-placeholder"></div>
-      <!-- Hero Section -->
-      <section class="hero is-medium download-hero">
-        <div class="hero-body">
-          <div class="container has-text-centered">
-            <h1 class="title is-size-1 is-size-2-mobile animate-fade-in" data-i18n="downloadTitle">
-              Download IoTSploit
-            </h1>
-            <p class="subtitle is-size-3 is-size-4-mobile animate-fade-in animate-delay-1" data-i18n="downloadSubtitle">
-              Get the latest version of IoTSploit for your platform
+    <div id="navbar-placeholder"></div>
+
+    <main class="aw-page">
+      <!-- ============================ Hero ============================ -->
+      <section class="aw-section dl-hero">
+        <div class="aw-container">
+          <p class="aw-tagline" data-i18n="dlTagline">Downloads</p>
+          <h1 class="dl-hero-title">
+            <span data-i18n="dlTitleLead">Download IoTSploit or</span>
+            <em data-i18n="dlTitleAccent">JTAG Boundary Scan.</em>
+          </h1>
+          <p class="dl-hero-sub" data-i18n="dlSubtitle">
+            Two independent desktop applications for Windows, macOS and Linux.
+          </p>
+          <div class="dl-meta">
+            <span class="dl-chip dl-chip-mono">v0.0.16</span>
+            <span class="dl-chip" data-i18n="dlReleased">Released 4 August 2026</span>
+            <span class="dl-chip">Windows &middot; macOS &middot; Linux</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================= The products ======================= -->
+      <section class="aw-section" id="apps">
+        <div class="aw-container" style="padding-top: 0">
+          <div class="dl-split">
+
+            <!-- IoTSploit ------------------------------------------------ -->
+            <article class="dl-panel" data-reveal>
+              <div class="dl-panel-head">
+                <h2 class="dl-panel-name">IoTSploit</h2>
+                <span class="dl-badge dl-badge-free" data-i18n="dlBadgeFree">Free</span>
+              </div>
+              <p class="dl-panel-job" data-i18n="dlToolkitJob">
+                Enumerate devices, keep a target inventory, run plugins and fuzzing campaigns, and
+                collect the results in one workspace. Opens on the Control Center.
+              </p>
+
+              <ul class="dl-features">
+                <li>
+                  <span class="dl-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10"/></svg></span>
+                  <span data-i18n="dlToolkitFeat1">Device discovery and inventory</span>
+                </li>
+                <li>
+                  <span class="dl-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10"/></svg></span>
+                  <span data-i18n="dlToolkitFeat2">Plugins and plugin groups</span>
+                </li>
+                <li>
+                  <span class="dl-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10"/></svg></span>
+                  <span data-i18n="dlToolkitFeat3">IoT fuzzer and threat modeler</span>
+                </li>
+              </ul>
+
+              <hr class="dl-rule">
+
+              <div class="dl-primary">
+                <a class="btn btn-primary" href="downloads/iotsploit-ui-v0.0.16-linux.AppImage" data-os-link="standard">
+                  <svg class="dl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>
+                  <span data-os-label="standard">Download for Linux</span>
+                </a>
+                <p class="dl-primary-note">
+                  <b data-os-file="standard">iotsploit-ui-v0.0.16-linux.AppImage</b> &middot; <span data-os-size="standard">92 MB</span>
+                </p>
+              </div>
+
+              <div class="dl-alts">
+                <p class="dl-alts-label" data-i18n="dlAllPlatforms">All platforms</p>
+                <a class="dl-alt" href="downloads/iotsploit-ui-v0.0.16-windows.zip">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 20l-12 -1.5c-1 -.1 -1.8 -.9 -1.8 -1.9v-9.2c0 -1 .8 -1.8 1.8 -1.9l12 -1.5c1.2 -.1 2.2 .8 2.2 1.9v12.1c0 1.2 -1.1 2.1 -2.2 1.9l0 .1"/><path d="M12 5l0 14"/><path d="M4 12l16 0"/></svg>
+                  <span class="dl-alt-name">Windows</span>
+                  <span class="dl-alt-file">.zip &middot; 88 MB</span>
+                </a>
+                <a class="dl-alt" href="downloads/iotsploit-ui-v0.0.16-macos.zip">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.286 7.008c-3.216 0 -4.286 3.23 -4.286 5.92c0 3.229 2.143 8.072 4.286 8.072c1.165 -.05 1.799 -.538 3.214 -.538c1.406 0 1.607 .538 3.214 .538s4.286 -3.229 4.286 -5.381c-.03 -.011 -2.649 -.434 -2.679 -3.23c-.02 -2.335 2.589 -3.179 2.679 -3.228c-1.096 -1.606 -3.162 -2.113 -3.75 -2.153c-1.535 -.12 -3.032 1.077 -3.75 1.077c-.729 0 -2.036 -1.077 -3.214 -1.077"/><path d="M12 4a2 2 0 0 0 2 -2a2 2 0 0 0 -2 2"/></svg>
+                  <span class="dl-alt-name">macOS</span>
+                  <span class="dl-alt-file">.zip &middot; 95 MB</span>
+                </a>
+                <a class="dl-alt" href="downloads/iotsploit-ui-v0.0.16-linux.AppImage">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17.723 7.41a7.992 7.992 0 0 0 -3.74 -2.162m-3.971 0a7.993 7.993 0 0 0 -3.789 2.216m-1.881 3.215a8 8 0 0 0 -.342 2.32c0 .738 .1 1.453 .287 2.132m1.96 3.428a7.993 7.993 0 0 0 3.759 2.19m4 0a7.993 7.993 0 0 0 3.747 -2.186m1.962 -3.43a8.008 8.008 0 0 0 .287 -2.131c0 -.764 -.107 -1.503 -.307 -2.203"/><path d="M3 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg>
+                  <span class="dl-alt-name">Linux &mdash; AppImage</span>
+                  <span class="dl-alt-file">.AppImage &middot; 92 MB</span>
+                </a>
+                <a class="dl-alt" href="downloads/iotsploit-ui-v0.0.16-linux.tar.gz">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17.723 7.41a7.992 7.992 0 0 0 -3.74 -2.162m-3.971 0a7.993 7.993 0 0 0 -3.789 2.216m-1.881 3.215a8 8 0 0 0 -.342 2.32c0 .738 .1 1.453 .287 2.132m1.96 3.428a7.993 7.993 0 0 0 3.759 2.19m4 0a7.993 7.993 0 0 0 3.747 -2.186m1.962 -3.43a8.008 8.008 0 0 0 .287 -2.131c0 -.764 -.107 -1.503 -.307 -2.203"/><path d="M3 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg>
+                  <span class="dl-alt-name">Linux &mdash; tarball</span>
+                  <span class="dl-alt-file">.tar.gz &middot; 90 MB</span>
+                </a>
+                <a class="dl-alt" href="downloads/iotsploit-ui-v0.0.16-web.zip">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/></svg>
+                  <span class="dl-alt-name" data-i18n="dlWebBundle">Self-hosted web bundle</span>
+                  <span class="dl-alt-file">.zip &middot; 24 MB</span>
+                </a>
+              </div>
+
+              <div class="dl-panel-foot">
+                <hr class="dl-rule">
+                <dl class="dl-req">
+                  <dt data-i18n="dlRequires">Requires</dt>
+                  <dd>Windows 10/11 64-bit &middot; macOS 10.15+ (Intel &amp; Apple Silicon) &middot; Ubuntu 20.04+, Debian 11+, CentOS 8+</dd>
+                  <dt data-i18n="dlLicence">Licence</dt>
+                  <dd data-i18n="dlLicenceNone">None. Install and run.</dd>
+                </dl>
+              </div>
+            </article>
+
+            <!-- JTAG Boundary Scan --------------------------------------- -->
+            <article class="dl-panel dark" data-reveal>
+              <div class="dl-panel-head">
+                <h2 class="dl-panel-name" data-i18n="jtagScan">JTAG Boundary Scan</h2>
+                <span class="dl-badge dl-badge-licensed" data-i18n="dlBadgeLicensed">Licensed</span>
+              </div>
+              <p class="dl-panel-job" data-i18n="dlJtagJob">
+                Discover the chain, load a BSDL, and watch live pin states on a package pin map
+                while the target keeps running. Opens on the scan view.
+              </p>
+
+              <ul class="dl-features">
+                <li>
+                  <span class="dl-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10"/></svg></span>
+                  <span data-i18n="dlJtagFeat1">JTAG chain discovery</span>
+                </li>
+                <li>
+                  <span class="dl-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10"/></svg></span>
+                  <span data-i18n="dlJtagFeat2">Pin maps for DIP, QFP, PLCC and BGA</span>
+                </li>
+                <li>
+                  <span class="dl-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10"/></svg></span>
+                  <span data-i18n="dlJtagFeat5">J-Link, CMSIS-DAP and FTDI probes</span>
+                </li>
+              </ul>
+
+              <hr class="dl-rule">
+
+              <div class="dl-primary">
+                <a class="btn btn-primary" href="downloads/iotsploit-jtag-v0.0.16-linux.AppImage" data-os-link="jtag">
+                  <svg class="dl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>
+                  <span data-os-label="jtag">Download for Linux</span>
+                </a>
+                <p class="dl-primary-note">
+                  <b data-os-file="jtag">iotsploit-jtag-v0.0.16-linux.AppImage</b> &middot; <span data-os-size="jtag">71 MB</span>
+                </p>
+              </div>
+
+              <div class="dl-alts">
+                <p class="dl-alts-label" data-i18n="dlAllPlatforms">All platforms</p>
+                <a class="dl-alt" href="downloads/iotsploit-jtag-v0.0.16-windows.zip">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 20l-12 -1.5c-1 -.1 -1.8 -.9 -1.8 -1.9v-9.2c0 -1 .8 -1.8 1.8 -1.9l12 -1.5c1.2 -.1 2.2 .8 2.2 1.9v12.1c0 1.2 -1.1 2.1 -2.2 1.9l0 .1"/><path d="M12 5l0 14"/><path d="M4 12l16 0"/></svg>
+                  <span class="dl-alt-name">Windows</span>
+                  <span class="dl-alt-file">.zip &middot; 68 MB</span>
+                </a>
+                <a class="dl-alt" href="downloads/iotsploit-jtag-v0.0.16-macos.zip">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.286 7.008c-3.216 0 -4.286 3.23 -4.286 5.92c0 3.229 2.143 8.072 4.286 8.072c1.165 -.05 1.799 -.538 3.214 -.538c1.406 0 1.607 .538 3.214 .538s4.286 -3.229 4.286 -5.381c-.03 -.011 -2.649 -.434 -2.679 -3.23c-.02 -2.335 2.589 -3.179 2.679 -3.228c-1.096 -1.606 -3.162 -2.113 -3.75 -2.153c-1.535 -.12 -3.032 1.077 -3.75 1.077c-.729 0 -2.036 -1.077 -3.214 -1.077"/><path d="M12 4a2 2 0 0 0 2 -2a2 2 0 0 0 -2 2"/></svg>
+                  <span class="dl-alt-name">macOS</span>
+                  <span class="dl-alt-file">.zip &middot; 74 MB</span>
+                </a>
+                <a class="dl-alt" href="downloads/iotsploit-jtag-v0.0.16-linux.AppImage">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17.723 7.41a7.992 7.992 0 0 0 -3.74 -2.162m-3.971 0a7.993 7.993 0 0 0 -3.789 2.216m-1.881 3.215a8 8 0 0 0 -.342 2.32c0 .738 .1 1.453 .287 2.132m1.96 3.428a7.993 7.993 0 0 0 3.759 2.19m4 0a7.993 7.993 0 0 0 3.747 -2.186m1.962 -3.43a8.008 8.008 0 0 0 .287 -2.131c0 -.764 -.107 -1.503 -.307 -2.203"/><path d="M3 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg>
+                  <span class="dl-alt-name">Linux &mdash; AppImage</span>
+                  <span class="dl-alt-file">.AppImage &middot; 71 MB</span>
+                </a>
+                <a class="dl-alt" href="downloads/iotsploit-jtag-v0.0.16-linux.tar.gz">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17.723 7.41a7.992 7.992 0 0 0 -3.74 -2.162m-3.971 0a7.993 7.993 0 0 0 -3.789 2.216m-1.881 3.215a8 8 0 0 0 -.342 2.32c0 .738 .1 1.453 .287 2.132m1.96 3.428a7.993 7.993 0 0 0 3.759 2.19m4 0a7.993 7.993 0 0 0 3.747 -2.186m1.962 -3.43a8.008 8.008 0 0 0 .287 -2.131c0 -.764 -.107 -1.503 -.307 -2.203"/><path d="M3 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M17 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/></svg>
+                  <span class="dl-alt-name">Linux &mdash; tarball</span>
+                  <span class="dl-alt-file">.tar.gz &middot; 69 MB</span>
+                </a>
+              </div>
+
+              <div class="dl-panel-foot">
+                <hr class="dl-rule">
+                <dl class="dl-req">
+                  <dt data-i18n="dlRequires">Requires</dt>
+                  <dd data-i18n="dlJtagRequires">A debug probe with raw JTAG access, and a published BSDL for the part. Desktop only &mdash; there is no mobile or web build.</dd>
+                </dl>
+                <a class="btn" href="license.html" style="width: 100%">
+                  <svg class="dl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6"/><path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"/><path d="M8 11v-4a4 4 0 1 1 8 0v4"/></svg>
+                  <span data-i18n="jtagTrialCta">Get a 7-day trial licence</span>
+                </a>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= Mobile toolkit ======================= -->
+      <section class="aw-section aw-bg-tint" id="mobile">
+        <div class="aw-container aw-container-6xl">
+          <div class="dl-headline">
+            <p class="aw-tagline" data-i18n="dlCompanionTagline">Mobile Toolkit</p>
+            <h2 class="aw-title" data-i18n="dlCompanionTitle">Offline security testing on your phone</h2>
+            <p class="aw-subtitle" data-i18n="dlCompanionDesc">
+              A standalone offline toolkit &mdash; file obfuscation, ECC key generation, port scanning,
+              SSH client and more, all running locally on your device with no desktop or server
+              connection required.
             </p>
-            <div class="animate-fade-in animate-delay-2">
-              <span class="version-badge" data-i18n="latestVersion">Latest Version</span>
-              <span class="version-badge">v0.0.16</span>
-            </div>
           </div>
-        </div>
-      </section>
-
-      <!-- Desktop Downloads -->
-      <section class="section">
-        <div class="container">
-          <h2 class="title is-size-2 has-text-centered mb-6">Desktop Applications</h2>
-          <div class="columns is-multiline">
-            <!-- Windows -->
-            <div class="column is-4">
-              <div class="card download-card animate-fade-in animate-delay-1">
-                <div class="card-content has-text-centered">
-                  <div class="card-main-content">
-                    <div class="platform-icon">
-                      <i class="fab fa-windows"></i>
-                    </div>
-                    <h3 class="title is-size-4" data-i18n="windowsTitle">Windows</h3>
-                    <p class="subtitle is-size-6 mb-4" data-i18n="windowsDesc">Compatible with Windows 10/11 (64-bit)</p>
-                    <ul class="feature-list mb-4">
-                    </ul>
-                  </div>
-                  <div class="card-footer-content">
-                    <div class="buttons is-centered">
-                      <a class="button download-button is-medium" href="downloads/iotsploit-ui-v0.0.16-windows.zip">
-                        <span class="icon">
-                          <i class="fas fa-download"></i>
-                        </span>
-                        <span data-i18n="downloadNow">Download Now</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
+          <div class="dl-duo">
+            <div class="dl-mobile">
+              <div class="dl-mobile-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l0 6"/><path d="M20 10l0 6"/><path d="M7 9h10v8a1 1 0 0 1 -1 1h-8a1 1 0 0 1 -1 -1v-8a5 5 0 0 1 10 0"/><path d="M8 3l1 2"/><path d="M16 3l-1 2"/><path d="M9 18l0 3"/><path d="M15 18l0 3"/></svg>
               </div>
-            </div>
-
-            <!-- macOS -->
-            <div class="column is-4">
-              <div class="card download-card animate-fade-in animate-delay-2">
-                <div class="card-content has-text-centered">
-                  <div class="card-main-content">
-                    <div class="platform-icon">
-                      <i class="fab fa-apple"></i>
-                    </div>
-                    <h3 class="title is-size-4" data-i18n="macosTitle">macOS</h3>
-                    <p class="subtitle is-size-6 mb-4" data-i18n="macosDesc">Compatible with macOS 10.15+ (Intel & Apple Silicon)</p>
-                    <ul class="feature-list mb-4">
-                    </ul>
-                  </div>
-                  <div class="card-footer-content">
-                    <div class="buttons is-centered">
-                      <a class="button download-button is-medium" href="downloads/iotsploit-ui-v0.0.16-macos.zip">
-                        <span class="icon">
-                          <i class="fas fa-download"></i>
-                        </span>
-                        <span data-i18n="downloadNow">Download Now</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
+              <div>
+                <h3 data-i18n="androidApp">Android</h3>
+                <p data-i18n="dlAndroidDesc">On Google Play &middot; requires Android 8.0+</p>
               </div>
-            </div>
-
-            <!-- Linux -->
-            <div class="column is-4">
-              <div class="card download-card animate-fade-in animate-delay-3">
-                <div class="card-content has-text-centered">
-                  <div class="card-main-content">
-                    <div class="platform-icon">
-                      <i class="fab fa-linux"></i>
-                    </div>
-                    <h3 class="title is-size-4" data-i18n="linuxTitle">Linux</h3>
-                    <p class="subtitle is-size-6 mb-4" data-i18n="linuxDesc">Compatible with Ubuntu 20.04+, Debian 11+, CentOS 8+</p>
-                    <ul class="feature-list mb-4">
-                    </ul>
-                  </div>
-                  <div class="card-footer-content">
-                    <div class="buttons is-centered">
-                      <a class="button download-button is-medium" onclick="showLinuxDownloadModal()">
-                        <span class="icon">
-                          <i class="fas fa-download"></i>
-                        </span>
-                        <span data-i18n="downloadNow">Download Now</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Mobile Apps -->
-      <section class="section has-background-light">
-        <div class="container">
-          <h2 class="title is-size-2 has-text-centered mb-6" data-i18n="mobileTitle">Mobile Apps</h2>
-          <p class="subtitle has-text-centered mb-6" data-i18n="mobileDesc">Control IoTSploit from your mobile device</p>
-          <div class="mobile-cards">
-            <!-- Android — available on Google Play -->
-            <div class="mobile-card animate-fade-in animate-delay-1">
-              <div class="mobile-app-icon is-android">
-                <i class="fab fa-android"></i>
-              </div>
-              <div class="mobile-card-info">
-                <h3 class="mobile-card-title" data-i18n="androidApp">Android App</h3>
-                <p class="mobile-card-desc" data-i18n="androidAppDesc">Now available on Google Play</p>
-              </div>
-              <a class="gplay-badge" href="https://play.google.com/store/apps/details?id=org.iotsploit.app.toolkit" target="_blank" rel="noopener">
-                <i class="fab fa-google-play"></i>
-                <span class="gplay-badge-text">
-                  <span class="gplay-badge-top" data-i18n="getItOn">Get it on</span>
-                  <span class="gplay-badge-name">Google Play</span>
-                </span>
-              </a>
-              <a class="app-qr" href="https://play.google.com/store/apps/details?id=org.iotsploit.app.toolkit" target="_blank" rel="noopener" title="Scan to install">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&qzone=0&color=1e2430&bgcolor=ffffff&data=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.iotsploit.app.toolkit" alt="Scan to download IoTSploit on Google Play" width="76" height="76">
+              <a class="btn dl-mobile-act" href="https://play.google.com/store/apps/details?id=org.iotsploit.app.toolkit" target="_blank" rel="noopener">
+                <svg class="dl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3.71v16.58a.7 .7 0 0 0 1.05 .606l14.622 -8.42a.55 .55 0 0 0 0 -.953l-14.622 -8.419a.7 .7 0 0 0 -1.05 .607l0 -.001"/><path d="M15 9l-10.5 11.5"/><path d="M4.5 3.5l10.5 11.5"/></svg>
+                <span data-i18n="dlGooglePlay">Get it on Google Play</span>
               </a>
             </div>
-            <!-- iOS — coming soon -->
-            <div class="mobile-card animate-fade-in animate-delay-2">
-              <div class="mobile-app-icon is-apple">
-                <i class="fab fa-apple"></i>
+            <div class="dl-mobile">
+              <div class="dl-mobile-icon is-quiet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.286 7.008c-3.216 0 -4.286 3.23 -4.286 5.92c0 3.229 2.143 8.072 4.286 8.072c1.165 -.05 1.799 -.538 3.214 -.538c1.406 0 1.607 .538 3.214 .538s4.286 -3.229 4.286 -5.381c-.03 -.011 -2.649 -.434 -2.679 -3.23c-.02 -2.335 2.589 -3.179 2.679 -3.228c-1.096 -1.606 -3.162 -2.113 -3.75 -2.153c-1.535 -.12 -3.032 1.077 -3.75 1.077c-.729 0 -2.036 -1.077 -3.214 -1.077"/><path d="M12 4a2 2 0 0 0 2 -2a2 2 0 0 0 -2 2"/></svg>
               </div>
-              <div class="mobile-card-info">
-                <h3 class="mobile-card-title" data-i18n="iosApp">iOS App</h3>
-                <p class="mobile-card-desc" data-i18n="iosAppDesc">Requires iOS 13.0 or later</p>
+              <div>
+                <h3 data-i18n="iosApp">iOS</h3>
+                <p data-i18n="iosAppDesc">Requires iOS 13.0 or later</p>
               </div>
-              <span class="coming-soon-badge" data-i18n="comingSoon">Coming Soon</span>
+              <span class="dl-soon dl-mobile-act" data-i18n="comingSoon">Coming Soon</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Web Source Downloads -->
-      <section class="section">
-        <div class="container">
-          <h2 class="title is-size-2 has-text-centered mb-6" data-i18n="webSourceTitle">Web Source Downloads</h2>
-          <p class="subtitle has-text-centered mb-6" data-i18n="webSourceDesc">Flutter web build output and source files</p>
-          <div class="columns is-centered">
-            <div class="column is-4">
-              <div class="card download-card animate-fade-in animate-delay-1">
-                <div class="card-content has-text-centered">
-                  <div class="card-main-content">
-                    <div class="platform-icon">
-                      <i class="fas fa-globe"></i>
-                    </div>
-                    <h3 class="title is-size-4">Web Application</h3>
-                    <p class="subtitle is-size-6 mb-4">Ready-to-deploy Flutter web build output</p>
-                    <ul class="feature-list mb-4">
-                    </ul>
-                  </div>
-                  <div class="card-footer-content">
-                    <div class="buttons is-centered">
-                      <a class="button download-button is-medium" href="downloads/iotsploit-ui-v0.0.16-web.zip">
-                        <span class="icon">
-                          <i class="fas fa-download"></i>
-                        </span>
-                        <span data-i18n="webAppDownload">Download Web App</span>
-                      </a>
-                    </div>
-                    <p class="is-size-7 has-text-grey">Contains: HTML, CSS, JS, Assets</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    </main>
 
-      <!-- Footer -->
-      <div id="footer-placeholder"></div>
+    <!-- =========================== Footer =========================== -->
+    <div id="footer-placeholder"></div>
 
-      <!-- Linux Download Modal -->
-      <div class="modal" id="linuxDownloadModal">
-        <div class="modal-background" onclick="closeLinuxDownloadModal()"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title" data-i18n="linuxDownloadTitle">Choose Linux Version</p>
-            <button class="delete" aria-label="close" onclick="closeLinuxDownloadModal()"></button>
-          </header>
-          <section class="modal-card-body">
-            <p class="mb-4" data-i18n="linuxDownloadDesc">Select the Linux package format that works best for your system:</p>
-            <div class="columns">
-              <div class="column is-6">
-                <div class="card">
-                  <div class="card-content has-text-centered">
-                    <div class="platform-icon" style="font-size: 2rem; margin-bottom: 0.5rem;">
-                      <i class="fas fa-cube"></i>
-                    </div>
-                    <h4 class="title is-size-5">AppImage</h4>
-                    <p class="subtitle is-size-6 mb-4" data-i18n="appImageDesc">Universal binary for most Linux distributions</p>
-                    <a class="button download-button" href="downloads/iotsploit-ui-v0.0.16-linux.AppImage">
-                      <span class="icon">
-                        <i class="fas fa-download"></i>
-                      </span>
-                      <span data-i18n="downloadNow">Download Now</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="column is-6">
-                <div class="card">
-                  <div class="card-content has-text-centered">
-                    <div class="platform-icon" style="font-size: 2rem; margin-bottom: 0.5rem;">
-                      <i class="fas fa-file-archive"></i>
-                    </div>
-                    <h4 class="title is-size-5">TAR.GZ</h4>
-                    <p class="subtitle is-size-6 mb-4" data-i18n="tarGzDesc">Traditional archive for manual installation</p>
-                    <a class="button download-button" href="downloads/iotsploit-ui-v0.0.16-linux.tar.gz">
-                      <span class="icon">
-                        <i class="fas fa-download"></i>
-                      </span>
-                      <span data-i18n="downloadNow">Download Now</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-          <footer class="modal-card-foot">
-            <button class="button" onclick="closeLinuxDownloadModal()" data-i18n="cancel">Cancel</button>
-          </footer>
-        </div>
-      </div>
-    </div>
-
+    <!-- Scripts -->
     <script>
-      // Simple navbar toggle for mobile
-      const page = {
-        toggleNavbarMenu: function() {
-          const navMenu = document.getElementById('navMenu');
-          const burger = document.querySelector('.navbar-burger');
-          navMenu.classList.toggle('is-active');
-          burger.classList.toggle('is-active');
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.initializeLanguage) {
+          window.initializeLanguage();
         }
-      };
 
-      // Linux Download Modal functions
-      function showLinuxDownloadModal() {
-        document.getElementById('linuxDownloadModal').classList.add('is-active');
-        document.body.style.overflow = 'hidden';
-      }
-
-      function closeLinuxDownloadModal() {
-        document.getElementById('linuxDownloadModal').classList.remove('is-active');
-        document.body.style.overflow = 'auto';
-      }
-
-      // Add scroll animations
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fade-in');
-          }
-        });
-      }, observerOptions);
-
-      document.addEventListener('DOMContentLoaded', () => {
-        // Observe all cards for animation
-        document.querySelectorAll('.download-card, .stats-card').forEach(card => {
-          observer.observe(card);
-        });
-      });
-
-      // --- 动态加载独立导航栏 ---
-      document.addEventListener('DOMContentLoaded', () => {
         fetch('navbar.html')
           .then(r => r.text())
           .then(html => {
             const placeholder = document.getElementById('navbar-placeholder');
             if (placeholder) {
               placeholder.innerHTML = html;
-              // 导航栏加载完成后，重新应用当前语言设置
               const currentLanguage = localStorage.getItem('language') || (window.detectLanguage ? window.detectLanguage() : 'en');
               if (window.changeLanguage) {
                 window.changeLanguage(currentLanguage);
               }
             }
           });
-      });
 
-      // --- 动态加载共享页脚 ---
-      fetch('footer.html', { credentials: 'same-origin' })
-        .then(function(r){ return r.text(); })
-        .then(function(html){
-          var placeholder = document.getElementById('footer-placeholder');
-          if (!placeholder) return;
-          placeholder.innerHTML = html;
-          var lang = localStorage.getItem('language');
-          if (typeof changeLanguage === 'function' && lang) {
-            changeLanguage(lang);
+        // Load shared footer
+        fetch('footer.html', { credentials: 'same-origin' })
+          .then(function(r){ return r.text(); })
+          .then(function(html){
+            var placeholder = document.getElementById('footer-placeholder');
+            if (!placeholder) return;
+            placeholder.innerHTML = html;
+            var lang = localStorage.getItem('language');
+            if (typeof changeLanguage === 'function' && lang) {
+              changeLanguage(lang);
+            }
+          })
+          .catch(function(){ /* ignore footer load failure */ });
+      });
+    </script>
+
+    <!-- Platform detection + scroll reveal -->
+    <script>
+      (function () {
+        "use strict";
+
+        // Name the platform the visitor is on, so each product's primary button
+        // offers the file they actually need. Everything stays reachable below it.
+        var FILES = {
+          windows: {
+            label: "Windows",
+            standard: { href: "downloads/iotsploit-ui-v0.0.16-windows.zip",   file: "iotsploit-ui-v0.0.16-windows.zip",   size: "88 MB" },
+            jtag:     { href: "downloads/iotsploit-jtag-v0.0.16-windows.zip", file: "iotsploit-jtag-v0.0.16-windows.zip", size: "68 MB" }
+          },
+          macos: {
+            label: "macOS",
+            standard: { href: "downloads/iotsploit-ui-v0.0.16-macos.zip",   file: "iotsploit-ui-v0.0.16-macos.zip",   size: "95 MB" },
+            jtag:     { href: "downloads/iotsploit-jtag-v0.0.16-macos.zip", file: "iotsploit-jtag-v0.0.16-macos.zip", size: "74 MB" }
+          },
+          linux: {
+            label: "Linux",
+            standard: { href: "downloads/iotsploit-ui-v0.0.16-linux.AppImage",   file: "iotsploit-ui-v0.0.16-linux.AppImage",   size: "92 MB" },
+            jtag:     { href: "downloads/iotsploit-jtag-v0.0.16-linux.AppImage", file: "iotsploit-jtag-v0.0.16-linux.AppImage", size: "71 MB" }
           }
-        })
-        .catch(function(){ /* ignore footer load failure */ });
+        };
+
+        function detect() {
+          var ua = navigator.userAgent;
+          if (/Mac|iPhone|iPad|iPod/.test(ua)) return "macos";
+          if (/Win/.test(ua)) return "windows";
+          return "linux";
+        }
+
+        var os = FILES[detect()];
+        ["standard", "jtag"].forEach(function (product) {
+          var build = os[product];
+          var link  = document.querySelector('[data-os-link="'  + product + '"]');
+          var label = document.querySelector('[data-os-label="' + product + '"]');
+          var file  = document.querySelector('[data-os-file="'  + product + '"]');
+          var size  = document.querySelector('[data-os-size="'  + product + '"]');
+          if (link)  link.setAttribute("href", build.href);
+          if (label) label.textContent = "Download for " + os.label;
+          if (file)  file.textContent = build.file;
+          if (size)  size.textContent = build.size;
+        });
+
+        // The one motion idiom in the system: fadeInUp, fired once when a
+        // quarter of the element enters the viewport. Content is visible
+        // without this — the observer only adds the class that plays the
+        // animation, so a JS failure or a reduced-motion preference still
+        // leaves a fully readable page.
+        var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var targets = document.querySelectorAll("[data-reveal]");
+        if (reduced || !("IntersectionObserver" in window)) return;
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("aw-fade");
+            io.unobserve(entry.target);
+          });
+        }, { threshold: 0.25 });
+        targets.forEach(function (el) { io.observe(el); });
+      })();
     </script>
   </body>
-</html> 
+</html>
