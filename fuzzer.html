@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content="Hugo 0.120.3">
     <meta name="description" content="IoT Protocol Fuzzer - Advanced IoT Security Testing Tool" />
 
@@ -33,10 +33,11 @@
 
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/mstile-144x144.png">
-    <meta name="theme-color" content="#9c3838">
+    <meta name="theme-color" content="#0161ef">
 
     <title>IoT Protocol Fuzzer - IoTSploit</title>
 
+    <!-- Bulma powers the shared navbar only; the page itself uses the design system. -->
     <!-- Colour scheme. Must run before any stylesheet so the stored choice is on
          <html> for the first paint, otherwise a dark page flashes white. -->
     <script src="js/theme.js"></script>
@@ -44,6 +45,7 @@
     <link rel="stylesheet" href="css/bulma.css">
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/ds/styles.css">
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -80,208 +82,184 @@
     <script defer src="js/navbar.js"></script>
 
     <style>
-      /* Navbar logo styling */
-      .navbar-item img.is-logo {
-        max-height: 3rem;
-      }
+      /* ==================================================================
+         IoT Protocol Fuzzer — IoTSploit Astro Design System (AstroWind v6).
+         Tokens and utilities come from css/ds/. Everything below is either
+         a Bulma-coexistence reset or a layout the design system does not
+         ship as CSS (its widgets are React).
+         ================================================================== */
 
+      /* Bulma styles the shared navbar; keep its reach out of the page body. */
+      .aw-page p,
+      .aw-page h1,
+      .aw-page h2,
+      .aw-page h3,
+      .aw-page h4,
+      .aw-page ul {
+        margin: 0;
+        padding: 0;
+      }
+      .aw-page ul { list-style: none; }
+
+      /* The logo makes the fixed navbar taller than Bulma's 3.25rem reserve. */
+      .navbar-item img.is-logo { max-height: 3rem; }
+      body.has-navbar-fixed-top { padding-top: 4rem; }
       @media screen and (max-width: 1023px) {
-        .navbar-item img.is-logo {
-          max-height: 2.5rem;
-        }
+        .navbar-item img.is-logo { max-height: 2.5rem; }
+        body.has-navbar-fixed-top { padding-top: 3.5rem; }
       }
 
-      .buttons .button {
-        width: 120px;
-        display: inline-flex;
+      /* Icons: Tabler outline glyphs, inheriting currentColor. */
+      .fz-icon { width: 1.5rem; height: 1.5rem; flex: 0 0 auto; }
+
+      /* 48px pill chip, white glyph on primary blue — the Features treatment. */
+      .fz-chip-icon {
+        width: 3rem;
+        height: 3rem;
+        display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: var(--radius-full);
+        background-color: var(--aw-color-primary);
+        color: var(--text-on-primary);
+        margin-bottom: var(--space-4);
       }
-      
-      /* Discord purple button styling */
-      .button.is-discord-purple {
-        background-color: #5865F2;
-        border-color: #5865F2;
-        color: white;
-      }
-      
-      .button.is-discord-purple:hover {
-        background-color: #4752C4;
-        border-color: #4752C4;
-        color: white;
-      }
+      .fz-chip-icon .fz-icon { width: 1.5rem; height: 1.5rem; }
 
-
-
-      /* Fuzzer Hero Background */
-      .fuzzer-hero-background {
+      /* ---------- Hero ---------- */
+      .fz-hero {
         position: relative;
         min-height: 80vh;
-        overflow: hidden;
-        background-image: url('images/fuzzer.png');
+        display: flex;
+        align-items: center;
+        background-image: url("images/fuzzer.png");
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
       }
-      
-      /* Dark overlay for better text readability */
-      .fuzzer-hero-overlay {
+      .fz-hero-overlay {
         position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        background: linear-gradient(135deg, rgba(65, 77, 89, 0.9), rgba(50, 59, 68, 0.9));
-        z-index: 1;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgb(3 6 32 / 0.92),
+          rgb(15 23 42 / 0.92)
+        );
+        z-index: 0;
       }
-      
-      /* Ensure text appears above the overlay */
-      .fuzzer-hero-background .hero-body {
-        position: relative;
-        z-index: 2;
+      .fz-hero-inner { position: relative; z-index: 1; }
+      .fz-hero-content {
+        max-width: var(--container-max-5xl);
+        margin: 0 auto;
+        text-align: center;
       }
-      
-      /* Enhanced text visibility */
-      .fuzzer-hero-background .title,
-      .fuzzer-hero-background .subtitle {
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-        margin-bottom: 1.5rem;
+      .fz-hero-title {
+        font-size: var(--text-5xl);
+        font-weight: var(--font-bold);
+        line-height: var(--leading-tighter);
+        letter-spacing: var(--tracking-tighter);
+        color: var(--text-heading);
+        text-shadow: 0 2px 8px rgb(0 0 0 / 0.4);
       }
-      
-      /* Feature cards styling */
-      .fuzzer-feature-card {
-        background: #27343F;
-        border-radius: 12px;
-        padding: 2rem;
-        height: 100%;
-        transition: all 0.3s ease;
-        border-top: 3px solid transparent;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        color: rgba(255, 255, 255, 0.7);
+      @media (min-width: 768px) { .fz-hero-title { font-size: var(--text-6xl); } }
+      .fz-hero .aw-subtitle {
+        margin-top: var(--space-4);
+        text-shadow: 0 1px 6px rgb(0 0 0 / 0.4);
       }
-      
-      .fuzzer-feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-        border-top-color: #0096D1;
-        background: #323b44;
+      .fz-hero-desc {
+        margin: var(--space-6) auto 0;
+        max-width: 60ch;
+        font-size: var(--text-lg);
+        line-height: var(--text-lg-lh);
+        color: var(--text-muted);
+        text-shadow: 0 1px 6px rgb(0 0 0 / 0.4);
       }
-      
-      .fuzzer-feature-icon {
-        background: linear-gradient(135deg, #414d59, #0096D1);
-        color: white;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
+      .fz-actions {
         display: flex;
-        align-items: center;
+        flex-wrap: wrap;
+        gap: var(--space-3);
         justify-content: center;
-        margin-bottom: 1rem;
-        font-size: 1.5rem;
+        margin-top: var(--space-8);
       }
-      
-      /* Technical specs styling */
-      .tech-spec-item {
+      .fz-actions .btn { white-space: nowrap; }
+      .fz-actions .fz-icon { width: 1.25rem; height: 1.25rem; }
+
+      /* ---------- Headline block ---------- */
+      .fz-headline {
+        max-width: var(--container-max-3xl);
+        margin-inline: auto;
+        text-align: center;
+        margin-bottom: var(--space-12);
+      }
+      .fz-headline .aw-tagline { margin-bottom: var(--space-2); }
+
+      /* ---------- Grids ---------- */
+      .fz-grid {
+        display: grid;
+        gap: var(--grid-gap);
+      }
+      @media (min-width: 768px) {
+        .fz-grid.is-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+      .fz-item-title {
+        font-size: 1.3rem;
+        font-weight: var(--font-bold);
+        line-height: var(--leading-snug);
+        color: var(--text-heading);
+      }
+      .fz-item-desc {
+        margin-top: var(--space-2);
+        color: var(--text-muted);
+      }
+
+      /* An item whose glyph sits beside the text — the Content treatment. */
+      .fz-row {
         display: flex;
-        align-items: center;
-        margin-bottom: 1rem;
-        padding: 1rem;
-        background: #212C34;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        border-left: 4px solid #0096D1;
-        color: rgba(255, 255, 255, 0.7);
+        gap: var(--space-4);
       }
-      
-      .tech-spec-item:hover {
-        transform: translateX(5px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        background: #27343F;
+      .fz-row .fz-icon {
+        color: var(--icon-accent);
+        margin-top: 0.2rem;
       }
-      
-      .tech-spec-icon {
-        background: rgba(0, 150, 209, 0.2);
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 1rem;
-        color: #0096D1;
-      }
-      
-      /* Code block styling */
-      .api-code-block {
-        background: #1f2c36;
-        border-radius: 8px;
-        padding: 1.5rem;
-        color: rgba(255, 255, 255, 0.7);
-        font-family: 'Source Code Pro', monospace;
-        overflow-x: auto;
-        border: 1px solid #323b44;
-      }
-      
-      .api-endpoint {
-        color: #0096D1;
-        font-weight: bold;
-      }
-      
-      .api-method {
-        color: #ADD8E6;
-        font-weight: bold;
-      }
-      
-      /* Responsive adjustments */
+
+      /* ---------- Responsive ---------- */
       @media screen and (max-width: 768px) {
-        .fuzzer-hero-background {
+        .fz-hero {
           min-height: 60vh;
           background-attachment: scroll;
-        }
-        
-        .fuzzer-hero-background .title {
-          font-size: 2rem !important;
-        }
-        
-        .fuzzer-hero-background .subtitle {
-          font-size: 1.25rem !important;
         }
       }
     </style>
   </head>
-  
-  <body class="page has-navbar-fixed-top">
-    <div class="main">
-      <div id="navbar-placeholder"></div>
 
-      <!-- Hero Section -->
-      <section class="hero has-text-centered is-medium fuzzer-hero-background">
-        <div class="fuzzer-hero-overlay"></div>
-        <div class="hero-body">
-          <div class="container">
-            <h1 class="title is-size-1 is-size-2-mobile is-spaced has-text-white" data-i18n="fuzzerTitle">
+  <body class="page has-navbar-fixed-top">
+    <div id="navbar-placeholder"></div>
+
+    <main class="aw-page">
+      <!-- ============================ Hero ============================ -->
+      <section class="aw-section fz-hero dark">
+        <div class="fz-hero-overlay" aria-hidden="true"></div>
+        <div class="aw-container fz-hero-inner">
+          <div class="fz-hero-content">
+            <h1 class="fz-hero-title" data-i18n="fuzzerTitle">
               IoT Protocol Fuzzer
             </h1>
-            
-            <p class="subtitle is-size-3 is-size-4-mobile has-text-weight-light has-text-white" data-i18n="fuzzerSubtitle">
+
+            <p class="aw-subtitle" data-i18n="fuzzerSubtitle">
               Advanced Security Testing for IoT Protocols
             </p>
-            
-            <p class="subtitle is-size-5 is-size-6-mobile has-text-white" style="max-width: 600px; margin: 0 auto 2rem;" data-i18n="fuzzerDescription">
+
+            <p class="fz-hero-desc" data-i18n="fuzzerDescription">
               Comprehensive protocol fuzzing tool designed specifically for IoT devices and communication protocols. Test security vulnerabilities with real-time monitoring and advanced analysis capabilities.
             </p>
-            
-            <div class="mt-6">
-              <a class="button is-primary is-large mr-2" href="https://iotsploit-tutorial.readthedocs.io/en/latest/">
-                <span class="icon">
-                  <i class="fas fa-rocket"></i>
-                </span>
+
+            <div class="fz-actions">
+              <a class="btn btn-primary" href="https://iotsploit-tutorial.readthedocs.io/en/latest/">
+                <svg class="fz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3 -5a9 9 0 0 0 6 -8a3 3 0 0 0 -3 -3a9 9 0 0 0 -8 6a6 6 0 0 0 -5 3"/><path d="M7 14a6 6 0 0 0 -3 6a6 6 0 0 0 6 -3"/><path d="M14 9a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/></svg>
                 <span data-i18n="getStarted">Get Started</span>
               </a>
-              <a class="button is-light is-large" href="https://github.com/TKXB/iotsploit" target="_blank">
-                <span class="icon">
-                  <i class="fab fa-github"></i>
-                </span>
+              <a class="btn" href="https://github.com/TKXB/iotsploit" target="_blank" rel="noopener noreferrer">
+                <svg class="fz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"/></svg>
                 <span data-i18n="learnMore">Learn More</span>
               </a>
             </div>
@@ -289,143 +267,94 @@
         </div>
       </section>
 
-      <!-- Core Features Section -->
-      <section class="section" style="background-color: #1f2c36;">
-        <div class="container">
-          <h2 class="title has-text-centered mb-6" style="color: #0096D1;">Core Features</h2>
-          
-          <div class="columns is-multiline">
+      <!-- ========================= Core Features ====================== -->
+      <section class="aw-section" id="features">
+        <div class="aw-container aw-container-5xl">
+          <div class="fz-headline">
+            <h2 class="aw-title">Core Features</h2>
+          </div>
+
+          <div class="fz-grid is-2">
             <!-- Real-time Testing -->
-            <div class="column is-6">
-              <div class="fuzzer-feature-card">
-                <div class="fuzzer-feature-icon">
-                  <i class="fas fa-play-circle"></i>
-                </div>
-                <h3 class="title is-4" style="color: #0096D1;" data-i18n="realTimeTestingTitle">Real-time Testing</h3>
-                <p data-i18n="realTimeTestingDesc">Execute fuzzing campaigns with live monitoring and instant feedback on test progress and results.</p>
+            <div class="aw-card">
+              <div class="fz-chip-icon">
+                <svg class="fz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12h-8a1 1 0 1 0 -1 1v8a9 9 0 0 0 9 -9"/><path d="M16 9a5 5 0 1 0 -7 7"/><path d="M20.486 9a9 9 0 1 0 -11.482 11.495"/></svg>
               </div>
+              <h3 class="fz-item-title" data-i18n="realTimeTestingTitle">Real-time Testing</h3>
+              <p class="fz-item-desc" data-i18n="realTimeTestingDesc">Execute fuzzing campaigns with live monitoring and instant feedback on test progress and results.</p>
             </div>
-            
+
             <!-- Protocol Configuration -->
-            <div class="column is-6">
-              <div class="fuzzer-feature-card">
-                <div class="fuzzer-feature-icon">
-                  <i class="fas fa-cogs"></i>
-                </div>
-                <h3 class="title is-4" style="color: #0096D1;" data-i18n="protocolConfigTitle">Protocol Configuration</h3>
-                <p data-i18n="protocolConfigDesc">Configure and customize fuzzing parameters for various IoT protocols including UART, JTAG, BLE, and more.</p>
+            <div class="aw-card">
+              <div class="fz-chip-icon">
+                <svg class="fz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/></svg>
               </div>
+              <h3 class="fz-item-title" data-i18n="protocolConfigTitle">Protocol Configuration</h3>
+              <p class="fz-item-desc" data-i18n="protocolConfigDesc">Configure and customize fuzzing parameters for various IoT protocols including UART, JTAG, BLE, and more.</p>
             </div>
-            
+
             <!-- Test Management -->
-            <div class="column is-6">
-              <div class="fuzzer-feature-card">
-                <div class="fuzzer-feature-icon">
-                  <i class="fas fa-tasks"></i>
-                </div>
-                <h3 class="title is-4" style="color: #0096D1;" data-i18n="testManagementTitle">Test Management</h3>
-                <p data-i18n="testManagementDesc">Organize test cases and groups for systematic security assessment campaigns.</p>
+            <div class="aw-card">
+              <div class="fz-chip-icon">
+                <svg class="fz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 5.5l1.5 1.5l2.5 -2.5"/><path d="M3.5 11.5l1.5 1.5l2.5 -2.5"/><path d="M3.5 17.5l1.5 1.5l2.5 -2.5"/><path d="M11 6l9 0"/><path d="M11 12l9 0"/><path d="M11 18l9 0"/></svg>
               </div>
+              <h3 class="fz-item-title" data-i18n="testManagementTitle">Test Management</h3>
+              <p class="fz-item-desc" data-i18n="testManagementDesc">Organize test cases and groups for systematic security assessment campaigns.</p>
             </div>
-            
+
             <!-- Result Analysis -->
-            <div class="column is-6">
-              <div class="fuzzer-feature-card">
-                <div class="fuzzer-feature-icon">
-                  <i class="fas fa-chart-line"></i>
-                </div>
-                <h3 class="title is-4" style="color: #0096D1;" data-i18n="resultAnalysisTitle">Result Analysis</h3>
-                <p data-i18n="resultAnalysisDesc">Comprehensive result analysis with live logging, filtering, and export capabilities for detailed reporting.</p>
+            <div class="aw-card">
+              <div class="fz-chip-icon">
+                <svg class="fz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h5.697"/><path d="M18 12v-5a2 2 0 0 0 -2 -2h-2"/><path d="M8 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2"/><path d="M8 11h4"/><path d="M8 15h3"/><path d="M14 17.5a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0"/><path d="M18.5 19.5l2.5 2.5"/></svg>
               </div>
+              <h3 class="fz-item-title" data-i18n="resultAnalysisTitle">Result Analysis</h3>
+              <p class="fz-item-desc" data-i18n="resultAnalysisDesc">Comprehensive result analysis with live logging, filtering, and export capabilities for detailed reporting.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Technical Features Section -->
-      <section class="section" style="background: linear-gradient(135deg, #323b44 0%, #414d59 100%);">
-        <div class="container">
-          <h2 class="title has-text-centered mb-6" style="color: #0096D1;" data-i18n="techFeaturesTitle">Technical Features</h2>
-          
-          <div class="columns">
-            <div class="column is-6">
-              <div class="tech-spec-item">
-                <div class="tech-spec-icon">
-                  <i class="fas fa-stream"></i>
-                </div>
-                <div>
-                  <h4 class="title is-5" style="color: #0096D1;" data-i18n="liveLoggingTitle">Live Logging</h4>
-                  <p data-i18n="liveLoggingDesc">Real-time log streaming with advanced filtering by status, search terms, and log levels.</p>
-                </div>
-              </div>
-              
-              <div class="tech-spec-item">
-                <div class="tech-spec-icon">
-                  <i class="fas fa-tachometer-alt"></i>
-                </div>
-                <div>
-                  <h4 class="title is-5" style="color: #0096D1;" data-i18n="performanceMonitoringTitle">Performance Monitoring</h4>
-                  <p data-i18n="performanceMonitoringDesc">System metrics tracking including CPU, memory usage, and test execution statistics.</p>
-                </div>
-              </div>
-            </div>
-            
-            <div class="column is-6">
-              <div class="tech-spec-item">
-                <div class="tech-spec-icon">
-                  <i class="fas fa-folder-open"></i>
-                </div>
-                <div>
-                  <h4 class="title is-5" style="color: #0096D1;" data-i18n="fileManagementTitle">File Management</h4>
-                  <p data-i18n="fileManagementDesc">Comprehensive file management for test results, configurations, and analysis reports.</p>
-                </div>
-              </div>
-              
-              <div class="tech-spec-item">
-                <div class="tech-spec-icon">
-                  <i class="fas fa-download"></i>
-                </div>
-                <div>
-                  <h4 class="title is-5" style="color: #0096D1;" data-i18n="exportCapabilityTitle">Export Capability</h4>
-                  <p data-i18n="exportCapabilityDesc">Generate detailed reports and export test data for further analysis and documentation.</p>
-                </div>
-              </div>
-            </div>
+      <!-- ====================== Technical Features ==================== -->
+      <section class="aw-section aw-bg-tint" id="technical">
+        <div class="aw-container aw-container-5xl">
+          <div class="fz-headline">
+            <h2 class="aw-title" data-i18n="techFeaturesTitle">Technical Features</h2>
           </div>
-        </div>
-      </section>
 
-      <!-- Integration Section -->
-      <section class="section" style="background-color: #212C34;">
-        <div class="container">
-          <div class="columns is-vcentered">
-            <div class="column is-6">
-              <h2 class="title" style="color: #0096D1;" data-i18n="integrationTitle">Integration & API</h2>
-              <p class="subtitle" style="color: rgba(255, 255, 255, 0.7);" data-i18n="integrationDesc">
-                The IoT Protocol Fuzzer integrates with Django backend API and provides WebSocket connections for real-time updates. Features include:
-              </p>
-              
-              <div class="content" style="color: rgba(255, 255, 255, 0.7);">
-                <ul>
-                  <li><strong data-i18n="djangoIntegration" style="color: #ADD8E6;">Django Backend Integration</strong></li>
-                  <li><strong data-i18n="websocketSupport" style="color: #ADD8E6;">WebSocket Real-time Updates</strong></li>
-                  <li><strong data-i18n="restApi" style="color: #ADD8E6;">RESTful API Endpoints</strong></li>
-                  <li><strong data-i18n="errorHandling" style="color: #ADD8E6;">Advanced Error Handling</strong></li>
-                </ul>
+          <div class="fz-grid is-2">
+            <!-- Live Logging -->
+            <div class="fz-row">
+              <svg class="fz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3 8l4 -16l3 8h4"/></svg>
+              <div>
+                <h3 class="fz-item-title" data-i18n="liveLoggingTitle">Live Logging</h3>
+                <p class="fz-item-desc" data-i18n="liveLoggingDesc">Real-time log streaming with advanced filtering by status, search terms, and log levels.</p>
               </div>
             </div>
-            
-            <div class="column is-6">
-              <div class="api-code-block">
-<span class="api-method">POST</span> <span class="api-endpoint">/api/iot-fuzzer/testing/campaign/start/</span>
-<span class="api-method">POST</span> <span class="api-endpoint">/api/iot-fuzzer/testing/campaign/stop/</span>
-<span class="api-method">POST</span> <span class="api-endpoint">/api/iot-fuzzer/testing/campaign/pause/</span>
-<span class="api-method">GET</span>  <span class="api-endpoint">/api/iot-fuzzer/testing/campaign/status/</span>
-<span class="api-method">GET</span>  <span class="api-endpoint">/api/iot-fuzzer/testing/statistics/</span>
-<span class="api-method">GET</span>  <span class="api-endpoint">/api/iot-fuzzer/testing/test-groups/</span>
 
-<span style="color: #6272a4;"># WebSocket connection for real-time updates</span>
-<span style="color: #f1fa8c;">ws://localhost:9999/fuzzer/live</span>
+            <!-- Performance Monitoring -->
+            <div class="fz-row">
+              <svg class="fz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1l0 -12"/><path d="M9 9h6v6h-6l0 -6"/><path d="M3 10h2"/><path d="M3 14h2"/><path d="M10 3v2"/><path d="M14 3v2"/><path d="M21 10h-2"/><path d="M21 14h-2"/><path d="M14 21v-2"/><path d="M10 21v-2"/></svg>
+              <div>
+                <h3 class="fz-item-title" data-i18n="performanceMonitoringTitle">Performance Monitoring</h3>
+                <p class="fz-item-desc" data-i18n="performanceMonitoringDesc">System metrics tracking including CPU, memory usage, and test execution statistics.</p>
+              </div>
+            </div>
+
+            <!-- File Management -->
+            <div class="fz-row">
+              <svg class="fz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2"/><path d="M10 13l-1 2l1 2"/><path d="M14 13l1 2l-1 2"/></svg>
+              <div>
+                <h3 class="fz-item-title" data-i18n="fileManagementTitle">File Management</h3>
+                <p class="fz-item-desc" data-i18n="fileManagementDesc">Comprehensive file management for test results, configurations, and analysis reports.</p>
+              </div>
+            </div>
+
+            <!-- Export Capability -->
+            <div class="fz-row">
+              <svg class="fz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>
+              <div>
+                <h3 class="fz-item-title" data-i18n="exportCapabilityTitle">Export Capability</h3>
+                <p class="fz-item-desc" data-i18n="exportCapabilityDesc">Generate detailed reports and export test data for further analysis and documentation.</p>
               </div>
             </div>
           </div>
@@ -433,8 +362,8 @@
       </section>
 
       <!-- Footer -->
-      <div id="footer-placeholder" class="dark"></div>
-    </div>
+      <div id="footer-placeholder"></div>
+    </main>
 
     <!-- Scripts -->
     <script>
@@ -446,7 +375,7 @@
         if (window.initializeLanguage) {
           window.initializeLanguage();
         }
-        
+
         // 动态加载导航栏
         fetch('navbar.html')
           .then(r => r.text())
@@ -478,4 +407,4 @@
       });
     </script>
   </body>
-</html> 
+</html>
