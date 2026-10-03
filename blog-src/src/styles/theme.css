@@ -72,7 +72,8 @@
 }
 
 /* ---------- Site header: subtle brand underglow ---------- */
-.header {
+/* Scope to <header>: Starlight's inner Header component is also div.header */
+header.header {
   border-bottom: 1px solid var(--sl-color-gray-5);
   background-color: color-mix(in srgb, var(--sl-color-black) 88%, transparent);
   backdrop-filter: blur(8px);
