@@ -81,6 +81,13 @@ export default defineConfig({
           ],
         },
         {
+          label: 'IoT Fuzzer',
+          translations: { en: 'IoT Fuzzer' },
+          items: [
+            { slug: 'manual/iot-fuzzer-test-management', label: '测试组与测试用例', translations: { en: 'Test Groups and Cases' } },
+          ],
+        },
+        {
           label: '工具箱',
           translations: { en: 'Toolkit' },
           items: [
