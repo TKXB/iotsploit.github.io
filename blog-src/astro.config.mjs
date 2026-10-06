@@ -86,6 +86,7 @@ export default defineConfig({
           items: [
             { slug: 'manual/key-tool', label: '密钥工具', translations: { en: 'Key Tool' } },
             { slug: 'manual/port-scanner', label: '端口扫描', translations: { en: 'Port Scanner' } },
+            { slug: 'manual/can-analysis', label: 'CAN 总线分析', translations: { en: 'CAN Analysis' } },
             { slug: 'manual/ssh-client', label: 'SSH 客户端', translations: { en: 'SSH Client' } },
             { slug: 'manual/file-obfuscator', label: '文件混淆器', translations: { en: 'File Obfuscator' } },
             { slug: 'manual/usbtmc-device-control', label: 'USBTMC 仪器控制', translations: { en: 'USBTMC Console' } },
